@@ -4,18 +4,25 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Detail view</title>
-        <link href="style.css" rel="stylesheet" type="text/css"/>
+        <link href="Styles/style.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
         <div id="container">
             <div class="headerContainer2">
-                <div class="iconContainer">
-                    <img src="BackIcon.png" width="30px" onclick="window.history.back()">
-                    <h4 class="headerText">Helseflora</h4> 
-                </div>
+                <div class="headerTopContainer2">
+                    <div class="iconContainer">
+                        <img src="Assets/BackIcon.png" width="30px" onclick="window.history.back()">
+                        <h4 class="headerText">Helseflora</h4> 
+                    </div>
+                        <div class="headerButtonContainer">
+                            <input type="text" id="searchInput">
+                            <img src="/Assets/Search.png" class="headerButtonIcon" onclick="changeWindowPlantSearch()">
+                            <img src="/Assets/Cart.png" class="headerButtonIcon" onclick="changeWindowCart()">
+                        </div>
+                    </div>
                 <hr>
             </div>
         </div>
     </body>
-    <script type="text/javascript" src="main.js"></script>
+    <script type="text/javascript" src="Scripts/main.js"></script>
 </html>

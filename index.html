@@ -4,43 +4,50 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Category view</title>
-        <link href="style.css" rel="stylesheet" type="text/css"/>
+        <link href="Styles/style.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
         <div id="container">
             <div class="headerContainer">
-                <h4 class="headerText">Helseflora</h4>
+                <div class="headerTopContainer">
+                    <h4 class="headerText">Helseflora</h4>
+                    <div class="headerButtonContainer">
+                        <input type="text" id="searchInput">
+                        <img src="/Assets/Search.png" class="headerButtonIcon" onclick="changeWindowPlantSearch()">
+                        <img src="/Assets/Cart.png" class="headerButtonIcon" onclick="changeWindowCart()">
+                    </div>
+                </div>
                 <hr>
                 <h1 class="headerCategory">Kategorier</h1>
                 <hr>
             </div>
             <div id="categoryContainer">
-                <div class="categoryTextContainer" onclick="changeWindowPlant(0)">
+                <div class="categoryTextContainer" onclick="changeWindowPlant(1)">
                     <p>Sår og insektstikk</p>
                     <hr>  
                 </div>
-                <div class="categoryTextContainer" onclick="changeWindowPlant(1)">
+                <div class="categoryTextContainer" onclick="changeWindowPlant(2)">
                     <p>Fordøyelse</p>
                     <hr> 
                 </div>
-                <div class="categoryTextContainer" onclick="changeWindowPlant(2)">
+                <div class="categoryTextContainer" onclick="changeWindowPlant(3)">
                     <p>Beroligende</p>
                     <hr>
                 </div>
-                <div class="categoryTextContainer" onclick="changeWindowPlant(3)">
+                <div class="categoryTextContainer" onclick="changeWindowPlant(4)">
                     <p>Oppkvikkende</p>
                     <hr>  
                 </div>
-                <div class="categoryTextContainer" onclick="changeWindowPlant(4)">
+                <div class="categoryTextContainer" onclick="changeWindowPlant(5)">
                     <p>Hudplager</p>
                     <hr> 
                 </div>
-                <div class="categoryTextContainer" onclick="changeWindowPlant(5)">
+                <div class="categoryTextContainer" onclick="changeWindowPlant(6)">
                     <p>Luftveisplager</p>
                     <hr>
                 </div>
             </div>
         </div>
     </body>
-    <script type="text/javascript" src="main.js"></script>
+    <script type="text/javascript" src="Scripts/main.js"></script>
 </html>
