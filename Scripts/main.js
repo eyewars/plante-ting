@@ -20,7 +20,7 @@ async function getCategoryData(category) {
   }
 }
 //HALLO EVEN
-// HEI LASSE OG BERNER
+//ja hei
 async function getPlantViewData(category) {
   try {
     let response = await fetch(plantViewUrl + (await getCategoryData(category)));
