@@ -1,5 +1,5 @@
 "use strict";
-// yo
+
 let categoryUrl = "https://sukkergris.no/plantcategories/";
 let plantViewUrl = "https://sukkergris.no/plants/?category=";
 let detailViewUrl = "https://sukkergris.no/plant/?id=";
@@ -19,7 +19,7 @@ async function getCategoryData(category) {
     console.log(error);
   }
 }
-//lviet
+//HALLO EVEN
 async function getPlantViewData(category) {
   try {
     let response = await fetch(plantViewUrl + (await getCategoryData(category)));
