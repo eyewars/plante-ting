@@ -1,0 +1,136 @@
+html{
+    background-color: rgb(43, 66, 43);
+}
+
+*{
+    color: white;
+    margin: 0;
+    padding: 0;
+}
+
+.headerContainer{
+    height: 80px;
+    width: 500px;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.headerContainer2{
+    height: 35px;
+    width: 500px;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.iconContainer{
+    display: flex;
+    margin-left: 5px;
+}
+
+.iconContainer h4{
+    margin: auto;
+    margin-left: 5px;
+}
+
+.headerText{
+    color: rgb(139, 206, 139);
+    margin-left: 5px;
+}
+
+.headerCategory{
+    color: rgb(87, 122, 87);
+    margin-left: 5px;
+}
+
+#categoryContainer{
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+}
+
+#categoryContainer p{
+    margin-left: 5px;
+    margin-top: 5px;
+}
+
+.categoryTextContainer hr{
+    margin-top: 5px;
+}
+
+.categoryTextContainer:hover{
+    background-color: rgb(76, 119, 76);
+}
+
+.categoryTextContainer:hover p{
+    background-color: rgb(76, 119, 76);
+}
+
+.plantContainer{
+    display: flex;
+    height: 120px;
+    margin-bottom: 2px;
+}
+
+.detailContainer p{
+    margin-left: 50px;
+}
+
+.textContainer{
+    width: 380px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.textContainerBig{
+    width: 450px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+h3{
+    margin: 5px;
+}
+
+p{
+    margin: 5px; 
+}
+
+.line{
+    width: 500px;
+}
+
+.line2{
+    width: 400px;
+    margin-left: 50px;
+}
+
+.bigPic{
+    width: 400px;
+    margin: 20px 0 0 50px;
+}
+
+.description{
+    width: 400px;
+}
+
+.picContainer{
+    position: relative;
+}
+
+.picTextContainer{
+    position: absolute;
+    width: 230px;
+    top: 80px;
+    left: 5px;
+    background-color: rgba(99, 121, 99, 0.795);
+}
+
+.picTextContainer h1{
+    margin-left: 5px;
+}
