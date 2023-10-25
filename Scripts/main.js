@@ -20,7 +20,7 @@ async function getCategoryData(category){
         console.log(error);
     }
 }
-
+//lviet
 async function getPlantViewData(category){
     try{
         let response = await fetch(plantViewUrl + await getCategoryData(category));
