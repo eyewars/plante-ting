@@ -10,11 +10,11 @@
         <div id="container">
             <div class="headerContainer">
                 <div class="headerTopContainer">
-                    <h4 class="headerText">Helseflora</h4>
+                    <h4><a href="index.html" class="headerText">Helseflora</a></h4> 
                     <div class="headerButtonContainer">
                         <input type="text" id="searchInput">
-                        <img src="/Assets/Search.png" class="headerButtonIcon" onclick="changeWindowPlantSearch()">
-                        <img src="/Assets/Cart.png" class="headerButtonIcon" onclick="changeWindowCart()">
+                        <img src="/Assets/Search.png" class="headerButtonIcon" id="plantSearch">
+                        <img src="/Assets/Cart.png" class="headerButtonIcon" id="shoppingCart">
                     </div>
                 </div>
                 <hr>
@@ -22,32 +22,33 @@
                 <hr>
             </div>
             <div id="categoryContainer">
-                <div class="categoryTextContainer" onclick="changeWindowPlant(1)">
+                <div id="categoryButton1" class="categoryTextContainer">
                     <p>Sår og insektstikk</p>
                     <hr>  
                 </div>
-                <div class="categoryTextContainer" onclick="changeWindowPlant(2)">
+                <div id="categoryButton2" class="categoryTextContainer">
                     <p>Fordøyelse</p>
                     <hr> 
                 </div>
-                <div class="categoryTextContainer" onclick="changeWindowPlant(3)">
+                <div id="categoryButton3" class="categoryTextContainer">
                     <p>Beroligende</p>
                     <hr>
                 </div>
-                <div class="categoryTextContainer" onclick="changeWindowPlant(4)">
+                <div id="categoryButton4" class="categoryTextContainer">
                     <p>Oppkvikkende</p>
                     <hr>  
                 </div>
-                <div class="categoryTextContainer" onclick="changeWindowPlant(5)">
+                <div id="categoryButton5" class="categoryTextContainer">
                     <p>Hudplager</p>
                     <hr> 
                 </div>
-                <div class="categoryTextContainer" onclick="changeWindowPlant(6)">
+                <div id="categoryButton6" class="categoryTextContainer">
                     <p>Luftveisplager</p>
                     <hr>
                 </div>
             </div>
         </div>
+
+        <script type="module" src="Scripts/main.js"></script>
     </body>
-    <script type="text/javascript" src="Scripts/main.js"></script>
 </html>

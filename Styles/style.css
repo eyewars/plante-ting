@@ -8,6 +8,10 @@ html{
     padding: 0;
 }
 
+.hidden{
+    display: none;
+}
+
 .headerContainer{
     height: 80px;
     width: 500px;
@@ -64,11 +68,16 @@ html{
     margin-left: 5px;
 }
 
+.headerTopContainer h4{
+    display: flex
+}
+
 .headerText{
     color: rgb(139, 206, 139);
     margin-left: 5px;
     display: flex;
     align-items: center;
+    text-decoration: none;
 }
 
 .headerCategory{
@@ -107,6 +116,11 @@ html{
 
 .detailContainer p{
     margin-left: 50px;
+}
+
+.detailContainer button{
+    margin-left: 50px;
+    color: black;
 }
 
 .textContainer{
@@ -162,5 +176,9 @@ p{
 }
 
 .picTextContainer h1{
+    margin-left: 5px;
+}
+
+.picTextContainer h2{
     margin-left: 5px;
 }

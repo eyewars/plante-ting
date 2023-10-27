@@ -6,6 +6,8 @@ let plantViewUrl = "https://helseflora.herokuapp.com/webshop/plants?category=";
 let detailViewUrl = "https://helseflora.herokuapp.com/webshop/plants?id=";
 let plantZoneUrl = "https://helseflora.herokuapp.com/botany/plantzones";
 
+import {addToCart} from "./buyPlant.js";
+
 async function getCategoryData(category) {
     try {
         let response = await fetch(categoryUrl + "?" + key);
@@ -65,7 +67,7 @@ async function getDetailViewData(id) {
 async function getPlantZoneData(id) {
     try {
         let response = await fetch(plantZoneUrl + "?" + key);
-        console.log(plantZoneUrl + "?" + key);
+        //console.log(plantZoneUrl + "?" + key);
 
         if (response.status != 200) {
             console.log("DET ER EN FEIL I getPlantZoneData()");
@@ -89,7 +91,7 @@ function plantViewUI(plantArr, fromSearch) {
     }
     else {
         for (let plant of plantArr) {
-            console.log(plant);
+            //console.log(plant);
             const plantContainer = document.createElement("div");
             plantContainer.classList.add("plantContainer");
 
@@ -134,7 +136,7 @@ function plantViewUI(plantArr, fromSearch) {
 }
 
 function detailViewUI(detail, zone) {
-    console.log(zone);
+    //console.log(detail);
     const detailContainer = document.createElement("div");
     detailContainer.classList.add("detailContainer");
 
@@ -151,10 +153,14 @@ function detailViewUI(detail, zone) {
     const picText = document.createElement("h1");
     picText.innerText = detail.name;
 
-    // HER HER FIKS HER LOL
+    const picDiscountText = document.createElement("h2");
+    picDiscountText.innerText = detail.discount + "%" + " salg!!";
+    if (detail.discount <= 0){
+        picDiscountText.classList.add("hidden");
+    }
+    
     const categoryText = document.createElement("p");
     categoryText.innerText = "Kategori: " + detail.category_name;
-    // HER HER FIKS HER LOL
 
     const line = document.createElement("hr");
     line.classList.add("line2");
@@ -187,12 +193,35 @@ function detailViewUI(detail, zone) {
     const price = document.createElement("p");
     price.innerText = "kr " + detail.price + ",-";
 
+    const stock = document.createElement("p");
+    if (detail.stock != 0){
+        stock.innerText = detail.stock + " på lager";
+    }
+    else {
+        let temp = new Date(detail.expected_shipped);
+        stock.innerText = "Forventet på lager: " + temp.toString().substring(4, 15);;
+    }
+
+    const rating = document.createElement("p");
+    rating.innerText = detail.rating;
+
+    if (detail.rating == null){
+        picDiscountText.classList.add("hidden");
+    }
+
+    const buyPlant = document.createElement("button");
+    buyPlant.innerText = "Kjøp den planten";
+    buyPlant.addEventListener("click", function(){
+        addToCart();
+    });
+
     textContainer.appendChild(height);
     textContainer.appendChild(vekstsone);
     textContainer.appendChild(vekstsoneDescr);
     textContainer.appendChild(mix);
 
     picTextContainer.appendChild(picText);
+    picTextContainer.appendChild(picDiscountText);
 
     picContainer.appendChild(pic);
     picContainer.appendChild(picTextContainer);
@@ -205,6 +234,9 @@ function detailViewUI(detail, zone) {
     detailContainer.appendChild(textContainer);
     detailContainer.appendChild(line3);
     detailContainer.appendChild(price);
+    detailContainer.appendChild(stock);
+    detailContainer.appendChild(rating);
+    detailContainer.appendChild(buyPlant);
 
     document.getElementById("container").appendChild(detailContainer);
 }
@@ -214,6 +246,7 @@ async function changeWindowPlant(category) {
 }
 
 async function changeWindowPlantSearch() {
+    console.log("HEISANN JEG TRYKKA LOOOL");
     window.location.href = "plant.html?searchType=" + document.getElementById("searchInput").value;
 }
 
@@ -252,3 +285,30 @@ async function displayPlantView() {
 }
 
 window.addEventListener("load", displayPlantView);
+
+if (window.location.href.includes("index.html")){
+    for (let i = 1; i < 7; i++){
+        document.getElementById("categoryButton" + i).addEventListener("click", function(){
+            changeWindowPlant(i);
+        });
+    }
+}
+
+document.getElementById("shoppingCart").addEventListener("click", function(){
+    changeWindowCart();
+});
+
+document.getElementById("plantSearch").addEventListener("click", function(){
+    changeWindowPlantSearch();
+});
+
+
+/*
+TODO:
+
+1. Bytt ut .includes() med noe regex shit (+ da kan vi få den til å funke med små og store bokstaver)
+
+
+
+
+*/
