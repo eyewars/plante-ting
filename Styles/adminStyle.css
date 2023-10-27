@@ -1,0 +1,20 @@
+#adminLoginForm {
+  width: 150px;
+
+  display: flex;
+  flex-direction: column;
+}
+
+#adminFormButton {
+  margin-top: 20px;
+}
+
+#adminButtonContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+#adminButtonContainer button {
+  width: 150px;
+  margin-top: 10px;
+}
