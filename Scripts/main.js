@@ -18,7 +18,7 @@ async function getCategoryData(category) {
         let data = await response.json();
         //console.log(data);
 
-        return data[category].id;  
+        return data[category].id;
 
     } catch (error) {
         console.log(error);
@@ -81,47 +81,56 @@ async function getPlantZoneData(id) {
 }
 
 function plantViewUI(plantArr, fromSearch) {
-    for (let plant of plantArr) {
-        console.log(plant);
-        const plantContainer = document.createElement("div");
-        plantContainer.classList.add("plantContainer");
+    if (plantArr[0] == null) {
+        const noPlantText = document.createElement("h2");
+        noPlantText.innerText = "Your search did not match any plants";
 
-        const textContainer = document.createElement("div");
-        textContainer.classList.add("textContainer");
+        document.getElementById("container").appendChild(noPlantText);
+    }
+    else {
+        for (let plant of plantArr) {
+            console.log(plant);
+            const plantContainer = document.createElement("div");
+            plantContainer.classList.add("plantContainer");
 
-        const pic = document.createElement("img");
-        pic.src = plant.thumb;
-        pic.onclick = function () {
-            window.location.href = "detail.html?id=" + plant.id;
-        };
+            const textContainer = document.createElement("div");
+            textContainer.classList.add("textContainer");
 
-        const name = document.createElement("h3");
-        name.innerText = plant.name;
+            const pic = document.createElement("img");
+            pic.src = plant.thumb;
+            pic.onclick = function () {
+                window.location.href = "detail.html?id=" + plant.id;
+            };
 
-        const descr = document.createElement("p");
-        descr.innerText = plant.description;
+            const name = document.createElement("h3");
+            name.innerText = plant.name;
 
-        const price = document.createElement("p");
-        price.innerText = "kr " + plant.price + ",-";
+            const descr = document.createElement("p");
+            descr.innerText = plant.description;
 
-        const line = document.createElement("hr");
-        line.classList.add("line");
+            const price = document.createElement("p");
+            price.innerText = "kr " + plant.price + ",-";
 
-        textContainer.appendChild(name);
-        textContainer.appendChild(descr);
-        textContainer.appendChild(price);
+            const line = document.createElement("hr");
+            line.classList.add("line");
 
-        plantContainer.appendChild(pic);
-        plantContainer.appendChild(textContainer);
+            textContainer.appendChild(name);
+            textContainer.appendChild(descr);
+            textContainer.appendChild(price);
 
-        document.getElementById("container").appendChild(plantContainer);
-        document.getElementById("container").appendChild(line);
+            plantContainer.appendChild(pic);
+            plantContainer.appendChild(textContainer);
+
+            document.getElementById("container").appendChild(plantContainer);
+            document.getElementById("container").appendChild(line);
+        }
+
+        if (fromSearch == undefined) {
+            document.getElementById("planteKategori").innerText = plantArr[0].category_name;
+        }
+        else document.getElementById("planteKategori").innerText = "Not categorized";
     }
 
-    if (fromSearch == undefined){
-       document.getElementById("planteKategori").innerText = plantArr[0].category_name; 
-    }
-    else document.getElementById("planteKategori").innerText = "Not categorized";
 }
 
 function detailViewUI(detail, zone) {
@@ -204,11 +213,11 @@ async function changeWindowPlant(category) {
     window.location.href = "plant.html?category=" + category;
 }
 
-async function changeWindowPlantSearch(){
+async function changeWindowPlantSearch() {
     window.location.href = "plant.html?searchType=" + document.getElementById("searchInput").value;
 }
 
-function changeWindowCart(){
+function changeWindowCart() {
     window.location.href = "cart.html";
 }
 
@@ -216,24 +225,24 @@ async function displayPlantView() {
     document.getElementById("searchInput").value = "";
     if (window.location.href.includes("index.html")) return;
     else if (window.location.href.includes("plant.html")) {
-        if (!window.location.href.includes("searchType")){
+        if (!window.location.href.includes("searchType")) {
             let category = new URLSearchParams(window.location.search).get("category");
-            plantViewUI(await getPlantViewData(category)); 
+            plantViewUI(await getPlantViewData(category));
         }
-        else{
+        else {
             let searchType = new URLSearchParams(window.location.search).get("searchType");
 
             let plantArr = [];
-            for (let i = 0; i < 7; i++){
+            for (let i = 0; i < 7; i++) {
                 let plants = await getPlantViewData(i);
-        
-                for (let j = 0; j < plants.length; j++){
-                    if (plants[j].name.includes(searchType)){
+
+                for (let j = 0; j < plants.length; j++) {
+                    if (plants[j].name.includes(searchType)) {
                         plantArr.push(plants[j]);
                     }
                 }
             }
-            plantViewUI(plantArr, true); 
+            plantViewUI(plantArr, true);
         }
     } else if (window.location.href.includes("detail.html")) {
         let id = new URLSearchParams(window.location.search).get("id");
