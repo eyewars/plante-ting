@@ -1,3 +1,7 @@
+"use strict";
+
+import { addToCart } from "./buyPlant.js";
+
 export function plantViewUI(plantArr, fromSearch) {
   if (plantArr[0] == null) {
     const noPlantText = document.createElement("h2");

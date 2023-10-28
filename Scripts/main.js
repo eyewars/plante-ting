@@ -1,86 +1,8 @@
 "use strict";
 //OLMALY81
-let key = "key=OLMALY81";
-let categoryUrl = "https://helseflora.herokuapp.com/webshop/categories";
-let plantViewUrl = "https://helseflora.herokuapp.com/webshop/plants?category=";
-let detailViewUrl = "https://helseflora.herokuapp.com/webshop/plants?id=";
-let plantZoneUrl = "https://helseflora.herokuapp.com/botany/plantzones";
 
-import { addToCart } from "./buyPlant.js";
+import { getPlantViewData, getDetailViewData, getPlantZoneData } from "./getData.js";
 import { plantViewUI, detailViewUI } from "./createUI.js";
-
-async function getCategoryData(category) {
-  try {
-    let response = await fetch(categoryUrl + "?" + key);
-
-    if (response.status != 200) {
-      console.log("DET ER EN FEIL I getCategoryData()");
-      throw new Error("Server error: " + response.status);
-    }
-
-    let data = await response.json();
-    //console.log(data);
-
-    return data[category].id;
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-async function getPlantViewData(category) {
-  try {
-    let response = await fetch(plantViewUrl + (await getCategoryData(category)) + "&" + key);
-
-    //console.log(plantViewUrl + (await getCategoryData(category)) + "&" + key);
-
-    if (response.status != 200) {
-      console.log("DET ER EN FEIL I getPlantViewData()");
-      throw new Error("Server error: " + response.status);
-    }
-
-    let data = await response.json();
-    //console.log(data);
-    return data;
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-async function getDetailViewData(id) {
-  try {
-    let response = await fetch(detailViewUrl + id + "&" + key);
-
-    if (response.status != 200) {
-      console.log("DET ER EN FEIL I getDetailViewData()");
-      throw new Error("Server error: " + response.status);
-    }
-
-    let data = await response.json();
-
-    //console.log(data[0]);
-    return data[0];
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-async function getPlantZoneData(id) {
-  try {
-    let response = await fetch(plantZoneUrl + "?" + key);
-    //console.log(plantZoneUrl + "?" + key);
-
-    if (response.status != 200) {
-      console.log("DET ER EN FEIL I getPlantZoneData()");
-      throw new Error("Server error: " + response.status);
-    }
-
-    let data = await response.json();
-
-    return data[id];
-  } catch (error) {
-    console.log(error);
-  }
-}
 
 async function changeWindowPlant(category) {
   window.location.href = "plant.html?category=" + category;
@@ -101,13 +23,13 @@ async function displayPlantView() {
   else if (window.location.href.includes("plant.html")) {
     if (!window.location.href.includes("searchType")) {
       let category = new URLSearchParams(window.location.search).get("category");
-      plantViewUI(await getPlantViewData(category));
+      plantViewUI(await getPlantViewData(category, true));
     } else {
       let searchType = new URLSearchParams(window.location.search).get("searchType");
 
       let plantArr = [];
       for (let i = 0; i < 7; i++) {
-        let plants = await getPlantViewData(i);
+        let plants = await getPlantViewData(i, true);
 
         for (let j = 0; j < plants.length; j++) {
           if (plants[j].name.includes(searchType)) {
@@ -126,7 +48,11 @@ async function displayPlantView() {
 
 window.addEventListener("load", displayPlantView);
 
-if (window.location.href.includes("index.html")) {
+if (!window.location.href.includes("index.html") && !window.location.href.includes("plant.html") && !window.location.href.includes("detail.html") && !window.location.href.includes("cart.html")){
+  window.location.href = "index.html";
+}
+
+if (window.location.href.includes("index.html")){
   for (let i = 1; i < 7; i++) {
     document.getElementById("categoryButton" + i).addEventListener("click", function () {
       changeWindowPlant(i);
