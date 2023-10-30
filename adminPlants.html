@@ -4,70 +4,90 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <link href="Styles/adminStyle.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
     <div id="wrapper">
       <div id="listEditContainer">
         <div id="topPartContainer">
           <label for="plantListInput">Plant Name:</label>
-          <input type="text" id="plantListInput" name="plantListInput">
+          <input type="text" id="plantListInput" name="plantListInput" />
           <button id="plantListButton">List plant</button>
         </div>
-        <div id="bottomPartContainer">
-
-        </div>
+        <div id="bottomPartContainer"></div>
       </div>
       <div id="addContainer">
+        <form id="createPlantForm">
+          <label for="adminPlantImg">Image:</label><br />
+          <input type="text" id="adminPlantImg" name="adminPlantImg" /><br />
 
+          <label for="adminPlantId">Id:</label><br />
+          <input type="text" id="adminPlantId" name="adminPlantId" /><br />
+
+          <label for="adminPlantName">Name:</label><br />
+          <input type="text" id="adminPlantName" name="adminPlantName" /><br />
+
+          <label for="adminPlantcategoryId">Category id:</label><br />
+          <input type="text" id="adminPlantcategoryId" name="adminPlantcategoryId" /><br />
+
+          <label for="adminPlantDescription">Name:</label><br />
+          <input type="text" id="adminPlantDescription" name="adminPlantDescription" /><br />
+
+          <label for="adminPlantPrice">Price:</label><br />
+          <input type="text" id="adminPlantPrice" name="adminPlantPrice" /><br />
+
+          <label for="adminPlantDiscount">Discount:</label><br />
+          <input type="text" id="adminPlantDiscount" name="adminPlantDiscount" /><br />
+
+          <label for="adminPlantHeight">Height:</label><br />
+          <input type="text" id="adminPlantHeight" name="adminPlantHeight" /><br />
+
+          <label for="adminPlantZone">Zone:</label><br />
+          <input type="text" id="adminPlantZone" name="adminPlantZone" /><br />
+
+          <label for="adminPlantMinTempDay">Min temp day:</label><br />
+          <input type="text" id="adminPlantMinTempDay" name="adminPlantMinTempDay" /><br />
+
+          <label for="adminPlantMinTempNight">Min temp night:</label><br />
+          <input type="text" id="adminPlantMinTempNight" name="adminPlantMinTempNight" /><br />
+
+          <label for="adminPlantNitrogen">Nitrogen:</label><br />
+          <input type="text" id="adminPlantNitrogen" name="adminPlantNitrogen" /><br />
+
+          <label for="adminPlantPotassium">Potassium:</label><br />
+          <input type="text" id="adminPlantPotassium" name="adminPlantPotassium" /><br />
+
+          <label for="adminPlantPhosphor">Phosphor:</label><br />
+          <input type="text" id="adminPlantPhosphor" name="adminPlantPhosphor" /><br />
+
+          <label for="adminPlantStock">Stock:</label><br />
+          <input type="text" id="adminPlantStock" name="adminPlantStock" /><br />
+
+          <label for="adminPlantExpectedShipped">Expected shipped:</label><br />
+          <input type="text" id="adminPlantExpectedShipped" name="adminPlantExpectedShipped" /><br />
+
+          <label for="adminPlantReservedMembers">Reserved memebers:</label><br />
+          <input type="text" id="adminPlantReservedMembers" name="adminPlantReservedMembers" /><br />
+
+          <label for="adminPlantStatic">Static:</label><br />
+          <input type="text" id="adminPlantStatic" name="adminPlantStatic" /><br />
+
+          <label for="adminPlantExtra1">Extra 1:</label><br />
+          <input type="text" id="adminPlantExtra1" name="adminPlantExtra1" /><br />
+
+          <label for="adminPlantExtra2">Extra 2:</label><br />
+          <input type="text" id="adminPlantExtra2" name="adminPlantExtra2" /><br />
+
+          <label for="adminPlantCategoryName">Category name:</label><br />
+          <input type="text" id="adminPlantCategoryName" name="adminPlantCategoryName" /><br />
+
+          <label for="adminPlantRating">Rating:</label><br />
+          <input type="text" id="adminPlantRating" name="adminPlantRating" /><br />
+
+          <input id="adminFormButton" type="button" value="Submit" />
+        </form>
       </div>
     </div>
-    
-    <template id="adminPlantTemplate">
-      <div id="imgContainer">
-        <img id="imgImg">
-        <button id="imgButton"></button>
-      </div>
-      <div id="idContainer">
-        <p id="idText">Test</p>
-        <button id="idButton"></button>
-      </div>
-      <div id="nameContainer">
-        <img id="nameText">
-        <button id="nameButton"></button>
-      </div>
-      <div id="descriptionContainer">
-        <img id="descriptionText">
-        <button id="descriptionButton"></button>
-      </div>
-      <div id="categoryIdContainer">
-        <img id="categoryIdText">
-        <button id="categoryIdButton"></button>
-      </div>
-      <div id="categoryNameContainer">
-        <img id="categoryNameText">
-        <button id="categoryNameButton"></button>
-      </div>
-      <div id="priceContainer">
-        <img id="priceText">
-        <button id="priceButton"></button>
-      </div>
-      <div id="discountContainer">
-        <img id="discountText">
-        <button id="discountButton"></button>
-      </div>
-      <div id="heightContainer">
-        <img id="heightText">
-        <button id="heightButton"></button>
-      </div>
-      <div id="zoneIdContainer">
-        <img id="zoneIdText">
-        <button id="zoneIdButton"></button>
-      </div>
-      <div id="Container">
-        <img id="Text">
-        <button id="Button"></button>
-      </div>
-    </template>
 
     <script type="module" src="Scripts/admin.js"></script>
   </body>

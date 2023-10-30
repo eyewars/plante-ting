@@ -1,3 +1,6 @@
+* {
+}
+
 #adminLoginForm {
   width: 150px;
 
@@ -17,4 +20,38 @@
 #adminButtonContainer button {
   width: 150px;
   margin-top: 10px;
+}
+
+#wrapper {
+  display: flex;
+}
+
+#listEditContainer {
+  margin-right: 100px;
+  width: 400px;
+}
+
+.adminPlantListContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.adminPlantContainer {
+  display: flex;
+  align-items: center;
+  border: 1px blue solid;
+}
+
+.adminPlantKey {
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+.adminPlantButton {
+  height: 20px;
+  margin-left: 10px;
+}
+
+#addContainer {
+  width: 400px;
 }

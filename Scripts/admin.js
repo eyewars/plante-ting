@@ -1,6 +1,6 @@
 "use strict";
 
-import {getPlantViewData, getDetailViewData, getPlantZoneData } from "./getData.js";
+import { getPlantViewData, getAuthenticationToken } from "./getData.js";
 
 function adminLogin() {
   const username = document.getElementById("username").value;
@@ -15,33 +15,31 @@ function adminLogin() {
 
 // carlvonlinne@helseflora.no
 // pollendust
-if (window.location.href.includes("admin.html")){
-    document.getElementById("adminFormButton").addEventListener("click", function(){
+if (window.location.href.includes("admin.html")) {
+  document.getElementById("adminFormButton").addEventListener("click", function () {
     adminLogin();
-  })
-}
-else if(window.location.href.includes("admin2.html")){
-  for (let i = 1; i < 5; i++){
-    document.getElementById("adminSiteButton" + i).addEventListener("click", function(){
+  });
+} else if (window.location.href.includes("admin2.html")) {
+  for (let i = 1; i < 5; i++) {
+    document.getElementById("adminSiteButton" + i).addEventListener("click", function () {
       adminPageChange(i);
-    })
+    });
   }
-}
-else if(window.location.href.includes("adminPlants.html")){
-  document.getElementById("plantListButton").addEventListener("click", async function(){
+} else if (window.location.href.includes("adminPlants.html")) {
+  document.getElementById("plantListButton").addEventListener("click", async function () {
     let plantListInputName = document.getElementById("plantListInput").value;
     let plant;
 
     let plants = await getPlantViewData(null, false);
 
-    for (let i = 0; i < plants.length; i++){
+    for (let i = 0; i < plants.length; i++) {
       if (plants[i].name.includes(plantListInputName)) {
         plant = plants[i];
         break;
       }
     }
     createPlantUI(plant);
-  })
+  });
 }
 
 function adminPageChange(page) {
@@ -61,21 +59,47 @@ function adminPageChange(page) {
   }
 }
 
-function createPlantUI(plant){
+function createPlantUI(plant) {
   let container = document.getElementById("bottomPartContainer");
-  for (let key in plant){
-    if (key == "thumb") continue
+  container.classList.add("adminPlantListContainer");
+
+  let tempContainer = document.createElement("div");
+  tempContainer.classList.add("adminPlantContainer");
+
+  let tempPic = document.createElement("img");
+  tempPic.src = plant.thumb;
+
+  let tempButton = document.createElement("button");
+  tempButton.classList.add("adminPlantButton");
+  tempButton.innerText = "edit";
+  tempButton.addEventListener("click", function () {
+    //Do stuff
+  });
+
+  tempContainer.appendChild(tempPic);
+  tempContainer.appendChild(tempButton);
+
+  container.appendChild(tempContainer);
+
+  for (let key in plant) {
+    if (key == "thumb") continue;
     let tempContainer = document.createElement("div");
+    tempContainer.classList.add("adminPlantContainer");
 
     let tempKey = document.createElement("p");
-    tempKey.innerText = key;
+    tempKey.classList.add("adminPlantKey");
+    tempKey.innerText = key + ":";
 
     let tempText = document.createElement("p");
-    tempText.innerText = plant[key];
+    tempText.innerText = String(plant[key]);
 
     let tempButton = document.createElement("button");
+    tempButton.classList.add("adminPlantButton");
     tempButton.innerText = "edit";
-    
+    tempButton.addEventListener("click", function () {
+      //Do stuff
+    });
+
     tempContainer.appendChild(tempKey);
     tempContainer.appendChild(tempText);
     tempContainer.appendChild(tempButton);
@@ -83,3 +107,5 @@ function createPlantUI(plant){
     container.appendChild(tempContainer);
   }
 }
+
+getAuthenticationToken();
