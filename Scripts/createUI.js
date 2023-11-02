@@ -156,3 +156,39 @@ export function detailViewUI(detail, zone) {
 
   document.getElementById("container").appendChild(detailContainer);
 }
+
+export function createAdminPlantUI(plant) {
+  let container = document.getElementById("bottomPartContainer");
+  container.innerHTML = "";
+
+  let myForm = document.createElement("form");
+  myForm.id = "editPlantForm";
+
+  let tempContainer = document.createElement("div");
+  tempContainer.classList.add("adminPlantContainer");
+
+  let tempPic = document.createElement("img");
+  tempPic.src = plant.thumb;
+
+  tempContainer.appendChild(tempPic);
+
+  container.appendChild(tempContainer);
+
+  for (let key in plant) {
+    if (key == "thumb") continue;
+    let tempContainer = document.createElement("div");
+    tempContainer.classList.add("adminPlantContainer");
+
+    let tempKey = document.createElement("p");
+    tempKey.classList.add("adminPlantKey");
+    tempKey.innerText = key + ":";
+
+    let tempText = document.createElement("p");
+    tempText.innerText = String(plant[key]);
+
+    tempContainer.appendChild(tempKey);
+    tempContainer.appendChild(tempText);
+
+    container.appendChild(tempContainer);
+  }
+}

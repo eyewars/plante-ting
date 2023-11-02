@@ -25,13 +25,19 @@ async function getCategoryData(category) {
   }
 }
 
-export async function getPlantViewData(category, searchByCategory) {
+export async function getPlantViewData(category, searchByCategory, token) {
+  let requestOptions = {
+    method: "GET",
+    headers: {
+      authorization: token,
+    },
+  }
   try {
     let response;
     if (searchByCategory) {
       response = await fetch(plantViewUrl + "category=" + (await getCategoryData(category)) + "&" + key);
     } else {
-      response = await fetch(plantViewUrl + key);
+      response = await fetch(plantViewUrl + key, requestOptions);
     }
 
     //console.log(await fetch(plantViewUrl + key));
@@ -91,34 +97,14 @@ function createBasicAuthString(username, password) {
   return "basic " + b64Str; //return the basic authentication string
 }
 
-let username = "carlvonlinne@helseflora.no";
-let password = "pollendust";
-
-/* 
-Vi brukte chatGPT for å finne ut hvordan vi kunne sjekke admin login mot server for å kunne gjøre endringer. 
-
-Input var punkt 5 fra dokumentasjonen og "I have to log into a server as an administrator to change, add, or remove things on it. 
-This is how it's described in the documentation, how would you go about logging in? Use javascript."
-*/
-export async function getAuthenticationToken() {
+export async function getAuthenticationToken(username, password) {
   let basicAuthString = createBasicAuthString(username, password);
-  console.log(basicAuthString);
-
-  //let headers = new Headers();
-  //headers.append("authorization", basicAuthString);
-  //Den sa dette ville fikse erroren, men det funka ikke
-  //headers.append("Content-Type", "application/x-www-form-urlencoded");
-
-  //const requestData = new URLSearchParams();
-  //requestData.append("key", "OLMALY81");
 
   let requestOptions = {
     method: "POST",
     headers: {
       authorization: basicAuthString,
     },
-    //Den sa også at å adde .toString() ville fikse det, men det gjorde det ikke
-    //body: requestData.toString(),
   };
 
   try {
@@ -130,10 +116,35 @@ export async function getAuthenticationToken() {
     }
 
     let data = await response.json();
-    console.log(data);
+    //console.log(data);
 
     return data;
   } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function addChangePlantData(token, formData, postOrPut){
+  let requestOptions = {
+    method: postOrPut,
+    headers: {
+      authorization: token,
+    },
+    body: formData,
+  }
+  try{
+    let response = await fetch(plantViewUrl + key, requestOptions);
+
+    if (response.status != 200) {
+      console.log("DET ER EN FEIL I addChangePlantData()");
+      throw new Error("Server error: " + response.status);
+    }
+
+    let data = await response.json();
+    console.log(data);
+
+    return data;
+  } catch(error){
     console.log(error);
   }
 }

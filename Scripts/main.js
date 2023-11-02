@@ -74,7 +74,8 @@ TODO:
 1. Bytt ut .includes() med noe regex shit (+ da kan vi få den til å funke med små og store bokstaver)
 2. Responsive design
 3. Oppdater admin login ui
-
+4. Tror man skulle kunne se extra_3 og 4 i adminPlants.html sida (dobbel sjekk)
+5. HUSK Å GJØRE SÅNN AT ALLE ERRORS VISES TIL BRUKEREN OG IKKE BARE I KONSOLLEN!!!!!!!!!!!!!!!!!
 
 
 
