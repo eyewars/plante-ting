@@ -97,28 +97,32 @@ let password = "pollendust";
 /* 
 Vi brukte chatGPT for å finne ut hvordan vi kunne sjekke admin login mot server for å kunne gjøre endringer. 
 
-Input var punkt 5 fra dokumentasjonen og "I have to log into a server as an administrator to change, add, or remove things on it. This is how it's described in the documentation, how would you go about logging in? Use javascript."
+Input var punkt 5 fra dokumentasjonen og "I have to log into a server as an administrator to change, add, or remove things on it. 
+This is how it's described in the documentation, how would you go about logging in? Use javascript."
 */
 export async function getAuthenticationToken() {
   let basicAuthString = createBasicAuthString(username, password);
+  console.log(basicAuthString);
 
-  let headers = new Headers();
-  headers.append("authorization", basicAuthString);
+  //let headers = new Headers();
+  //headers.append("authorization", basicAuthString);
   //Den sa dette ville fikse erroren, men det funka ikke
-  headers.append("Content-Type", "application/x-www-form-urlencoded");
+  //headers.append("Content-Type", "application/x-www-form-urlencoded");
 
-  const requestData = new URLSearchParams();
-  requestData.append("key", "OLMALY81");
+  //const requestData = new URLSearchParams();
+  //requestData.append("key", "OLMALY81");
 
   let requestOptions = {
     method: "POST",
-    headers,
+    headers: {
+      authorization: basicAuthString,
+    },
     //Den sa også at å adde .toString() ville fikse det, men det gjorde det ikke
-    body: requestData.toString(),
+    //body: requestData.toString(),
   };
 
   try {
-    let response = await fetch(adminLoginUrl, requestOptions);
+    let response = await fetch(adminLoginUrl + "?" + key, requestOptions);
 
     if (response.status != 200) {
       console.log("DET ER EN FEIL I getAuthenticationToken()");
