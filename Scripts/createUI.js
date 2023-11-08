@@ -1,6 +1,6 @@
 "use strict";
 
-import { addToCart } from "./buyPlant.js";
+import { addToCart, changeCartPlant, removePlantFromCart, emptyCart } from "./buyPlant.js";
 
 export function plantViewUI(plantArr, fromSearch) {
   if (plantArr[0] == null) {
@@ -128,7 +128,7 @@ export function detailViewUI(detail, zone) {
   const buyPlant = document.createElement("button");
   buyPlant.innerText = "Kjøp den planten";
   buyPlant.addEventListener("click", function () {
-    addToCart();
+    addToCart(detail);
   });
 
   textContainer.appendChild(height);
@@ -192,3 +192,114 @@ export function createAdminPlantUI(plant) {
     container.appendChild(tempContainer);
   }
 }
+
+export function createShoppingCartUI(){
+  let cart = JSON.parse(localStorage.cart);
+
+  let fullContainer = document.getElementById("fullContainer");
+  fullContainer.innerHTML = "";
+
+  let topContainer = document.createElement("div");
+  topContainer.classList.add("cartTopContainer");
+
+  let checkOutButton = document.createElement("button");
+  checkOutButton.innerText = "Gå til betaling";
+
+  let tempTotal = 0;
+  for (let i = 0; i < cart.length; i++){
+    for (let j = 0; j < cart[i][1]; j++){
+      tempTotal += cart[i][0].price;
+    }
+  }
+
+  let totalPrice = document.createElement("h2");
+  totalPrice.innerText = "Totalpris: kr " + tempTotal + ",-";
+
+  let emptyButton = document.createElement("button");
+  emptyButton.classList.add("emptyCartButton");
+  emptyButton.innerText = "Tøm handlekurv";
+  emptyButton.addEventListener("click", function(){
+    emptyCart();
+  })
+
+  let line = document.createElement("hr");
+  line.classList.add("line2");
+
+  topContainer.appendChild(checkOutButton);
+  topContainer.appendChild(totalPrice);
+  topContainer.appendChild(emptyButton);
+
+  fullContainer.appendChild(topContainer);
+  fullContainer.appendChild(line);
+
+  for (let i = 0; i < cart.length; i++){
+    let plantContainer = document.createElement("div");
+    plantContainer.classList.add("cartPlantContainer");
+
+    let plantId = document.createElement("p");
+    plantId.innerText = "Id: " + cart[i][0].id;
+
+    let plantName = document.createElement("p");
+    plantName.innerText = cart[i][0].name;
+
+    let numberOfPlantsContainer = document.createElement("div");
+    numberOfPlantsContainer.classList.add("numberOfPlantsContainer");
+
+    let plantAmount = document.createElement("p");
+    plantAmount.innerText = "Antall: " + cart[i][1];
+
+    let minusButton = document.createElement("button");
+    minusButton.classList.add("cartAmountButton");
+    minusButton.innerText = "-";
+    minusButton.addEventListener("click", function(){
+      changeCartPlant(i, false);
+    })
+
+    let plusButton = document.createElement("button");
+    plusButton.classList.add("cartAmountButton");
+    plusButton.innerText = "+";
+    plusButton.addEventListener("click", function(){
+      changeCartPlant(i, true);
+    })
+
+    numberOfPlantsContainer.appendChild(plantAmount);
+    numberOfPlantsContainer.appendChild(minusButton);
+    numberOfPlantsContainer.appendChild(plusButton);
+
+    let plantPrice = document.createElement("p");
+    plantPrice.innerText = "kr " + cart[i][0].price + ",-";
+
+    let plantPriceTotal = document.createElement("p");
+    plantPriceTotal.innerText = "Total pris: kr " + (cart[i][0].price * cart[i][1]) + ",-";
+
+    let deleteButton = document.createElement("button");
+    deleteButton.classList.add("removeFromCartButton");
+    deleteButton.innerText = "Fjern fra kurv";
+    deleteButton.addEventListener("click", function(){
+      removePlantFromCart(i);
+    })
+
+    let line2 = document.createElement("hr");
+    line2.classList.add("line2");
+
+    plantContainer.appendChild(plantId);
+    plantContainer.appendChild(plantName);
+    plantContainer.appendChild(numberOfPlantsContainer);
+    plantContainer.appendChild(plantPrice);
+    plantContainer.appendChild(plantPriceTotal);
+    if (cart[i][0].stock == 0){
+      let temp = new Date(cart[i][0].expected_shipped);
+      let shippingText = document.createElement("p");
+      shippingText.innerText = "Forventet på lager: " + temp.toString().substring(4, 15);
+
+      plantContainer.appendChild(shippingText);
+    }
+    plantContainer.appendChild(deleteButton);
+
+    fullContainer.appendChild(plantContainer);
+    fullContainer.appendChild(line2)
+  }
+
+  document.getElementById("container").appendChild(fullContainer);
+}
+

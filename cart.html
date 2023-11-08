@@ -7,7 +7,23 @@
         <link href="Styles/style.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
-
+        <div id="container">
+            <div class="headerContainer2">
+              <div class="headerTopContainer2">
+                <div class="iconContainer">
+                  <img src="./Assets/BackIcon.png" width="30px" onclick="window.history.back()" />
+                  <h4><a href="index.html" class="headerText">Helseflora</a></h4>
+                </div>
+                <div class="headerButtonContainer">
+                  <input type="text" id="searchInput" />
+                  <img src="./Assets/Search.png" class="headerButtonIcon" id="plantSearch" />
+                  <img src="./Assets/Cart.png" class="headerButtonIcon" id="shoppingCart" />
+                </div>
+              </div>
+              <hr />
+            </div>
+            <div id="fullContainer"></div>
+          </div>
 
         <script type="module" src="Scripts/main.js"></script>
     </body>

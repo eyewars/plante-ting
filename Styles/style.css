@@ -181,3 +181,49 @@ p{
 .picTextContainer h2{
     margin-left: 5px;
 }
+
+.cartTopContainer{
+    display: flex;
+    flex-direction: column;
+    margin-left: 50px;
+}
+
+.cartTopContainer button{
+    width: 100px;
+    color: black;
+    margin-top: 5px;
+}
+
+.cartTopContainer h2{
+    margin: 10px 0 5px 0;
+}
+
+.emptyCartButton{
+    margin-bottom: 5px;
+}
+
+.cartPlantContainer{
+    display: flex;
+    flex-direction: column;
+    margin-left: 50px;
+}
+
+.cartPlantContainer p{
+    margin-left: 0;
+}
+
+.numberOfPlantsContainer{
+    display: flex;
+}
+
+.cartAmountButton{
+    width: 20px;
+    color: black;
+    margin-right: 5px;
+}
+
+.removeFromCartButton{
+    width: 100px;
+    color: black;
+    margin-bottom: 5px;
+}

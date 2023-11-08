@@ -2,7 +2,7 @@
 //OLMALY81
 
 import { getPlantViewData, getDetailViewData, getPlantZoneData } from "./getData.js";
-import { plantViewUI, detailViewUI } from "./createUI.js";
+import { plantViewUI, detailViewUI, createShoppingCartUI } from "./createUI.js";
 
 async function changeWindowPlant(category) {
   window.location.href = "plant.html?category=" + category;
@@ -43,6 +43,9 @@ async function displayPlantView() {
     let id = new URLSearchParams(window.location.search).get("id");
     let plant = await getDetailViewData(id);
     detailViewUI(plant, await getPlantZoneData(plant.zone_id));
+  }
+  else if (window.location.href.includes("cart.html")){
+    createShoppingCartUI();
   }
 }
 
