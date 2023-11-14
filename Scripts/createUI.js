@@ -2,6 +2,8 @@
 
 import { addToCart, changeCartPlant, removePlantFromCart, emptyCart } from "./buyPlant.js";
 
+import {getShippingMethods, sendOrder} from "./getData.js";
+
 export function plantViewUI(plantArr, fromSearch) {
   if (plantArr[0] == null) {
     const noPlantText = document.createElement("h2");
@@ -204,6 +206,9 @@ export function createShoppingCartUI(){
 
   let checkOutButton = document.createElement("button");
   checkOutButton.innerText = "Gå til betaling";
+  checkOutButton.addEventListener("click", function(){
+    window.location.href = "checkout.html";
+  })
 
   let tempTotal = 0;
   for (let i = 0; i < cart.length; i++){
@@ -303,3 +308,174 @@ export function createShoppingCartUI(){
   document.getElementById("container").appendChild(fullContainer);
 }
 
+export async function createCheckoutUI(){
+  let fullContainer = document.getElementById("fullContainer2");
+
+  let formContainer = document.createElement("div");
+  formContainer.classList.add("formContainer");
+  
+  let shippingMethodContainer = document.createElement("div");
+  shippingMethodContainer.classList.add("shippingMethodContainer");
+
+  let confirmationContainer = document.createElement("div");
+  confirmationContainer.classList.add("confirmationContainer");
+
+  let customerForm = document.createElement("form");
+
+  let customerNameLabel = document.createElement("label");
+  customerNameLabel.innerText = "Navn:";
+  
+  let customerName = document.createElement("input");
+  customerName.classList.add("checkoutInput");
+  customerName.setAttribute("type", "text");
+  customerName.setAttribute("name", "customer_name");
+  customerName.setAttribute("id", "textField0");
+
+  let streetLabel = document.createElement("label");
+  streetLabel.innerText = "Gateadresse:";
+  
+  let street = document.createElement("input");
+  street.classList.add("checkoutInput");
+  street.setAttribute("type", "text");
+  street.setAttribute("name", "street");
+  street.setAttribute("id", "textField1");
+
+  let cityLabel = document.createElement("label");
+  cityLabel.innerText = "By:";
+  
+  let city = document.createElement("input");
+  city.classList.add("checkoutInput");
+  city.setAttribute("type", "text");
+  city.setAttribute("name", "city");
+  city.setAttribute("id", "textField2");
+
+  let zipCodeLabel = document.createElement("label");
+  zipCodeLabel.innerText = "Postnummer:";
+  
+  let zipCode = document.createElement("input");
+  zipCode.classList.add("checkoutInput");
+  zipCode.setAttribute("type", "text");
+  zipCode.setAttribute("name", "zipcode");
+  zipCode.setAttribute("id", "textField3");
+
+  let countryLabel = document.createElement("label");
+  countryLabel.innerText = "Land:";
+  
+  let country = document.createElement("input");
+  country.classList.add("checkoutInput");
+  country.setAttribute("type", "text");
+  country.setAttribute("name", "country");
+  country.setAttribute("id", "textField4");
+
+  customerForm.appendChild(customerNameLabel);
+  customerForm.appendChild(document.createElement("br"));
+  customerForm.appendChild(customerName);
+  customerForm.appendChild(document.createElement("br"));
+  customerForm.appendChild(streetLabel);
+  customerForm.appendChild(document.createElement("br"));
+  customerForm.appendChild(street);
+  customerForm.appendChild(document.createElement("br"));
+  customerForm.appendChild(cityLabel);
+  customerForm.appendChild(document.createElement("br"));
+  customerForm.appendChild(city);
+  customerForm.appendChild(document.createElement("br"));
+  customerForm.appendChild(zipCodeLabel);
+  customerForm.appendChild(document.createElement("br"));
+  customerForm.appendChild(zipCode);
+  customerForm.appendChild(document.createElement("br"));
+  customerForm.appendChild(countryLabel);
+  customerForm.appendChild(document.createElement("br"));
+  customerForm.appendChild(country);
+
+  formContainer.appendChild(customerForm);
+  
+  let shippingMethods = await getShippingMethods();
+  console.log(shippingMethods);
+
+  for (let i = 0; i < shippingMethods.length; i++){
+    let tempShippingMethod = document.createElement("input");
+    tempShippingMethod.setAttribute("type", "radio");
+    tempShippingMethod.setAttribute("name", "shipping");
+    tempShippingMethod.setAttribute("id", "shippingOption" + i);
+
+    let tempShippingMethodLabel = document.createElement("label");
+    tempShippingMethodLabel.innerText = shippingMethods[i].method + ": " + shippingMethods[i].description + " kr " + shippingMethods[i].price + ",-";
+
+    shippingMethodContainer.appendChild(tempShippingMethod);
+    shippingMethodContainer.appendChild(tempShippingMethodLabel);
+    shippingMethodContainer.appendChild(document.createElement("br"));
+  }
+
+  let cart = JSON.parse(localStorage.cart);
+
+  let tempTotal = 0;
+  for (let i = 0; i < cart.length; i++){
+    for (let j = 0; j < cart[i][1]; j++){
+      tempTotal += cart[i][0].price;
+    }
+  }
+
+  let totalPrice = document.createElement("h3");
+  totalPrice.innerText = "Totalpris: kr " + tempTotal + ",-";
+
+  let confirmationButton = document.createElement("button");
+  confirmationButton.innerText = "Bekreft ordre";
+  confirmationButton.addEventListener("click", function(){
+    let text = false;
+    let radio = false;
+
+    for (let i = 0; i < 4; i++){
+      if (document.getElementById("textField" + i).value == ""){
+        alert("Vennligst fyll inn alle feltene.");
+
+        return;
+      }
+    }
+    text = true;
+
+    if (document.getElementById("shippingOption0").checked || document.getElementById("shippingOption1").checked || document.getElementById("shippingOption2").checked || document.getElementById("shippingOption3").checked){
+      radio = true;
+    } else{
+      alert("Vennligst velg en shipping method.");
+
+      return;
+    }
+
+
+    if (radio && text){
+      let orderData = {};
+
+      for (let i = 0; i < 5; i++){
+        orderData[document.getElementById("textField" + i).name] = document.getElementById("textField" + i).value;
+      }
+
+      for (let i = 0; i < 4; i++){
+        if (document.getElementById("shippingOption" + i).checked){
+          orderData["shipping_id"] = i;
+        }
+      }
+
+      orderData["content"] = JSON.parse(localStorage.cart);
+
+      sendOrder(JSON.stringify(orderData));
+
+      //localStorage.orderData = JSON.stringify(orderData);
+
+      //window.location.href = "confirmation.html";
+    }
+  })
+
+  confirmationContainer.appendChild(totalPrice);
+  confirmationContainer.appendChild(document.createElement("br"));
+  confirmationContainer.appendChild(confirmationButton);
+
+  fullContainer.appendChild(formContainer);
+  fullContainer.appendChild(shippingMethodContainer);
+  fullContainer.appendChild(confirmationContainer);
+}
+
+export function createConfirmationUI(){
+  
+
+  console.log("GG");
+}

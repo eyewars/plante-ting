@@ -2,7 +2,7 @@
 //OLMALY81
 
 import { getPlantViewData, getDetailViewData, getPlantZoneData } from "./getData.js";
-import { plantViewUI, detailViewUI, createShoppingCartUI } from "./createUI.js";
+import { plantViewUI, detailViewUI, createShoppingCartUI, createCheckoutUI, createConfirmationUI } from "./createUI.js";
 
 async function changeWindowPlant(category) {
   window.location.href = "plant.html?category=" + category;
@@ -47,11 +47,17 @@ async function displayPlantView() {
   else if (window.location.href.includes("cart.html")){
     createShoppingCartUI();
   }
+  else if (window.location.href.includes("checkout.html")){
+    createCheckoutUI();
+  }
+  else if (window.location.href.includes("confirmation.html")){
+    createConfirmationUI();
+  }
 }
 
 window.addEventListener("load", displayPlantView);
 
-if (!window.location.href.includes("index.html") && !window.location.href.includes("plant.html") && !window.location.href.includes("detail.html") && !window.location.href.includes("cart.html")){
+if (!window.location.href.includes("index.html") && !window.location.href.includes("plant.html") && !window.location.href.includes("detail.html") && !window.location.href.includes("cart.html") && !window.location.href.includes("checkout.html") && !window.location.href.includes("confirmation.html")){
   window.location.href = "index.html";
 }
 

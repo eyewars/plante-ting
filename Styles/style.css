@@ -227,3 +227,28 @@ p{
     color: black;
     margin-bottom: 5px;
 }
+
+#fullContainer2 div{
+    margin-left: 50px;
+}
+
+#fullContainer form{
+    margin-top: 5px;
+}
+
+.checkoutInput{
+    color: black;
+}
+
+.shippingMethodContainer{
+    margin-top: 10px;
+}
+
+.confirmationContainer h3{
+  margin: 10px 0 0 0;
+}
+
+.confirmationContainer button{
+    color: black;
+}
+

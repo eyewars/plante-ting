@@ -6,6 +6,8 @@ let plantViewUrl = "https://helseflora.herokuapp.com/webshop/plants?";
 let detailViewUrl = "https://helseflora.herokuapp.com/webshop/plants?id=";
 let plantZoneUrl = "https://helseflora.herokuapp.com/botany/plantzones";
 let adminLoginUrl = "https://helseflora.herokuapp.com/users/adminlogin";
+let shippingMethodsUrl =  "https://helseflora.herokuapp.com/logistics/shippingtypes";
+let ordersUrl = "https://helseflora.herokuapp.com/webshop/orders";
 
 async function getCategoryData(category) {
   try {
@@ -145,6 +147,51 @@ export async function addChangePlantData(token, formData, postOrPut){
 
     return data;
   } catch(error){
+    console.log(error);
+  }
+}
+
+export async function getShippingMethods(){
+  try {
+    let response = await fetch(shippingMethodsUrl + "?" + key);
+
+    if (response.status != 200) {
+      console.log("DET ER EN FEIL I getShippingMethods()");
+      throw new Error("Server error: " + response.status);
+    }
+
+    let data = await response.json();
+    //console.log(data);
+
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function sendOrder(order){
+  let requestOptions = {
+    method: "POST",
+    headers: {
+      //HER SKAL DU KUNNE PUTTE INN BRUKER ID NÅR MAN LOGGER INN
+      //authorization: "",
+      "Content-Type": "application/json",
+    },
+    body: order,
+  }
+  try {
+    let response = await fetch(ordersUrl + "?" + key, requestOptions);
+
+    if (response.status != 200) {
+      console.log("DET ER EN FEIL I sendOrder()");
+      throw new Error("Server error: " + response.status);
+    }
+
+    let data = await response.json();
+    console.log(data);
+
+    return data;
+  } catch (error) {
     console.log(error);
   }
 }
