@@ -2,7 +2,7 @@
 
 import { getPlantViewData, getAuthenticationToken, addChangePlantData } from "./getData.js";
 
-import {createAdminPlantUI} from "./createUI.js";
+import {createAdminPlantUI, createAdminOrderUI} from "./createUI.js";
 
 async function adminLogin() {
   const username = document.getElementById("username").value;
@@ -71,6 +71,10 @@ if (window.location.href.includes("admin.html")) {
     plantListedId = plant.id;
     createAdminPlantUI(plant);
   });
+}else if (window.location.href.includes("adminOrders.html")){
+  let authToken = JSON.parse(localStorage.auth).logindata.token;
+
+  createAdminOrderUI(authToken);
 }
 
 function adminPageChange(page) {

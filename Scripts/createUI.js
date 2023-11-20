@@ -2,7 +2,7 @@
 
 import { addToCart, changeCartPlant, removePlantFromCart, emptyCart } from "./buyPlant.js";
 
-import {getShippingMethods, sendOrder} from "./getData.js";
+import {getShippingMethods, sendOrder, getOrder, deleteOrder} from "./getData.js";
 
 export function plantViewUI(plantArr, fromSearch) {
   if (plantArr[0] == null) {
@@ -390,7 +390,7 @@ export async function createCheckoutUI(){
   formContainer.appendChild(customerForm);
   
   let shippingMethods = await getShippingMethods();
-  console.log(shippingMethods);
+  //console.log(shippingMethods);
 
   for (let i = 0; i < shippingMethods.length; i++){
     let tempShippingMethod = document.createElement("input");
@@ -420,7 +420,7 @@ export async function createCheckoutUI(){
 
   let confirmationButton = document.createElement("button");
   confirmationButton.innerText = "Bekreft ordre";
-  confirmationButton.addEventListener("click", function(){
+  confirmationButton.addEventListener("click", async function(){
     let text = false;
     let radio = false;
 
@@ -441,7 +441,6 @@ export async function createCheckoutUI(){
       return;
     }
 
-
     if (radio && text){
       let orderData = {};
 
@@ -455,13 +454,30 @@ export async function createCheckoutUI(){
         }
       }
 
-      orderData["content"] = JSON.parse(localStorage.cart);
+      let tempCart = JSON.parse(localStorage.cart);
+      let tempArr = [];
 
-      sendOrder(JSON.stringify(orderData));
+      for (let i = 0; i < tempCart.length; i++){
+        let tempPlant = {id: null, amount: null};
+        tempPlant.id = tempCart[i][0].id;
+        tempPlant.amount = tempCart[i][1];
+        tempArr.push(tempPlant);
+      }
 
-      //localStorage.orderData = JSON.stringify(orderData);
+      orderData["content"] = tempArr;
 
-      //window.location.href = "confirmation.html";
+      console.log(orderData);
+
+      let order = await sendOrder(JSON.stringify(orderData));
+      //console.log(order);
+      //if ((order.msg == "insert order ok") && (order != undefined)){
+      if (order != undefined){
+        localStorage.orderData = JSON.stringify(order);
+        window.location.href = "confirmation.html";
+      }
+      else {
+        alert("Noe gikk galt");
+      }
     }
   })
 
@@ -474,8 +490,95 @@ export async function createCheckoutUI(){
   fullContainer.appendChild(confirmationContainer);
 }
 
-export function createConfirmationUI(){
-  
+export async function createConfirmationUI(){
+  let orderConfirmation = JSON.parse(localStorage.orderData);
 
-  console.log("GG");
+  let container = document.getElementById("fullContainer3");
+
+  let confirmationText = document.createElement("h2");
+  confirmationText.innerText = "Orderen din er bekreftet!";
+
+  container.appendChild(confirmationText);
+
+  for (let key in orderConfirmation["record"]) {
+    if ((key == "content") || (key == "completed") || (key == "completed_date")) continue
+    let tempText = document.createElement("p");
+    if (key == "shipping_id"){
+      let shippingMethods = await getShippingMethods();
+
+      //console.log(shippingMethods);
+      //console.log(orderConfirmation["record"][key]);
+
+      tempText.innerText = key + ": " + shippingMethods[orderConfirmation["record"][key]].method + ", " + shippingMethods[orderConfirmation["record"][key]].description;
+    }
+    else if (key == "date"){
+      tempText.innerText = key + ": " + orderConfirmation["record"][key].substring(0, 10);
+    }else {
+      tempText.innerText = key + ": " + String(orderConfirmation["record"][key]);
+    }
+    
+
+    container.appendChild(tempText);
+  }
+
+  let tempCart = JSON.parse(localStorage.cart)
+  //console.log(tempCart);
+
+  for (let i = 0; i < tempCart.length; i++){
+    let tempPlantId = document.createElement("p");
+    tempPlantId.innerText = "Plante id: " + tempCart[i][0].id;
+
+    let tempPlantName = document.createElement("p");
+    tempPlantName.innerText = "Plante navn: " + tempCart[i][0].name;
+
+    let tempPlantTotal = document.createElement("p");
+    tempPlantTotal.innerText = "Plante antall: " + tempCart[i][1];
+
+    let tempPlantPrice = document.createElement("p");
+    tempPlantPrice.innerText = "Plante pris: " + tempCart[i][0].price;
+
+    let tempPlantPriceTotal = document.createElement("p");
+    tempPlantPriceTotal.innerText = "Plante total pris: " + tempCart[i][0].price * tempCart[i][1];
+
+    container.appendChild(document.createElement("br"));
+    container.appendChild(tempPlantId);
+    container.appendChild(tempPlantName);
+    container.appendChild(tempPlantTotal);
+    container.appendChild(tempPlantPrice);
+    container.appendChild(tempPlantPriceTotal);
+  }
+
+  //console.log(orderConfirmation);
+}
+
+export async function createAdminOrderUI(token){
+  let orders = await getOrder(token);
+
+  let wrapper = document.getElementById("orderWrapper");
+
+  for (let i = 0; i < orders.length; i++){
+    let tempOrderContainer = document.createElement("div");
+    tempOrderContainer.classList.add("orderContainer");
+
+    for (let key in orders[i]) {
+      let tempText = document.createElement("p");
+      tempText.innerText = key + ": " + String(orders[i][key]);
+
+      tempOrderContainer.appendChild(tempText);
+    }
+
+    let deleteButton = document.createElement("button");
+    deleteButton.innerText = "Slett order";
+    deleteButton.addEventListener("click", async function(){
+      await deleteOrder(token, orders[i].id);
+
+      location.reload();
+    })
+
+    let line = document.createElement("hr");
+
+    tempOrderContainer.appendChild(deleteButton);
+    tempOrderContainer.appendChild(line);
+    wrapper.appendChild(tempOrderContainer);
+  }
 }

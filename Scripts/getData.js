@@ -188,6 +188,54 @@ export async function sendOrder(order){
     }
 
     let data = await response.json();
+    //console.log(data);
+
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function getOrder(token){
+  let requestOptions = {
+    method: "GET",
+    headers: {
+      authorization: token,
+    },
+  }
+  try {
+    let response = await fetch(ordersUrl + "?" + key, requestOptions);
+
+    if (response.status != 200) {
+      console.log("DET ER EN FEIL I getOrder()");
+      throw new Error("Server error: " + response.status);
+    }
+
+    let data = await response.json();
+    //console.log(data);
+
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function deleteOrder(token, orderId){
+  let requestOptions = {
+    method: "DELETE",
+    headers: {
+      authorization: token,
+    },
+  }
+  try {
+    let response = await fetch(ordersUrl + "?" + key + "&id=" + orderId, requestOptions);
+
+    if (response.status != 200) {
+      console.log("DET ER EN FEIL I deleteOrder()");
+      throw new Error("Server error: " + response.status);
+    }
+
+    let data = await response.json();
     console.log(data);
 
     return data;
