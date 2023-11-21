@@ -2,7 +2,7 @@
 
 import { addToCart, changeCartPlant, removePlantFromCart, emptyCart } from "./buyPlant.js";
 
-import {getShippingMethods, sendOrder, getOrder, deleteOrder} from "./getData.js";
+import { getShippingMethods, sendOrder, getOrder, deleteOrder } from "./getData.js";
 
 export function plantViewUI(plantArr, fromSearch) {
   if (plantArr[0] == null) {
@@ -195,7 +195,7 @@ export function createAdminPlantUI(plant) {
   }
 }
 
-export function createShoppingCartUI(){
+export function createShoppingCartUI() {
   let cart = JSON.parse(localStorage.cart);
 
   let fullContainer = document.getElementById("fullContainer");
@@ -206,13 +206,13 @@ export function createShoppingCartUI(){
 
   let checkOutButton = document.createElement("button");
   checkOutButton.innerText = "Gå til betaling";
-  checkOutButton.addEventListener("click", function(){
+  checkOutButton.addEventListener("click", function () {
     window.location.href = "checkout.html";
-  })
+  });
 
   let tempTotal = 0;
-  for (let i = 0; i < cart.length; i++){
-    for (let j = 0; j < cart[i][1]; j++){
+  for (let i = 0; i < cart.length; i++) {
+    for (let j = 0; j < cart[i][1]; j++) {
       tempTotal += cart[i][0].price;
     }
   }
@@ -223,9 +223,9 @@ export function createShoppingCartUI(){
   let emptyButton = document.createElement("button");
   emptyButton.classList.add("emptyCartButton");
   emptyButton.innerText = "Tøm handlekurv";
-  emptyButton.addEventListener("click", function(){
+  emptyButton.addEventListener("click", function () {
     emptyCart();
-  })
+  });
 
   let line = document.createElement("hr");
   line.classList.add("line2");
@@ -237,7 +237,7 @@ export function createShoppingCartUI(){
   fullContainer.appendChild(topContainer);
   fullContainer.appendChild(line);
 
-  for (let i = 0; i < cart.length; i++){
+  for (let i = 0; i < cart.length; i++) {
     let plantContainer = document.createElement("div");
     plantContainer.classList.add("cartPlantContainer");
 
@@ -256,16 +256,16 @@ export function createShoppingCartUI(){
     let minusButton = document.createElement("button");
     minusButton.classList.add("cartAmountButton");
     minusButton.innerText = "-";
-    minusButton.addEventListener("click", function(){
+    minusButton.addEventListener("click", function () {
       changeCartPlant(i, false);
-    })
+    });
 
     let plusButton = document.createElement("button");
     plusButton.classList.add("cartAmountButton");
     plusButton.innerText = "+";
-    plusButton.addEventListener("click", function(){
+    plusButton.addEventListener("click", function () {
       changeCartPlant(i, true);
-    })
+    });
 
     numberOfPlantsContainer.appendChild(plantAmount);
     numberOfPlantsContainer.appendChild(minusButton);
@@ -275,14 +275,14 @@ export function createShoppingCartUI(){
     plantPrice.innerText = "kr " + cart[i][0].price + ",-";
 
     let plantPriceTotal = document.createElement("p");
-    plantPriceTotal.innerText = "Total pris: kr " + (cart[i][0].price * cart[i][1]) + ",-";
+    plantPriceTotal.innerText = "Total pris: kr " + cart[i][0].price * cart[i][1] + ",-";
 
     let deleteButton = document.createElement("button");
     deleteButton.classList.add("removeFromCartButton");
     deleteButton.innerText = "Fjern fra kurv";
-    deleteButton.addEventListener("click", function(){
+    deleteButton.addEventListener("click", function () {
       removePlantFromCart(i);
-    })
+    });
 
     let line2 = document.createElement("hr");
     line2.classList.add("line2");
@@ -292,7 +292,7 @@ export function createShoppingCartUI(){
     plantContainer.appendChild(numberOfPlantsContainer);
     plantContainer.appendChild(plantPrice);
     plantContainer.appendChild(plantPriceTotal);
-    if (cart[i][0].stock == 0){
+    if (cart[i][0].stock == 0) {
       let temp = new Date(cart[i][0].expected_shipped);
       let shippingText = document.createElement("p");
       shippingText.innerText = "Forventet på lager: " + temp.toString().substring(4, 15);
@@ -302,18 +302,18 @@ export function createShoppingCartUI(){
     plantContainer.appendChild(deleteButton);
 
     fullContainer.appendChild(plantContainer);
-    fullContainer.appendChild(line2)
+    fullContainer.appendChild(line2);
   }
 
   document.getElementById("container").appendChild(fullContainer);
 }
 
-export async function createCheckoutUI(){
+export async function createCheckoutUI() {
   let fullContainer = document.getElementById("fullContainer2");
 
   let formContainer = document.createElement("div");
   formContainer.classList.add("formContainer");
-  
+
   let shippingMethodContainer = document.createElement("div");
   shippingMethodContainer.classList.add("shippingMethodContainer");
 
@@ -324,7 +324,7 @@ export async function createCheckoutUI(){
 
   let customerNameLabel = document.createElement("label");
   customerNameLabel.innerText = "Navn:";
-  
+
   let customerName = document.createElement("input");
   customerName.classList.add("checkoutInput");
   customerName.setAttribute("type", "text");
@@ -333,7 +333,7 @@ export async function createCheckoutUI(){
 
   let streetLabel = document.createElement("label");
   streetLabel.innerText = "Gateadresse:";
-  
+
   let street = document.createElement("input");
   street.classList.add("checkoutInput");
   street.setAttribute("type", "text");
@@ -342,7 +342,7 @@ export async function createCheckoutUI(){
 
   let cityLabel = document.createElement("label");
   cityLabel.innerText = "By:";
-  
+
   let city = document.createElement("input");
   city.classList.add("checkoutInput");
   city.setAttribute("type", "text");
@@ -351,7 +351,7 @@ export async function createCheckoutUI(){
 
   let zipCodeLabel = document.createElement("label");
   zipCodeLabel.innerText = "Postnummer:";
-  
+
   let zipCode = document.createElement("input");
   zipCode.classList.add("checkoutInput");
   zipCode.setAttribute("type", "text");
@@ -360,7 +360,7 @@ export async function createCheckoutUI(){
 
   let countryLabel = document.createElement("label");
   countryLabel.innerText = "Land:";
-  
+
   let country = document.createElement("input");
   country.classList.add("checkoutInput");
   country.setAttribute("type", "text");
@@ -388,11 +388,11 @@ export async function createCheckoutUI(){
   customerForm.appendChild(country);
 
   formContainer.appendChild(customerForm);
-  
+
   let shippingMethods = await getShippingMethods();
   //console.log(shippingMethods);
 
-  for (let i = 0; i < shippingMethods.length; i++){
+  for (let i = 0; i < shippingMethods.length; i++) {
     let tempShippingMethod = document.createElement("input");
     tempShippingMethod.setAttribute("type", "radio");
     tempShippingMethod.setAttribute("name", "shipping");
@@ -409,8 +409,8 @@ export async function createCheckoutUI(){
   let cart = JSON.parse(localStorage.cart);
 
   let tempTotal = 0;
-  for (let i = 0; i < cart.length; i++){
-    for (let j = 0; j < cart[i][1]; j++){
+  for (let i = 0; i < cart.length; i++) {
+    for (let j = 0; j < cart[i][1]; j++) {
       tempTotal += cart[i][0].price;
     }
   }
@@ -420,12 +420,12 @@ export async function createCheckoutUI(){
 
   let confirmationButton = document.createElement("button");
   confirmationButton.innerText = "Bekreft ordre";
-  confirmationButton.addEventListener("click", async function(){
+  confirmationButton.addEventListener("click", async function () {
     let text = false;
     let radio = false;
 
-    for (let i = 0; i < 4; i++){
-      if (document.getElementById("textField" + i).value == ""){
+    for (let i = 0; i < 4; i++) {
+      if (document.getElementById("textField" + i).value == "") {
         alert("Vennligst fyll inn alle feltene.");
 
         return;
@@ -433,53 +433,57 @@ export async function createCheckoutUI(){
     }
     text = true;
 
-    if (document.getElementById("shippingOption0").checked || document.getElementById("shippingOption1").checked || document.getElementById("shippingOption2").checked || document.getElementById("shippingOption3").checked){
+    if (
+      document.getElementById("shippingOption0").checked ||
+      document.getElementById("shippingOption1").checked ||
+      document.getElementById("shippingOption2").checked ||
+      document.getElementById("shippingOption3").checked
+    ) {
       radio = true;
-    } else{
+    } else {
       alert("Vennligst velg en shipping method.");
 
       return;
     }
 
-    if (radio && text){
+    if (radio && text) {
       let orderData = {};
 
-      for (let i = 0; i < 5; i++){
+      for (let i = 0; i < 5; i++) {
         orderData[document.getElementById("textField" + i).name] = document.getElementById("textField" + i).value;
       }
 
-      for (let i = 0; i < 4; i++){
-        if (document.getElementById("shippingOption" + i).checked){
-          orderData["shipping_id"] = i;
+      for (let i = 0; i < 4; i++) {
+        if (document.getElementById("shippingOption" + i).checked) {
+          //Her tar vi +1 for å converte til riktig ID (indexen i arrayen er 0 - 3, idene er 1 - 4)
+          orderData["shipping_id"] = i + 1;
         }
       }
 
       let tempCart = JSON.parse(localStorage.cart);
       let tempArr = [];
 
-      for (let i = 0; i < tempCart.length; i++){
-        let tempPlant = {id: null, amount: null};
+      for (let i = 0; i < tempCart.length; i++) {
+        let tempPlant = { id: null, amount: null };
         tempPlant.id = tempCart[i][0].id;
         tempPlant.amount = tempCart[i][1];
         tempArr.push(tempPlant);
       }
 
       orderData["content"] = tempArr;
-
       console.log(orderData);
 
       let order = await sendOrder(JSON.stringify(orderData));
       //console.log(order);
       //if ((order.msg == "insert order ok") && (order != undefined)){
-      if (order != undefined){
+      if (order != undefined) {
         localStorage.orderData = JSON.stringify(order);
         window.location.href = "confirmation.html";
-      }
-      else {
+      } else {
         alert("Noe gikk galt");
       }
     }
-  })
+  });
 
   confirmationContainer.appendChild(totalPrice);
   confirmationContainer.appendChild(document.createElement("br"));
@@ -490,8 +494,9 @@ export async function createCheckoutUI(){
   fullContainer.appendChild(confirmationContainer);
 }
 
-export async function createConfirmationUI(){
+export async function createConfirmationUI() {
   let orderConfirmation = JSON.parse(localStorage.orderData);
+  console.log(orderConfirmation);
 
   let container = document.getElementById("fullContainer3");
 
@@ -501,30 +506,28 @@ export async function createConfirmationUI(){
   container.appendChild(confirmationText);
 
   for (let key in orderConfirmation["record"]) {
-    if ((key == "content") || (key == "completed") || (key == "completed_date")) continue
+    if (key == "content" || key == "completed" || key == "completed_date") continue;
     let tempText = document.createElement("p");
-    if (key == "shipping_id"){
+    if (key == "shipping_id") {
       let shippingMethods = await getShippingMethods();
+      console.log(shippingMethods);
 
-      //console.log(shippingMethods);
-      //console.log(orderConfirmation["record"][key]);
-
-      tempText.innerText = key + ": " + shippingMethods[orderConfirmation["record"][key]].method + ", " + shippingMethods[orderConfirmation["record"][key]].description;
-    }
-    else if (key == "date"){
+      //Her tar vi -1 på IDen vi sendte (og da fikk tilbake) for å få riktig index i arrayen
+      tempText.innerText =
+        key + ": " + shippingMethods[orderConfirmation["record"][key] - 1].method + ", " + shippingMethods[orderConfirmation["record"][key] - 1].description;
+    } else if (key == "date") {
       tempText.innerText = key + ": " + orderConfirmation["record"][key].substring(0, 10);
-    }else {
+    } else {
       tempText.innerText = key + ": " + String(orderConfirmation["record"][key]);
     }
-    
 
     container.appendChild(tempText);
   }
 
-  let tempCart = JSON.parse(localStorage.cart)
+  let tempCart = JSON.parse(localStorage.cart);
   //console.log(tempCart);
 
-  for (let i = 0; i < tempCart.length; i++){
+  for (let i = 0; i < tempCart.length; i++) {
     let tempPlantId = document.createElement("p");
     tempPlantId.innerText = "Plante id: " + tempCart[i][0].id;
 
@@ -551,12 +554,12 @@ export async function createConfirmationUI(){
   //console.log(orderConfirmation);
 }
 
-export async function createAdminOrderUI(token){
+export async function createAdminOrderUI(token) {
   let orders = await getOrder(token);
 
   let wrapper = document.getElementById("orderWrapper");
 
-  for (let i = 0; i < orders.length; i++){
+  for (let i = 0; i < orders.length; i++) {
     let tempOrderContainer = document.createElement("div");
     tempOrderContainer.classList.add("orderContainer");
 
@@ -569,11 +572,11 @@ export async function createAdminOrderUI(token){
 
     let deleteButton = document.createElement("button");
     deleteButton.innerText = "Slett order";
-    deleteButton.addEventListener("click", async function(){
+    deleteButton.addEventListener("click", async function () {
       await deleteOrder(token, orders[i].id);
 
       location.reload();
-    })
+    });
 
     let line = document.createElement("hr");
 
