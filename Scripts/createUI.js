@@ -2,7 +2,7 @@
 
 import { addToCart, changeCartPlant, removePlantFromCart, emptyCart } from "./buyPlant.js";
 
-import { getShippingMethods, sendOrder, getOrder, deleteOrder } from "./getData.js";
+import { getShippingMethods, sendOrder, getOrder, deleteOrder, registerUser, loginUser } from "./getData.js";
 
 export function plantViewUI(plantArr, fromSearch) {
   if (plantArr[0] == null) {
@@ -388,7 +388,7 @@ export async function createCheckoutUI() {
   customerForm.appendChild(country);
 
   formContainer.appendChild(customerForm);
-
+  
   let shippingMethods = await getShippingMethods();
   //console.log(shippingMethods);
 
@@ -584,4 +584,236 @@ export async function createAdminOrderUI(token) {
     tempOrderContainer.appendChild(line);
     wrapper.appendChild(tempOrderContainer);
   }
+}
+
+export function createHeaderUserUI(){
+  let container = document.getElementById("headerContainer");
+
+  let loggedIn = false;
+  if (!loggedIn){
+    let loginButton = document.createElement("button");
+    loginButton.addEventListener("click", function(){
+      window.location.href = "login.html";
+    })
+    loginButton.classList.add("headerButton");
+    loginButton.innerText = "Login";
+
+    let registerButton = document.createElement("button");
+    registerButton.addEventListener("click", function(){
+      window.location.href = "register.html";
+    })
+    registerButton.classList.add("headerButton");
+    registerButton.innerText = "Register";
+
+    container.appendChild(loginButton);
+    container.appendChild(registerButton);
+  }
+  else{
+    // BILDE OG LOGOUT KNAPP
+  }
+}
+
+export function createRegisterUI(){
+  let fullContainer = document.getElementById("fullContainer2");
+
+  let formContainer = document.createElement("div");
+  formContainer.classList.add("formContainer");
+
+  let customerForm = document.createElement("form");
+
+  let usernameLabel = document.createElement("label");
+  usernameLabel.innerText = "Brukernavn:";
+
+  let username = document.createElement("input");
+  username.classList.add("checkoutInput");
+  username.setAttribute("type", "text");
+  username.setAttribute("name", "username");
+  username.setAttribute("id", "textField0");
+
+  let passwordLabel = document.createElement("label");
+  passwordLabel.innerText = "Passord:";
+
+  let password = document.createElement("input");
+  password.classList.add("checkoutInput");
+  password.setAttribute("type", "password");
+  password.setAttribute("name", "password");
+  password.setAttribute("id", "textField1");
+
+  let customerNameLabel = document.createElement("label");
+  customerNameLabel.innerText = "Navn:";
+
+  let customerName = document.createElement("input");
+  customerName.classList.add("checkoutInput");
+  customerName.setAttribute("type", "text");
+  customerName.setAttribute("name", "customer_name");
+  customerName.setAttribute("id", "textField2");
+
+  let streetLabel = document.createElement("label");
+  streetLabel.innerText = "Gateadresse:";
+
+  let street = document.createElement("input");
+  street.classList.add("checkoutInput");
+  street.setAttribute("type", "text");
+  street.setAttribute("name", "street");
+  street.setAttribute("id", "textField3");
+
+  let cityLabel = document.createElement("label");
+  cityLabel.innerText = "By:";
+
+  let city = document.createElement("input");
+  city.classList.add("checkoutInput");
+  city.setAttribute("type", "text");
+  city.setAttribute("name", "city");
+  city.setAttribute("id", "textField4");
+
+  let zipCodeLabel = document.createElement("label");
+  zipCodeLabel.innerText = "Postnummer:";
+
+  let zipCode = document.createElement("input");
+  zipCode.classList.add("checkoutInput");
+  zipCode.setAttribute("type", "text");
+  zipCode.setAttribute("name", "zipcode");
+  zipCode.setAttribute("id", "textField5");
+
+  let countryLabel = document.createElement("label");
+  countryLabel.innerText = "Land:";
+
+  let country = document.createElement("input");
+  country.classList.add("checkoutInput");
+  country.setAttribute("type", "text");
+  country.setAttribute("name", "country");
+  country.setAttribute("id", "textField6");
+
+  let imageLabel = document.createElement("label");
+  imageLabel.innerText = "Profil bilde:";
+
+  let image = document.createElement("input");
+  image.classList.add("checkoutInput");
+  image.setAttribute("type", "file");
+  image.setAttribute("name", "img_file");
+  image.setAttribute("accept", "image/jpeg, image/png, image/jpg");
+  image.setAttribute("id", "imageField");
+  
+  let confirmationButton = document.createElement("input");
+  confirmationButton.setAttribute("type", "submit");
+  confirmationButton.setAttribute("value", "Registrer Bruker");
+  confirmationButton.setAttribute("id", "submitFormButton");
+
+  customerForm.addEventListener("submit", function(event){
+    event.preventDefault();
+
+    for (let i = 0; i < 6; i++) {
+      if (document.getElementById("textField" + i).value == "") {
+        alert("Vennligst fyll inn alle feltene.");
+
+        return;
+      }
+    }
+
+    let formData = new FormData(customerForm);
+    registerUser(formData);
+
+    window.location.href = "registerConfirmation.html";
+  })
+
+  customerForm.appendChild(usernameLabel);
+  customerForm.appendChild(document.createElement("br"));
+  customerForm.appendChild(username);
+  customerForm.appendChild(document.createElement("br"));
+  customerForm.appendChild(passwordLabel);
+  customerForm.appendChild(document.createElement("br"));
+  customerForm.appendChild(password);
+  customerForm.appendChild(document.createElement("br"));
+  customerForm.appendChild(customerNameLabel);
+  customerForm.appendChild(document.createElement("br"));
+  customerForm.appendChild(customerName);
+  customerForm.appendChild(document.createElement("br"));
+  customerForm.appendChild(streetLabel);
+  customerForm.appendChild(document.createElement("br"));
+  customerForm.appendChild(street);
+  customerForm.appendChild(document.createElement("br"));
+  customerForm.appendChild(cityLabel);
+  customerForm.appendChild(document.createElement("br"));
+  customerForm.appendChild(city);
+  customerForm.appendChild(document.createElement("br"));
+  customerForm.appendChild(zipCodeLabel);
+  customerForm.appendChild(document.createElement("br"));
+  customerForm.appendChild(zipCode);
+  customerForm.appendChild(document.createElement("br"));
+  customerForm.appendChild(countryLabel);
+  customerForm.appendChild(document.createElement("br"));
+  customerForm.appendChild(country);
+  customerForm.appendChild(document.createElement("br"));
+  customerForm.appendChild(imageLabel);
+  customerForm.appendChild(document.createElement("br"));
+  customerForm.appendChild(image);
+  customerForm.appendChild(document.createElement("br"));
+  customerForm.appendChild(document.createElement("br"));
+  customerForm.appendChild(confirmationButton);
+
+  formContainer.appendChild(customerForm);
+
+  fullContainer.appendChild(formContainer);
+}
+
+export function createRegisterUserConfirmationUI(){
+  let container = document.getElementById("fullContainer2");
+
+  let confirmationText = document.createElement("h1");
+  confirmationText.id = "confirmationText";
+  confirmationText.innerText = "Vellykket registrering!"
+
+  container.appendChild(confirmationText);
+}
+
+export function createLoginUI(){
+  let container = document.getElementById("fullContainer2");
+
+  let loginForm = document.createElement("form");
+  loginForm.setAttribute("id", "userLoginForm");
+
+  let usernameLabel = document.createElement("label");
+  usernameLabel.innerText = "Brukernavn:";
+
+  let username = document.createElement("input");
+  username.classList.add("checkoutInput");
+  username.setAttribute("type", "text");
+  username.setAttribute("name", "username");
+  username.setAttribute("id", "username");
+
+  let passwordLabel = document.createElement("label");
+  passwordLabel.innerText = "Passord:";
+
+  let password = document.createElement("input");
+  password.classList.add("checkoutInput");
+  password.setAttribute("type", "password");
+  password.setAttribute("name", "street");
+  password.setAttribute("id", "password");
+
+  let loginButton = document.createElement("input");
+  loginButton.setAttribute("type", "submit");
+  loginButton.setAttribute("value", "Login");
+  loginButton.setAttribute("id", "loginButton");
+
+  loginForm.addEventListener("submit", function(event){
+    event.preventDefault();
+
+    if (username.value == "") return
+    if (password.value == "") return
+
+    loginUser(username.value, password.value);
+  })
+
+  loginForm.appendChild(usernameLabel);
+  loginForm.appendChild(document.createElement("br"));
+  loginForm.appendChild(username);
+  loginForm.appendChild(document.createElement("br"));
+  loginForm.appendChild(passwordLabel);
+  loginForm.appendChild(document.createElement("br"));
+  loginForm.appendChild(password);
+  loginForm.appendChild(document.createElement("br"));
+  loginForm.appendChild(document.createElement("br"));
+  loginForm.appendChild(loginButton);
+
+  container.appendChild(loginForm);
 }

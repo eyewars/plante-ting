@@ -2,7 +2,7 @@
 //OLMALY81
 
 import { getPlantViewData, getDetailViewData, getPlantZoneData } from "./getData.js";
-import { plantViewUI, detailViewUI, createShoppingCartUI, createCheckoutUI, createConfirmationUI } from "./createUI.js";
+import { plantViewUI, detailViewUI, createShoppingCartUI, createCheckoutUI, createConfirmationUI, createHeaderUserUI, createRegisterUI, createRegisterUserConfirmationUI, createLoginUI } from "./createUI.js";
 
 async function changeWindowPlant(category) {
   window.location.href = "plant.html?category=" + category;
@@ -53,11 +53,20 @@ async function displayPlantView() {
   else if (window.location.href.includes("confirmation.html")){
     createConfirmationUI();
   }
+  else if (window.location.href.includes("register.html")){
+    createRegisterUI();
+  }
+  else if (window.location.href.includes("registerConfirmation.html")){
+    createRegisterUserConfirmationUI();
+  }
+  else if (window.location.href.includes("login.html")){
+    createLoginUI();
+  }
 }
 
 window.addEventListener("load", displayPlantView);
 
-if (!window.location.href.includes("index.html") && !window.location.href.includes("plant.html") && !window.location.href.includes("detail.html") && !window.location.href.includes("cart.html") && !window.location.href.includes("checkout.html") && !window.location.href.includes("confirmation.html")){
+if (!window.location.href.includes("index.html") && !window.location.href.includes("plant.html") && !window.location.href.includes("detail.html") && !window.location.href.includes("cart.html") && !window.location.href.includes("checkout.html") && !window.location.href.includes("confirmation.html") && !window.location.href.includes("register.html") && !window.location.href.includes("registerConfirmation.html") && !window.location.href.includes("login.html")){
   window.location.href = "index.html";
 }
 
@@ -77,6 +86,8 @@ document.getElementById("plantSearch").addEventListener("click", function () {
   changeWindowPlantSearch();
 });
 
+createHeaderUserUI();
+
 /*
 TODO:
 
@@ -85,8 +96,9 @@ TODO:
 3. Oppdater admin login ui
 4. Tror man skulle kunne se extra_3 og 4 i adminPlants.html sida (dobbel sjekk)
 5. HUSK Å GJØRE SÅNN AT ALLE ERRORS VISES TIL BRUKEREN OG IKKE BARE I KONSOLLEN!!!!!!!!!!!!!!!!!
-
-
-
+6. HUSK Å FJERNE KOMMENTARER (ALLE)
+7. Prøv å få fiksa det window.includes fanseskapet vi har
+8. FIKS FORMATERING
+9. ADD "?" I ALLE LINKENE OG FJERN FRA FUNKSJONENE
 
 */

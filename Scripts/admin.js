@@ -33,44 +33,43 @@ if (window.location.href.includes("admin.html")) {
     });
   }
 } else if (window.location.href.includes("adminPlants.html")) {
-  let myForm = document.getElementById("createPlantForm");
-  myForm.addEventListener("submit", async function(event){
-    event.preventDefault();
+    let myForm = document.getElementById("createPlantForm");
+    myForm.addEventListener("submit", async function(event){
+      event.preventDefault();
 
-    let formData = new FormData(myForm);
-    let authToken = JSON.parse(localStorage.auth).logindata.token;
+      let formData = new FormData(myForm);
+      let authToken = JSON.parse(localStorage.auth).logindata.token;
 
-    if (event.submitter.id == "adminFormButton"){
-      addChangePlantData(authToken, formData, "POST");
-    }
-    else{
-      if (plantListedId != null){
-        formData.append("id", plantListedId);
-      addChangePlantData(authToken, formData, "PUT");
+      if (event.submitter.id == "adminFormButton"){
+        addChangePlantData(authToken, formData, "POST");
       }
-      else console.log("Bruh, du må jo ha en plante lista opp for å endre");
-    }
-    
-  })
-
-  let plantListedId = null;
-
-  document.getElementById("plantListButton").addEventListener("click", async function () {
-    let plantListInputName = document.getElementById("plantListInput").value;
-    let plant;
-
-    let authToken = JSON.parse(localStorage.auth).logindata.token;
-    let plants = await getPlantViewData(null, false, authToken);
-
-    for (let i = 0; i < plants.length; i++) {
-      if (plants[i].name.includes(plantListInputName)) {
-        plant = plants[i];
-        break;
+      else{
+        if (plantListedId != null){
+          formData.append("id", plantListedId);
+        addChangePlantData(authToken, formData, "PUT");
+        }
+        else console.log("Bruh, du må jo ha en plante lista opp for å endre");
       }
-    }
-    plantListedId = plant.id;
-    createAdminPlantUI(plant);
-  });
+    })
+
+    let plantListedId = null;
+
+    document.getElementById("plantListButton").addEventListener("click", async function () {
+      let plantListInputName = document.getElementById("plantListInput").value;
+      let plant;
+
+      let authToken = JSON.parse(localStorage.auth).logindata.token;
+      let plants = await getPlantViewData(null, false, authToken);
+
+      for (let i = 0; i < plants.length; i++) {
+        if (plants[i].name.includes(plantListInputName)) {
+          plant = plants[i];
+          break;
+        }
+      }
+      plantListedId = plant.id;
+      createAdminPlantUI(plant);
+    });
 }else if (window.location.href.includes("adminOrders.html")){
   let authToken = JSON.parse(localStorage.auth).logindata.token;
 

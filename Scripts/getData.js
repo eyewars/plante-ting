@@ -8,6 +8,8 @@ let plantZoneUrl = "https://helseflora.herokuapp.com/botany/plantzones";
 let adminLoginUrl = "https://helseflora.herokuapp.com/users/adminlogin";
 let shippingMethodsUrl =  "https://helseflora.herokuapp.com/logistics/shippingtypes";
 let ordersUrl = "https://helseflora.herokuapp.com/webshop/orders";
+let userUrl =  "https://helseflora.herokuapp.com/users?";
+let loginUrl =  "https://helseflora.herokuapp.com/users/login?";
 
 async function getCategoryData(category) {
   try {
@@ -232,6 +234,55 @@ export async function deleteOrder(token, orderId){
 
     if (response.status != 200) {
       console.log("DET ER EN FEIL I deleteOrder()");
+      throw new Error("Server error: " + response.status);
+    }
+
+    let data = await response.json();
+    console.log(data);
+
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function registerUser(formData){
+  let requestOptions = {
+    method: "POST",
+    body: formData,
+  }
+  try{
+    let response = await fetch(userUrl + key, requestOptions);
+
+    if (response.status != 200) {
+      console.log("DET ER EN FEIL I registerUser()");
+      throw new Error("Server error: " + response.status);
+    }
+
+    let data = await response.json();
+    //console.log(data);
+
+    return data;
+  } catch(error){
+    console.log(error);
+  }
+}
+
+export async function loginUser(username, password){
+  let basicAuthString = createBasicAuthString(username, password);
+
+  let requestOptions = {
+    method: "POST",
+    headers: {
+      authorization: basicAuthString,
+    },
+  };
+
+  try {
+    let response = await fetch(loginUrl + key, requestOptions);
+
+    if (response.status != 200) {
+      console.log("DET ER EN FEIL I loginUser()");
       throw new Error("Server error: " + response.status);
     }
 

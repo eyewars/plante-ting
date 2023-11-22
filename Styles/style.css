@@ -255,3 +255,28 @@ p{
 #fullContainer3{
     margin: 5px 0 0 50px;
 }
+
+.headerButton{
+    color: black;
+    width: 60px;
+}
+
+#submitFormButton{
+    color: black;
+}
+
+#confirmationText{
+    margin-left: 50px;
+}
+
+#userLoginForm{
+    margin-left: 50px;
+}
+
+#userLoginForm input{
+    color: black;
+}
+
+#userFormButton{
+    color: black;
+}
