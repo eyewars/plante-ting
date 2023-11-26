@@ -1,282 +1,352 @@
-html{
-    background-color: rgb(43, 66, 43);
+html {
+	background-color: rgb(43, 66, 43);
 }
 
-*{
-    color: white;
-    margin: 0;
-    padding: 0;
+* {
+	color: white;
+	margin: 0;
+	padding: 0;
 }
 
-.hidden{
-    display: none;
+.hidden {
+	display: none;
 }
 
-.headerContainer{
-    height: 80px;
-    width: 500px;
-    margin-top: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+.headerContainer {
+	height: 80px;
+	width: 500px;
+	margin-top: 10px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 
 }
 
-.headerTopContainer{
-    display: flex;
-    justify-content: space-between;
-    height: 40%;
+.headerTopContainer {
+	display: flex;
+	justify-content: space-between;
+	height: 40%;
 }
 
-.headerButtonContainer{
-    display: flex;
-    align-items: center;
+.headerButtonContainer {
+	display: flex;
+	align-items: center;
 }
 
-.headerButtonIcon{
-    height: 30px;
-    margin-left: 15px;
+.headerButtonIcon {
+	height: 30px;
+	margin-left: 15px;
 }
 
-#searchInput{
-    margin-right: -10px;
-    color: black;
+#searchInput {
+	margin-right: -10px;
+	color: black;
 }
 
-.headerContainer2{
-    height: 35px;
-    width: 500px;
-    margin-top: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+.headerContainer2 {
+	height: 35px;
+	width: 500px;
+	margin-top: 10px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 }
 
-.headerTopContainer2{
-    display: flex;
-    justify-content: space-between;
+.headerTopContainer2 {
+	display: flex;
+	justify-content: space-between;
 }
 
-.iconContainer{
-    display: flex;
-    margin-left: 5px;
+.iconContainer {
+	display: flex;
+	margin-left: 5px;
 }
 
-.iconContainer h4{
-    margin: auto;
-    margin-left: 5px;
+.iconContainer h4 {
+	margin: auto;
+	margin-left: 5px;
 }
 
-.headerTopContainer h4{
-    display: flex
+.headerTopContainer h4 {
+	display: flex
 }
 
-.headerText{
-    color: rgb(139, 206, 139);
-    margin-left: 5px;
-    display: flex;
-    align-items: center;
-    text-decoration: none;
+.headerText {
+	color: rgb(139, 206, 139);
+	margin-left: 5px;
+	display: flex;
+	align-items: center;
+	text-decoration: none;
 }
 
-.headerCategory{
-    color: rgb(87, 122, 87);
-    margin-left: 5px;
+.headerCategory {
+	color: rgb(87, 122, 87);
+	margin-left: 5px;
 }
 
-#categoryContainer{
-    width: 500px;
-    display: flex;
-    flex-direction: column;
+#categoryContainer {
+	width: 500px;
+	display: flex;
+	flex-direction: column;
 }
 
-#categoryContainer p{
-    margin-left: 5px;
-    margin-top: 5px;
+#categoryContainer p {
+	margin-left: 5px;
+	margin-top: 5px;
 }
 
-.categoryTextContainer hr{
-    margin-top: 5px;
+.categoryTextContainer hr {
+	margin-top: 5px;
 }
 
-.categoryTextContainer:hover{
-    background-color: rgb(76, 119, 76);
+.categoryTextContainer:hover {
+	background-color: rgb(76, 119, 76);
 }
 
-.categoryTextContainer:hover p{
-    background-color: rgb(76, 119, 76);
+.categoryTextContainer:hover p {
+	background-color: rgb(76, 119, 76);
 }
 
-.plantContainer{
-    display: flex;
-    height: 120px;
-    margin-bottom: 2px;
+.plantContainer {
+	display: flex;
+	height: 120px;
+	margin-bottom: 2px;
 }
 
-.detailContainer p{
-    margin-left: 50px;
+.detailContainer p {
+	margin-left: 50px;
 }
 
-.detailContainer button{
-    margin-left: 50px;
-    color: black;
+.detailContainer button {
+	margin-left: 50px;
+	margin-bottom: 20px;
+	color: black;
 }
 
-.textContainer{
-    width: 380px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+.textContainer {
+	width: 380px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 }
 
-.textContainerBig{
-    width: 450px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+.textContainerBig {
+	width: 450px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 }
 
-h3{
-    margin: 5px;
+h3 {
+	margin: 5px;
 }
 
-p{
-    margin: 5px; 
+p {
+	margin: 5px;
 }
 
-.line{
-    width: 500px;
+.line {
+	width: 500px;
 }
 
-.line2{
-    width: 400px;
-    margin-left: 50px;
+.line2 {
+	width: 400px;
+	margin-left: 50px;
 }
 
-.bigPic{
-    width: 400px;
-    margin: 20px 0 0 50px;
+.bigPic {
+	width: 400px;
+	margin: 20px 0 0 50px;
 }
 
-.description{
-    width: 400px;
+.description {
+	width: 400px;
 }
 
-.picContainer{
-    position: relative;
+.picContainer {
+	position: relative;
 }
 
-.picTextContainer{
-    position: absolute;
-    width: 230px;
-    top: 80px;
-    left: 5px;
-    background-color: rgba(99, 121, 99, 0.795);
+.picTextContainer {
+	position: absolute;
+	width: 230px;
+	top: 80px;
+	left: 5px;
+	background-color: rgba(99, 121, 99, 0.795);
 }
 
-.picTextContainer h1{
-    margin-left: 5px;
+.picTextContainer h1 {
+	margin-left: 5px;
 }
 
-.picTextContainer h2{
-    margin-left: 5px;
+.picTextContainer h2 {
+	margin-left: 5px;
 }
 
-.cartTopContainer{
-    display: flex;
-    flex-direction: column;
-    margin-left: 50px;
+.cartTopContainer {
+	display: flex;
+	flex-direction: column;
+	margin-left: 50px;
 }
 
-.cartTopContainer button{
-    width: 100px;
-    color: black;
-    margin-top: 5px;
+.cartTopContainer button {
+	width: 100px;
+	color: black;
+	margin-top: 5px;
 }
 
-.cartTopContainer h2{
-    margin: 10px 0 5px 0;
+.cartTopContainer h2 {
+	margin: 10px 0 5px 0;
 }
 
-.emptyCartButton{
-    margin-bottom: 5px;
+.emptyCartButton {
+	margin-bottom: 5px;
 }
 
-.cartPlantContainer{
-    display: flex;
-    flex-direction: column;
-    margin-left: 50px;
+.cartPlantContainer {
+	display: flex;
+	flex-direction: column;
+	margin-left: 50px;
 }
 
-.cartPlantContainer p{
-    margin-left: 0;
+.cartPlantContainer p {
+	margin-left: 0;
 }
 
-.numberOfPlantsContainer{
-    display: flex;
+.numberOfPlantsContainer {
+	display: flex;
 }
 
-.cartAmountButton{
-    width: 20px;
-    color: black;
-    margin-right: 5px;
+.cartAmountButton {
+	width: 20px;
+	color: black;
+	margin-right: 5px;
 }
 
-.removeFromCartButton{
-    width: 100px;
-    color: black;
-    margin-bottom: 5px;
+.removeFromCartButton {
+	width: 100px;
+	color: black;
+	margin-bottom: 5px;
 }
 
-#fullContainer2 div{
-    margin-left: 50px;
+#fullContainer2 div {
+	margin-left: 50px;
 }
 
-#fullContainer form{
-    margin-top: 5px;
+#fullContainer form {
+	margin-top: 5px;
 }
 
-.checkoutInput{
-    color: black;
+.checkoutInput {
+	color: black;
 }
 
-.shippingMethodContainer{
-    margin-top: 10px;
+.shippingMethodContainer {
+	margin-top: 10px;
 }
 
-.confirmationContainer h3{
-  margin: 10px 0 0 0;
+.confirmationContainer h3 {
+	margin: 10px 0 0 0;
 }
 
-.confirmationContainer button{
-    color: black;
+.confirmationContainer button {
+	color: black;
 }
 
-#fullContainer3{
-    margin: 5px 0 0 50px;
+#fullContainer3 {
+	margin: 5px 0 0 50px;
 }
 
-.headerButton{
-    color: black;
-    width: 60px;
+.headerButton {
+	color: black;
+	width: 60px;
 }
 
-#submitFormButton{
-    color: black;
+#submitFormButton {
+	color: black;
 }
 
-#confirmationText{
-    margin-left: 50px;
+#confirmationText {
+	margin-left: 50px;
 }
 
-#userLoginForm{
-    margin-left: 50px;
+#userLoginForm {
+	margin-left: 50px;
 }
 
-#userLoginForm input{
-    color: black;
+#userLoginForm input {
+	color: black;
 }
 
-#userFormButton{
-    color: black;
+#userFormButton {
+	color: black;
+}
+
+.profilePic {
+	height: 30px;
+}
+
+.makeCommentContainer {
+	margin: 0 0 30px 50px;
+	width: 400px;
+
+	display: flex;
+	flex-direction: column;
+	align-items: left;
+}
+
+.makeCommentContainer textarea {
+	height: 100px;
+
+	color: black;
+}
+
+.makeCommentContainer select {
+	color: black;
+	margin: 10px 0 10px 0;
+	width: 40px;
+}
+
+.makeCommentContainer select option {
+	color: black;
+}
+
+.makeCommentContainer button {
+	width: 100px;
+	margin-top: 10px;
+	margin-left: 0;
+}
+
+#ratingContainer {
+	display: flex;
+	align-items: center;
+}
+
+#ratingContainer p {
+	margin-left: 5px;
+}
+
+.commentFullContainer{
+	margin-left: 50px;
+	width: 400px;
+}
+
+.tempTopContainer{
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.tempPersonContainer{
+	display: flex;
+	align-items: center;
+}
+
+.tempPersonContainer img {
+	width: 50px;
+}
+
+.tempCommentContainer{
+	margin: 20px 0 50px 0;
+	border: 2px solid white;
 }

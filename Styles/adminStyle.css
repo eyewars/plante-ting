@@ -36,20 +36,15 @@
   flex-direction: column;
 }
 
-.adminPlantContainer {
+.adminContainer {
   display: flex;
   align-items: center;
   border: 1px blue solid;
 }
 
-.adminPlantKey {
+.adminKey {
   font-weight: bold;
   margin-right: 5px;
-}
-
-.adminPlantField {
-  height: 20px;
-  margin-left: 10px;
 }
 
 #addContainer {

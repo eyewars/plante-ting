@@ -2,818 +2,1006 @@
 
 import { addToCart, changeCartPlant, removePlantFromCart, emptyCart } from "./buyPlant.js";
 
-import { getShippingMethods, sendOrder, getOrder, deleteOrder, registerUser, loginUser } from "./getData.js";
+import { getShippingMethods, sendOrder, getOrder, deleteOrder, registerUser, loginUser, listUsers, addComment, listComment } from "./getData.js";
 
 export function plantViewUI(plantArr, fromSearch) {
-  if (plantArr[0] == null) {
-    const noPlantText = document.createElement("h2");
-    noPlantText.innerText = "Your search did not match any plants";
+	if (plantArr[0] == null) {
+		const noPlantText = document.createElement("h2");
+		noPlantText.innerText = "Your search did not match any plants";
 
-    document.getElementById("container").appendChild(noPlantText);
-  } else {
-    for (let plant of plantArr) {
-      //console.log(plant);
-      const plantContainer = document.createElement("div");
-      plantContainer.classList.add("plantContainer");
+		document.getElementById("container").appendChild(noPlantText);
+	} else {
+		for (let plant of plantArr) {
+			const plantContainer = document.createElement("div");
+			plantContainer.classList.add("plantContainer");
 
-      const textContainer = document.createElement("div");
-      textContainer.classList.add("textContainer");
+			const textContainer = document.createElement("div");
+			textContainer.classList.add("textContainer");
 
-      const pic = document.createElement("img");
-      pic.src = plant.thumb;
-      pic.onclick = function () {
-        window.location.href = "detail.html?id=" + plant.id;
-      };
+			const pic = document.createElement("img");
+			pic.src = plant.thumb;
+			pic.onclick = function () {
+				window.location.href = "detail.html?id=" + plant.id;
+			};
 
-      const name = document.createElement("h3");
-      name.innerText = plant.name;
+			const name = document.createElement("h3");
+			name.innerText = plant.name;
 
-      const descr = document.createElement("p");
-      descr.innerText = plant.description;
+			const descr = document.createElement("p");
+			descr.innerText = plant.description;
 
-      const price = document.createElement("p");
-      price.innerText = "kr " + plant.price + ",-";
+			const price = document.createElement("p");
+			price.innerText = "kr " + plant.price + ",-";
 
-      const line = document.createElement("hr");
-      line.classList.add("line");
+			const line = document.createElement("hr");
+			line.classList.add("line");
 
-      textContainer.appendChild(name);
-      textContainer.appendChild(descr);
-      textContainer.appendChild(price);
+			textContainer.appendChild(name);
+			textContainer.appendChild(descr);
+			textContainer.appendChild(price);
 
-      plantContainer.appendChild(pic);
-      plantContainer.appendChild(textContainer);
+			plantContainer.appendChild(pic);
+			plantContainer.appendChild(textContainer);
 
-      document.getElementById("container").appendChild(plantContainer);
-      document.getElementById("container").appendChild(line);
-    }
+			document.getElementById("container").appendChild(plantContainer);
+			document.getElementById("container").appendChild(line);
+		}
 
-    if (fromSearch == undefined) {
-      document.getElementById("planteKategori").innerText = plantArr[0].category_name;
-    } else document.getElementById("planteKategori").innerText = "Not categorized";
-  }
+		if (fromSearch == undefined) {
+			document.getElementById("planteKategori").innerText = plantArr[0].category_name;
+		} else document.getElementById("planteKategori").innerText = "Not categorized";
+	}
 }
 
 export function detailViewUI(detail, zone) {
-  //console.log(detail);
-  const detailContainer = document.createElement("div");
-  detailContainer.classList.add("detailContainer");
+	const detailContainer = document.createElement("div");
+	detailContainer.classList.add("detailContainer");
 
-  const picContainer = document.createElement("div");
-  picContainer.classList.add("picContainer");
+	const picContainer = document.createElement("div");
+	picContainer.classList.add("picContainer");
 
-  const pic = document.createElement("img");
-  pic.src = detail.image;
-  pic.classList.add("bigPic");
+	const pic = document.createElement("img");
+	pic.src = detail.image;
+	pic.classList.add("bigPic");
 
-  const picTextContainer = document.createElement("div");
-  picTextContainer.classList.add("picTextContainer");
+	const picTextContainer = document.createElement("div");
+	picTextContainer.classList.add("picTextContainer");
 
-  const picText = document.createElement("h1");
-  picText.innerText = detail.name;
+	const picText = document.createElement("h1");
+	picText.innerText = detail.name;
 
-  const picDiscountText = document.createElement("h2");
-  picDiscountText.innerText = detail.discount + "%" + " salg!!";
-  if (detail.discount <= 0) {
-    picDiscountText.classList.add("hidden");
-  }
+	const picDiscountText = document.createElement("h2");
+	picDiscountText.innerText = detail.discount + "%" + " salg!!";
+	if (detail.discount <= 0) {
+		picDiscountText.classList.add("hidden");
+	}
 
-  const categoryText = document.createElement("p");
-  categoryText.innerText = "Kategori: " + detail.category_name;
+	const categoryText = document.createElement("p");
+	categoryText.innerText = "Kategori: " + detail.category_name;
 
-  const line = document.createElement("hr");
-  line.classList.add("line2");
+	const line = document.createElement("hr");
+	line.classList.add("line2");
 
-  const descr = document.createElement("p");
-  descr.innerText = detail.description;
-  descr.classList.add("description");
+	const descr = document.createElement("p");
+	descr.innerText = detail.description;
+	descr.classList.add("description");
 
-  const line2 = document.createElement("hr");
-  line2.classList.add("line2");
+	const line2 = document.createElement("hr");
+	line2.classList.add("line2");
 
-  const textContainer = document.createElement("div");
-  textContainer.classList.add("textContainerBig");
+	const textContainer = document.createElement("div");
+	textContainer.classList.add("textContainerBig");
 
-  const height = document.createElement("p");
-  height.innerText = "Normal høyde: " + detail.height + " cm";
+	const height = document.createElement("p");
+	height.innerText = "Normal høyde: " + detail.height + " cm";
 
-  const vekstsone = document.createElement("p");
-  vekstsone.innerText = "Vekstsone: " + zone.name;
+	const vekstsone = document.createElement("p");
+	vekstsone.innerText = "Vekstsone: " + zone.name;
 
-  const vekstsoneDescr = document.createElement("p");
-  vekstsoneDescr.innerText = zone.description;
+	const vekstsoneDescr = document.createElement("p");
+	vekstsoneDescr.innerText = zone.description;
 
-  const mix = document.createElement("p");
-  mix.innerText = `Ambefalt gjødselmix: ${detail.nitrogen}% nitrogen, ${detail.potassium}% kalium, og ${detail.phosphor}% fosfor. Bør ikke plantes hvis temperaturen om dagen er under ${detail.min_temp_day} grader, eller temperaturen om natten er under ${detail.min_temp_night} grader.`;
+	const mix = document.createElement("p");
+	mix.innerText = `Ambefalt gjødselmix: ${detail.nitrogen}% nitrogen, ${detail.potassium}% kalium, og ${detail.phosphor}% fosfor. Bør ikke plantes hvis temperaturen om dagen er under ${detail.min_temp_day} grader, eller temperaturen om natten er under ${detail.min_temp_night} grader.`;
 
-  const line3 = document.createElement("hr");
-  line3.classList.add("line2");
+	const line3 = document.createElement("hr");
+	line3.classList.add("line2");
 
-  const price = document.createElement("p");
-  price.innerText = "kr " + detail.price + ",-";
+	const price = document.createElement("p");
+	price.innerText = "kr " + detail.price + ",-";
 
-  const stock = document.createElement("p");
-  if (detail.stock != 0) {
-    stock.innerText = detail.stock + " på lager";
-  } else {
-    let temp = new Date(detail.expected_shipped);
-    stock.innerText = "Forventet på lager: " + temp.toString().substring(4, 15);
-  }
+	const stock = document.createElement("p");
+	if (detail.stock != 0) {
+		stock.innerText = detail.stock + " på lager";
+	} else {
+		let temp = new Date(detail.expected_shipped);
+		stock.innerText = "Forventet på lager: " + temp.toString().substring(4, 15);
+	}
 
-  const rating = document.createElement("p");
-  rating.innerText = detail.rating;
+	const rating = document.createElement("p");
+	rating.innerText = detail.rating.toFixed(2) + " Stjerner";
 
-  if (detail.rating == null) {
-    picDiscountText.classList.add("hidden");
-  }
+	if (detail.rating == null) {
+		picDiscountText.classList.add("hidden");
+	}
 
-  const buyPlant = document.createElement("button");
-  buyPlant.innerText = "Kjøp den planten";
-  buyPlant.addEventListener("click", function () {
-    addToCart(detail);
-  });
+	const buyPlant = document.createElement("button");
+	buyPlant.innerText = "Kjøp den planten";
+	buyPlant.addEventListener("click", function () {
+		addToCart(detail);
+	});
 
-  textContainer.appendChild(height);
-  textContainer.appendChild(vekstsone);
-  textContainer.appendChild(vekstsoneDescr);
-  textContainer.appendChild(mix);
+	textContainer.appendChild(height);
+	textContainer.appendChild(vekstsone);
+	textContainer.appendChild(vekstsoneDescr);
+	textContainer.appendChild(mix);
 
-  picTextContainer.appendChild(picText);
-  picTextContainer.appendChild(picDiscountText);
+	picTextContainer.appendChild(picText);
+	picTextContainer.appendChild(picDiscountText);
 
-  picContainer.appendChild(pic);
-  picContainer.appendChild(picTextContainer);
+	picContainer.appendChild(pic);
+	picContainer.appendChild(picTextContainer);
 
-  detailContainer.appendChild(picContainer);
-  detailContainer.appendChild(categoryText);
-  detailContainer.appendChild(line);
-  detailContainer.appendChild(descr);
-  detailContainer.appendChild(line2);
-  detailContainer.appendChild(textContainer);
-  detailContainer.appendChild(line3);
-  detailContainer.appendChild(price);
-  detailContainer.appendChild(stock);
-  detailContainer.appendChild(rating);
-  detailContainer.appendChild(buyPlant);
+	detailContainer.appendChild(picContainer);
+	detailContainer.appendChild(categoryText);
+	detailContainer.appendChild(line);
+	detailContainer.appendChild(descr);
+	detailContainer.appendChild(line2);
+	detailContainer.appendChild(textContainer);
+	detailContainer.appendChild(line3);
+	detailContainer.appendChild(price);
+	detailContainer.appendChild(stock);
+	detailContainer.appendChild(rating);
+	detailContainer.appendChild(buyPlant);
 
-  document.getElementById("container").appendChild(detailContainer);
+	if (sessionStorage.loginData != undefined){
+		let makeCommentContainer = document.createElement("div");
+		makeCommentContainer.classList.add("makeCommentContainer");
+
+		let makeCommentText = document.createElement("h3");
+		makeCommentText.innerText = "Legg igjen en kommentar";
+
+		let ratingContainer = document.createElement("div");
+		ratingContainer.setAttribute("id", "ratingContainer");
+
+		let rating = document.createElement("select");
+		rating.setAttribute("name", "rating");
+
+		for (let i = 1; i <= 5; i++){
+			let ratingOption = document.createElement("option");
+			ratingOption.value = i;
+			ratingOption.innerText = i;
+
+			rating.appendChild(ratingOption);
+		}
+
+		let ratingText = document.createElement("p");
+		ratingText.innerText = "Stjerner";
+
+		let commentBox = document.createElement("textarea");
+		commentBox.setAttribute("name", "comment_text");
+
+		let submitCommentButton = document.createElement("button");
+		submitCommentButton.innerText = "Legg igjen kommentar";
+		submitCommentButton.addEventListener("click", async function(){
+			let comment = {
+				comment_text: commentBox.value,
+				rating: rating.value,
+				plant_id: detail.id
+			};
+
+			let authToken = JSON.parse(sessionStorage.loginData).token;
+
+			await addComment(authToken, JSON.stringify(comment));
+
+			if (hasShownComments){
+				document.getElementById("commentFullContainer").innerHTML = "";
+
+				createCommentUI(detail.id);
+			}
+
+			commentBox.value = "";
+		})
+
+		ratingContainer.appendChild(rating);
+		ratingContainer.appendChild(ratingText);
+
+		makeCommentContainer.appendChild(makeCommentText);
+		makeCommentContainer.appendChild(ratingContainer);
+		makeCommentContainer.appendChild(commentBox);
+		makeCommentContainer.appendChild(submitCommentButton);
+
+		detailContainer.appendChild(makeCommentContainer);
+	}
+
+	let hasShownComments = false;
+
+	let showCommentsButton = document.createElement("button");
+	showCommentsButton.innerText = "Vis kommentarfelt";
+	showCommentsButton.addEventListener("click", function(){
+		createCommentUI(detail.id);
+		hasShownComments = true;
+		showCommentsButton.classList.add("hidden");
+	})
+
+	detailContainer.appendChild(showCommentsButton);
+
+	document.getElementById("container").appendChild(detailContainer);
+}
+
+async function createCommentUI(plantId){
+	let commentFullContainer = document.createElement("div");
+	commentFullContainer.setAttribute("id", "commentFullContainer");
+	commentFullContainer.classList.add("commentFullContainer");
+
+	let authToken;
+	if (sessionStorage.loginData != undefined){
+		authToken = JSON.parse(sessionStorage.loginData).token;
+	}
+
+	let comments = await listComment(authToken, plantId)
+
+	for (let i = 0; i < comments.length; i++){
+		let tempFullCommentContainer = document.createElement("div");
+		tempFullCommentContainer.classList.add("tempFullCommentContainer");
+
+		let tempTopContainer = document.createElement("div");
+		tempTopContainer.classList.add("tempTopContainer");
+
+		let tempPersonContainer = document.createElement("div");
+		tempPersonContainer.classList.add("tempPersonContainer");
+
+		let user;
+		if (authToken != undefined){
+			user = await listUsers(authToken, comments[i].user_id);
+
+			user = user[0];
+		}
+		else {
+			user = {
+				full_name: "Anonymous", 
+				thumb: "./Assets/bilde.PNG"
+			}
+		}
+
+		let tempImg = document.createElement("img");
+		tempImg.src = user.thumb;
+
+		let tempName = document.createElement("h3");
+		tempName.innerText = user.full_name;
+
+		let tempRating = document.createElement("h3");
+
+		if (comments[i].rating == 1){
+			tempRating.innerText = comments[i].rating + " Stjerne";
+		}
+		else tempRating.innerText = comments[i].rating + " Stjerner";
+
+		let tempCommentContainer = document.createElement("div");
+		tempCommentContainer.classList.add("tempCommentContainer");
+
+		let tempCommentText = document.createElement("p");
+		tempCommentText.innerText = comments[i].comment_text;
+
+		tempPersonContainer.appendChild(tempImg);
+		tempPersonContainer.appendChild(tempName);
+
+		tempTopContainer.appendChild(tempPersonContainer);
+		tempTopContainer.appendChild(tempRating);
+
+		tempCommentContainer.appendChild(tempCommentText);
+
+		tempFullCommentContainer.appendChild(tempTopContainer);
+		tempFullCommentContainer.appendChild(tempCommentContainer);
+
+		commentFullContainer.appendChild(tempFullCommentContainer);
+	}
+
+	document.getElementById("container").appendChild(commentFullContainer);
 }
 
 export function createAdminPlantUI(plant) {
-  let container = document.getElementById("bottomPartContainer");
-  container.innerHTML = "";
+	let container = document.getElementById("bottomPartContainer");
+	container.innerHTML = "";
 
-  let myForm = document.createElement("form");
-  myForm.id = "editPlantForm";
+	let tempContainer = document.createElement("div");
+	tempContainer.classList.add("adminContainer");
 
-  let tempContainer = document.createElement("div");
-  tempContainer.classList.add("adminPlantContainer");
+	let tempPic = document.createElement("img");
+	tempPic.src = plant.thumb;
 
-  let tempPic = document.createElement("img");
-  tempPic.src = plant.thumb;
+	tempContainer.appendChild(tempPic);
 
-  tempContainer.appendChild(tempPic);
+	container.appendChild(tempContainer);
 
-  container.appendChild(tempContainer);
+	for (let key in plant) {
+		if (key == "thumb") continue;
+		let tempContainer = document.createElement("div");
+		tempContainer.classList.add("adminContainer");
 
-  for (let key in plant) {
-    if (key == "thumb") continue;
-    let tempContainer = document.createElement("div");
-    tempContainer.classList.add("adminPlantContainer");
+		let tempKey = document.createElement("p");
+		tempKey.classList.add("adminKey");
+		tempKey.innerText = key + ":";
 
-    let tempKey = document.createElement("p");
-    tempKey.classList.add("adminPlantKey");
-    tempKey.innerText = key + ":";
+		let tempText = document.createElement("p");
+		tempText.innerText = String(plant[key]);
 
-    let tempText = document.createElement("p");
-    tempText.innerText = String(plant[key]);
+		tempContainer.appendChild(tempKey);
+		tempContainer.appendChild(tempText);
 
-    tempContainer.appendChild(tempKey);
-    tempContainer.appendChild(tempText);
+		container.appendChild(tempContainer);
+	}
+}
 
-    container.appendChild(tempContainer);
-  }
+export function createAdminUserUI(user){
+	let container = document.getElementById("bottomPartContainer");
+	container.innerHTML = "";
+
+	let tempContainer = document.createElement("div");
+	tempContainer.classList.add("adminContainer");
+
+	let tempPic = document.createElement("img");
+	tempPic.src = user.thumb;
+
+	tempContainer.appendChild(tempPic);
+
+	container.appendChild(tempContainer);
+
+	for (let key in user) {
+		if (key == "thumb") continue;
+		let tempContainer = document.createElement("div");
+		tempContainer.classList.add("adminContainer");
+
+		let tempKey = document.createElement("p");
+		tempKey.classList.add("adminKey");
+		tempKey.innerText = key + ":";
+
+		let tempText = document.createElement("p");
+		tempText.innerText = String(user[key]);
+
+		tempContainer.appendChild(tempKey);
+		tempContainer.appendChild(tempText);
+
+		container.appendChild(tempContainer);
+	}
 }
 
 export function createShoppingCartUI() {
-  let cart = JSON.parse(localStorage.cart);
+	let cart = JSON.parse(localStorage.cart);
 
-  let fullContainer = document.getElementById("fullContainer");
-  fullContainer.innerHTML = "";
+	let fullContainer = document.getElementById("fullContainer");
+	fullContainer.innerHTML = "";
 
-  let topContainer = document.createElement("div");
-  topContainer.classList.add("cartTopContainer");
+	let topContainer = document.createElement("div");
+	topContainer.classList.add("cartTopContainer");
 
-  let checkOutButton = document.createElement("button");
-  checkOutButton.innerText = "Gå til betaling";
-  checkOutButton.addEventListener("click", function () {
-    window.location.href = "checkout.html";
-  });
+	let checkOutButton = document.createElement("button");
+	checkOutButton.innerText = "Gå til betaling";
+	checkOutButton.addEventListener("click", function () {
+		window.location.href = "checkout.html";
+	});
 
-  let tempTotal = 0;
-  for (let i = 0; i < cart.length; i++) {
-    for (let j = 0; j < cart[i][1]; j++) {
-      tempTotal += cart[i][0].price;
-    }
-  }
+	let tempTotal = 0;
+	for (let i = 0; i < cart.length; i++) {
+		for (let j = 0; j < cart[i][1]; j++) {
+			tempTotal += cart[i][0].price;
+		}
+	}
 
-  let totalPrice = document.createElement("h2");
-  totalPrice.innerText = "Totalpris: kr " + tempTotal + ",-";
+	let totalPrice = document.createElement("h2");
+	totalPrice.innerText = "Totalpris: kr " + tempTotal + ",-";
 
-  let emptyButton = document.createElement("button");
-  emptyButton.classList.add("emptyCartButton");
-  emptyButton.innerText = "Tøm handlekurv";
-  emptyButton.addEventListener("click", function () {
-    emptyCart();
-  });
+	let emptyButton = document.createElement("button");
+	emptyButton.classList.add("emptyCartButton");
+	emptyButton.innerText = "Tøm handlekurv";
+	emptyButton.addEventListener("click", function () {
+		emptyCart();
+	});
 
-  let line = document.createElement("hr");
-  line.classList.add("line2");
+	let line = document.createElement("hr");
+	line.classList.add("line2");
 
-  topContainer.appendChild(checkOutButton);
-  topContainer.appendChild(totalPrice);
-  topContainer.appendChild(emptyButton);
+	topContainer.appendChild(checkOutButton);
+	topContainer.appendChild(totalPrice);
+	topContainer.appendChild(emptyButton);
 
-  fullContainer.appendChild(topContainer);
-  fullContainer.appendChild(line);
+	fullContainer.appendChild(topContainer);
+	fullContainer.appendChild(line);
 
-  for (let i = 0; i < cart.length; i++) {
-    let plantContainer = document.createElement("div");
-    plantContainer.classList.add("cartPlantContainer");
+	for (let i = 0; i < cart.length; i++) {
+		let plantContainer = document.createElement("div");
+		plantContainer.classList.add("cartPlantContainer");
 
-    let plantId = document.createElement("p");
-    plantId.innerText = "Id: " + cart[i][0].id;
+		let plantId = document.createElement("p");
+		plantId.innerText = "Id: " + cart[i][0].id;
 
-    let plantName = document.createElement("p");
-    plantName.innerText = cart[i][0].name;
+		let plantName = document.createElement("p");
+		plantName.innerText = cart[i][0].name;
 
-    let numberOfPlantsContainer = document.createElement("div");
-    numberOfPlantsContainer.classList.add("numberOfPlantsContainer");
+		let numberOfPlantsContainer = document.createElement("div");
+		numberOfPlantsContainer.classList.add("numberOfPlantsContainer");
 
-    let plantAmount = document.createElement("p");
-    plantAmount.innerText = "Antall: " + cart[i][1];
+		let plantAmount = document.createElement("p");
+		plantAmount.innerText = "Antall: " + cart[i][1];
 
-    let minusButton = document.createElement("button");
-    minusButton.classList.add("cartAmountButton");
-    minusButton.innerText = "-";
-    minusButton.addEventListener("click", function () {
-      changeCartPlant(i, false);
-    });
+		let minusButton = document.createElement("button");
+		minusButton.classList.add("cartAmountButton");
+		minusButton.innerText = "-";
+		minusButton.addEventListener("click", function () {
+			changeCartPlant(i, false);
+		});
 
-    let plusButton = document.createElement("button");
-    plusButton.classList.add("cartAmountButton");
-    plusButton.innerText = "+";
-    plusButton.addEventListener("click", function () {
-      changeCartPlant(i, true);
-    });
+		let plusButton = document.createElement("button");
+		plusButton.classList.add("cartAmountButton");
+		plusButton.innerText = "+";
+		plusButton.addEventListener("click", function () {
+			changeCartPlant(i, true);
+		});
 
-    numberOfPlantsContainer.appendChild(plantAmount);
-    numberOfPlantsContainer.appendChild(minusButton);
-    numberOfPlantsContainer.appendChild(plusButton);
+		numberOfPlantsContainer.appendChild(plantAmount);
+		numberOfPlantsContainer.appendChild(minusButton);
+		numberOfPlantsContainer.appendChild(plusButton);
 
-    let plantPrice = document.createElement("p");
-    plantPrice.innerText = "kr " + cart[i][0].price + ",-";
+		let plantPrice = document.createElement("p");
+		plantPrice.innerText = "kr " + cart[i][0].price + ",-";
 
-    let plantPriceTotal = document.createElement("p");
-    plantPriceTotal.innerText = "Total pris: kr " + cart[i][0].price * cart[i][1] + ",-";
+		let plantPriceTotal = document.createElement("p");
+		plantPriceTotal.innerText = "Total pris: kr " + cart[i][0].price * cart[i][1] + ",-";
 
-    let deleteButton = document.createElement("button");
-    deleteButton.classList.add("removeFromCartButton");
-    deleteButton.innerText = "Fjern fra kurv";
-    deleteButton.addEventListener("click", function () {
-      removePlantFromCart(i);
-    });
+		let deleteButton = document.createElement("button");
+		deleteButton.classList.add("removeFromCartButton");
+		deleteButton.innerText = "Fjern fra kurv";
+		deleteButton.addEventListener("click", function () {
+			removePlantFromCart(i);
+		});
 
-    let line2 = document.createElement("hr");
-    line2.classList.add("line2");
+		let line2 = document.createElement("hr");
+		line2.classList.add("line2");
 
-    plantContainer.appendChild(plantId);
-    plantContainer.appendChild(plantName);
-    plantContainer.appendChild(numberOfPlantsContainer);
-    plantContainer.appendChild(plantPrice);
-    plantContainer.appendChild(plantPriceTotal);
-    if (cart[i][0].stock == 0) {
-      let temp = new Date(cart[i][0].expected_shipped);
-      let shippingText = document.createElement("p");
-      shippingText.innerText = "Forventet på lager: " + temp.toString().substring(4, 15);
+		plantContainer.appendChild(plantId);
+		plantContainer.appendChild(plantName);
+		plantContainer.appendChild(numberOfPlantsContainer);
+		plantContainer.appendChild(plantPrice);
+		plantContainer.appendChild(plantPriceTotal);
+		if (cart[i][0].stock == 0) {
+			let temp = new Date(cart[i][0].expected_shipped);
+			let shippingText = document.createElement("p");
+			shippingText.innerText = "Forventet på lager: " + temp.toString().substring(4, 15);
 
-      plantContainer.appendChild(shippingText);
-    }
-    plantContainer.appendChild(deleteButton);
+			plantContainer.appendChild(shippingText);
+		}
+		plantContainer.appendChild(deleteButton);
 
-    fullContainer.appendChild(plantContainer);
-    fullContainer.appendChild(line2);
-  }
+		fullContainer.appendChild(plantContainer);
+		fullContainer.appendChild(line2);
+	}
 
-  document.getElementById("container").appendChild(fullContainer);
+	document.getElementById("container").appendChild(fullContainer);
 }
 
 export async function createCheckoutUI() {
-  let fullContainer = document.getElementById("fullContainer2");
+	let loginData;
+	if (sessionStorage.loginData != undefined){
+		loginData = JSON.parse(sessionStorage.loginData);
+	}
 
-  let formContainer = document.createElement("div");
-  formContainer.classList.add("formContainer");
+	let fullContainer = document.getElementById("fullContainer2");
 
-  let shippingMethodContainer = document.createElement("div");
-  shippingMethodContainer.classList.add("shippingMethodContainer");
+	let formContainer = document.createElement("div");
+	formContainer.classList.add("formContainer");
 
-  let confirmationContainer = document.createElement("div");
-  confirmationContainer.classList.add("confirmationContainer");
+	let shippingMethodContainer = document.createElement("div");
+	shippingMethodContainer.classList.add("shippingMethodContainer");
 
-  let customerForm = document.createElement("form");
+	let confirmationContainer = document.createElement("div");
+	confirmationContainer.classList.add("confirmationContainer");
 
-  let customerNameLabel = document.createElement("label");
-  customerNameLabel.innerText = "Navn:";
+	let customerForm = document.createElement("form");
 
-  let customerName = document.createElement("input");
-  customerName.classList.add("checkoutInput");
-  customerName.setAttribute("type", "text");
-  customerName.setAttribute("name", "customer_name");
-  customerName.setAttribute("id", "textField0");
+	let customerNameLabel = document.createElement("label");
+	customerNameLabel.innerText = "Navn:";
 
-  let streetLabel = document.createElement("label");
-  streetLabel.innerText = "Gateadresse:";
+	let customerName = document.createElement("input");
+	customerName.classList.add("checkoutInput");
+	customerName.setAttribute("type", "text");
+	customerName.setAttribute("name", "customer_name");
+	customerName.setAttribute("id", "textField0");
 
-  let street = document.createElement("input");
-  street.classList.add("checkoutInput");
-  street.setAttribute("type", "text");
-  street.setAttribute("name", "street");
-  street.setAttribute("id", "textField1");
+	let streetLabel = document.createElement("label");
+	streetLabel.innerText = "Gateadresse:";
 
-  let cityLabel = document.createElement("label");
-  cityLabel.innerText = "By:";
+	let street = document.createElement("input");
+	street.classList.add("checkoutInput");
+	street.setAttribute("type", "text");
+	street.setAttribute("name", "street");
+	street.setAttribute("id", "textField1");
 
-  let city = document.createElement("input");
-  city.classList.add("checkoutInput");
-  city.setAttribute("type", "text");
-  city.setAttribute("name", "city");
-  city.setAttribute("id", "textField2");
+	let cityLabel = document.createElement("label");
+	cityLabel.innerText = "By:";
 
-  let zipCodeLabel = document.createElement("label");
-  zipCodeLabel.innerText = "Postnummer:";
+	let city = document.createElement("input");
+	city.classList.add("checkoutInput");
+	city.setAttribute("type", "text");
+	city.setAttribute("name", "city");
+	city.setAttribute("id", "textField2");
 
-  let zipCode = document.createElement("input");
-  zipCode.classList.add("checkoutInput");
-  zipCode.setAttribute("type", "text");
-  zipCode.setAttribute("name", "zipcode");
-  zipCode.setAttribute("id", "textField3");
+	let zipCodeLabel = document.createElement("label");
+	zipCodeLabel.innerText = "Postnummer:";
 
-  let countryLabel = document.createElement("label");
-  countryLabel.innerText = "Land:";
+	let zipCode = document.createElement("input");
+	zipCode.classList.add("checkoutInput");
+	zipCode.setAttribute("type", "text");
+	zipCode.setAttribute("name", "zipcode");
+	zipCode.setAttribute("id", "textField3");
 
-  let country = document.createElement("input");
-  country.classList.add("checkoutInput");
-  country.setAttribute("type", "text");
-  country.setAttribute("name", "country");
-  country.setAttribute("id", "textField4");
+	let countryLabel = document.createElement("label");
+	countryLabel.innerText = "Land:";
 
-  customerForm.appendChild(customerNameLabel);
-  customerForm.appendChild(document.createElement("br"));
-  customerForm.appendChild(customerName);
-  customerForm.appendChild(document.createElement("br"));
-  customerForm.appendChild(streetLabel);
-  customerForm.appendChild(document.createElement("br"));
-  customerForm.appendChild(street);
-  customerForm.appendChild(document.createElement("br"));
-  customerForm.appendChild(cityLabel);
-  customerForm.appendChild(document.createElement("br"));
-  customerForm.appendChild(city);
-  customerForm.appendChild(document.createElement("br"));
-  customerForm.appendChild(zipCodeLabel);
-  customerForm.appendChild(document.createElement("br"));
-  customerForm.appendChild(zipCode);
-  customerForm.appendChild(document.createElement("br"));
-  customerForm.appendChild(countryLabel);
-  customerForm.appendChild(document.createElement("br"));
-  customerForm.appendChild(country);
+	let country = document.createElement("input");
+	country.classList.add("checkoutInput");
+	country.setAttribute("type", "text");
+	country.setAttribute("name", "country");
+	country.setAttribute("id", "textField4");
 
-  formContainer.appendChild(customerForm);
-  
-  let shippingMethods = await getShippingMethods();
-  //console.log(shippingMethods);
+	customerForm.appendChild(customerNameLabel);
+	customerForm.appendChild(document.createElement("br"));
+	customerForm.appendChild(customerName);
+	customerForm.appendChild(document.createElement("br"));
+	customerForm.appendChild(streetLabel);
+	customerForm.appendChild(document.createElement("br"));
+	customerForm.appendChild(street);
+	customerForm.appendChild(document.createElement("br"));
+	customerForm.appendChild(cityLabel);
+	customerForm.appendChild(document.createElement("br"));
+	customerForm.appendChild(city);
+	customerForm.appendChild(document.createElement("br"));
+	customerForm.appendChild(zipCodeLabel);
+	customerForm.appendChild(document.createElement("br"));
+	customerForm.appendChild(zipCode);
+	customerForm.appendChild(document.createElement("br"));
+	customerForm.appendChild(countryLabel);
+	customerForm.appendChild(document.createElement("br"));
+	customerForm.appendChild(country);
 
-  for (let i = 0; i < shippingMethods.length; i++) {
-    let tempShippingMethod = document.createElement("input");
-    tempShippingMethod.setAttribute("type", "radio");
-    tempShippingMethod.setAttribute("name", "shipping");
-    tempShippingMethod.setAttribute("id", "shippingOption" + i);
+	formContainer.appendChild(customerForm);
+	
+	if (loginData != undefined){
+		customerName.value = loginData.full_name;
+		street.value = loginData.street;
+		city.value = loginData.city;
+		zipCode.value = loginData.zipcode;
+		country.value = loginData.country;
+	}
 
-    let tempShippingMethodLabel = document.createElement("label");
-    tempShippingMethodLabel.innerText = shippingMethods[i].method + ": " + shippingMethods[i].description + " kr " + shippingMethods[i].price + ",-";
+	let shippingMethods = await getShippingMethods();
 
-    shippingMethodContainer.appendChild(tempShippingMethod);
-    shippingMethodContainer.appendChild(tempShippingMethodLabel);
-    shippingMethodContainer.appendChild(document.createElement("br"));
-  }
+	for (let i = 0; i < shippingMethods.length; i++) {
+		let tempShippingMethod = document.createElement("input");
+		tempShippingMethod.setAttribute("type", "radio");
+		tempShippingMethod.setAttribute("name", "shipping");
+		tempShippingMethod.setAttribute("id", "shippingOption" + i);
 
-  let cart = JSON.parse(localStorage.cart);
+		let tempShippingMethodLabel = document.createElement("label");
+		tempShippingMethodLabel.innerText = shippingMethods[i].method + ": " + shippingMethods[i].description + " kr " + shippingMethods[i].price + ",-";
 
-  let tempTotal = 0;
-  for (let i = 0; i < cart.length; i++) {
-    for (let j = 0; j < cart[i][1]; j++) {
-      tempTotal += cart[i][0].price;
-    }
-  }
+		shippingMethodContainer.appendChild(tempShippingMethod);
+		shippingMethodContainer.appendChild(tempShippingMethodLabel);
+		shippingMethodContainer.appendChild(document.createElement("br"));
+	}
 
-  let totalPrice = document.createElement("h3");
-  totalPrice.innerText = "Totalpris: kr " + tempTotal + ",-";
+	let cart = JSON.parse(localStorage.cart);
 
-  let confirmationButton = document.createElement("button");
-  confirmationButton.innerText = "Bekreft ordre";
-  confirmationButton.addEventListener("click", async function () {
-    let text = false;
-    let radio = false;
+	let tempTotal = 0;
+	for (let i = 0; i < cart.length; i++) {
+		for (let j = 0; j < cart[i][1]; j++) {
+			tempTotal += cart[i][0].price;
+		}
+	}
 
-    for (let i = 0; i < 4; i++) {
-      if (document.getElementById("textField" + i).value == "") {
-        alert("Vennligst fyll inn alle feltene.");
+	let totalPrice = document.createElement("h3");
+	totalPrice.innerText = "Totalpris: kr " + tempTotal + ",-";
 
-        return;
-      }
-    }
-    text = true;
+	let confirmationButton = document.createElement("button");
+	confirmationButton.innerText = "Bekreft ordre";
+	confirmationButton.addEventListener("click", async function () {
+		let text = false;
+		let radio = false;
 
-    if (
-      document.getElementById("shippingOption0").checked ||
-      document.getElementById("shippingOption1").checked ||
-      document.getElementById("shippingOption2").checked ||
-      document.getElementById("shippingOption3").checked
-    ) {
-      radio = true;
-    } else {
-      alert("Vennligst velg en shipping method.");
+		for (let i = 0; i < 4; i++) {
+			if (document.getElementById("textField" + i).value == "") {
+				alert("Vennligst fyll inn alle feltene.");
 
-      return;
-    }
+				return;
+			}
+		}
+		text = true;
 
-    if (radio && text) {
-      let orderData = {};
+		if (
+			document.getElementById("shippingOption0").checked ||
+			document.getElementById("shippingOption1").checked ||
+			document.getElementById("shippingOption2").checked ||
+			document.getElementById("shippingOption3").checked
+		) {
+			radio = true;
+		} else {
+			alert("Vennligst velg en shipping method.");
 
-      for (let i = 0; i < 5; i++) {
-        orderData[document.getElementById("textField" + i).name] = document.getElementById("textField" + i).value;
-      }
+			return;
+		}
 
-      for (let i = 0; i < 4; i++) {
-        if (document.getElementById("shippingOption" + i).checked) {
-          //Her tar vi +1 for å converte til riktig ID (indexen i arrayen er 0 - 3, idene er 1 - 4)
-          orderData["shipping_id"] = i + 1;
-        }
-      }
+		if (radio && text) {
+			let orderData = {};
 
-      let tempCart = JSON.parse(localStorage.cart);
-      let tempArr = [];
+			for (let i = 0; i < 5; i++) {
+				orderData[document.getElementById("textField" + i).name] = document.getElementById("textField" + i).value;
+			}
 
-      for (let i = 0; i < tempCart.length; i++) {
-        let tempPlant = { id: null, amount: null };
-        tempPlant.id = tempCart[i][0].id;
-        tempPlant.amount = tempCart[i][1];
-        tempArr.push(tempPlant);
-      }
+			for (let i = 0; i < 4; i++) {
+				if (document.getElementById("shippingOption" + i).checked) {
+					//Her tar vi +1 for å converte til riktig ID (indexen i arrayen er 0 - 3, idene er 1 - 4)
+					orderData["shipping_id"] = i + 1;
+				}
+			}
 
-      orderData["content"] = tempArr;
-      console.log(orderData);
+			let tempCart = JSON.parse(localStorage.cart);
+			let tempArr = [];
 
-      let order = await sendOrder(JSON.stringify(orderData));
-      //console.log(order);
-      //if ((order.msg == "insert order ok") && (order != undefined)){
-      if (order != undefined) {
-        localStorage.orderData = JSON.stringify(order);
-        window.location.href = "confirmation.html";
-      } else {
-        alert("Noe gikk galt");
-      }
-    }
-  });
+			for (let i = 0; i < tempCart.length; i++) {
+				let tempPlant = { id: null, amount: null };
+				tempPlant.id = tempCart[i][0].id;
+				tempPlant.amount = tempCart[i][1];
+				tempArr.push(tempPlant);
+			}
 
-  confirmationContainer.appendChild(totalPrice);
-  confirmationContainer.appendChild(document.createElement("br"));
-  confirmationContainer.appendChild(confirmationButton);
+			orderData["content"] = tempArr;
 
-  fullContainer.appendChild(formContainer);
-  fullContainer.appendChild(shippingMethodContainer);
-  fullContainer.appendChild(confirmationContainer);
+			let order = await sendOrder(JSON.stringify(orderData));
+			//if ((order.msg == "insert order ok") && (order != undefined)){
+			if (order != undefined) {
+				localStorage.orderData = JSON.stringify(order);
+				window.location.href = "confirmation.html";
+			} else {
+				alert("Noe gikk galt");
+			}
+		}
+	});
+
+	confirmationContainer.appendChild(totalPrice);
+	confirmationContainer.appendChild(document.createElement("br"));
+	confirmationContainer.appendChild(confirmationButton);
+
+	fullContainer.appendChild(formContainer);
+	fullContainer.appendChild(shippingMethodContainer);
+	fullContainer.appendChild(confirmationContainer);
 }
 
 export async function createConfirmationUI() {
-  let orderConfirmation = JSON.parse(localStorage.orderData);
-  console.log(orderConfirmation);
+	let orderConfirmation = JSON.parse(localStorage.orderData);
 
-  let container = document.getElementById("fullContainer3");
+	let container = document.getElementById("fullContainer3");
 
-  let confirmationText = document.createElement("h2");
-  confirmationText.innerText = "Orderen din er bekreftet!";
+	let confirmationText = document.createElement("h2");
+	confirmationText.innerText = "Orderen din er bekreftet!";
 
-  container.appendChild(confirmationText);
+	container.appendChild(confirmationText);
 
-  for (let key in orderConfirmation["record"]) {
-    if (key == "content" || key == "completed" || key == "completed_date") continue;
-    let tempText = document.createElement("p");
-    if (key == "shipping_id") {
-      let shippingMethods = await getShippingMethods();
-      console.log(shippingMethods);
+	for (let key in orderConfirmation["record"]) {
+		if (key == "content" || key == "completed" || key == "completed_date") continue;
+		let tempText = document.createElement("p");
+		if (key == "shipping_id") {
+			let shippingMethods = await getShippingMethods();
 
-      //Her tar vi -1 på IDen vi sendte (og da fikk tilbake) for å få riktig index i arrayen
-      tempText.innerText =
-        key + ": " + shippingMethods[orderConfirmation["record"][key] - 1].method + ", " + shippingMethods[orderConfirmation["record"][key] - 1].description;
-    } else if (key == "date") {
-      tempText.innerText = key + ": " + orderConfirmation["record"][key].substring(0, 10);
-    } else {
-      tempText.innerText = key + ": " + String(orderConfirmation["record"][key]);
-    }
+			//Her tar vi -1 på IDen vi sendte (og da fikk tilbake) for å få riktig index i arrayen
+			tempText.innerText =
+				key + ": " + shippingMethods[orderConfirmation["record"][key] - 1].method + ", " + shippingMethods[orderConfirmation["record"][key] - 1].description;
+		} else if (key == "date") {
+			tempText.innerText = key + ": " + orderConfirmation["record"][key].substring(0, 10);
+		} else {
+			tempText.innerText = key + ": " + String(orderConfirmation["record"][key]);
+		}
 
-    container.appendChild(tempText);
-  }
+		container.appendChild(tempText);
+	}
 
-  let tempCart = JSON.parse(localStorage.cart);
-  //console.log(tempCart);
+	let tempCart = JSON.parse(localStorage.cart);
 
-  for (let i = 0; i < tempCart.length; i++) {
-    let tempPlantId = document.createElement("p");
-    tempPlantId.innerText = "Plante id: " + tempCart[i][0].id;
+	for (let i = 0; i < tempCart.length; i++) {
+		let tempPlantId = document.createElement("p");
+		tempPlantId.innerText = "Plante id: " + tempCart[i][0].id;
 
-    let tempPlantName = document.createElement("p");
-    tempPlantName.innerText = "Plante navn: " + tempCart[i][0].name;
+		let tempPlantName = document.createElement("p");
+		tempPlantName.innerText = "Plante navn: " + tempCart[i][0].name;
 
-    let tempPlantTotal = document.createElement("p");
-    tempPlantTotal.innerText = "Plante antall: " + tempCart[i][1];
+		let tempPlantTotal = document.createElement("p");
+		tempPlantTotal.innerText = "Plante antall: " + tempCart[i][1];
 
-    let tempPlantPrice = document.createElement("p");
-    tempPlantPrice.innerText = "Plante pris: " + tempCart[i][0].price;
+		let tempPlantPrice = document.createElement("p");
+		tempPlantPrice.innerText = "Plante pris: " + tempCart[i][0].price;
 
-    let tempPlantPriceTotal = document.createElement("p");
-    tempPlantPriceTotal.innerText = "Plante total pris: " + tempCart[i][0].price * tempCart[i][1];
+		let tempPlantPriceTotal = document.createElement("p");
+		tempPlantPriceTotal.innerText = "Plante total pris: " + tempCart[i][0].price * tempCart[i][1];
 
-    container.appendChild(document.createElement("br"));
-    container.appendChild(tempPlantId);
-    container.appendChild(tempPlantName);
-    container.appendChild(tempPlantTotal);
-    container.appendChild(tempPlantPrice);
-    container.appendChild(tempPlantPriceTotal);
-  }
-
-  //console.log(orderConfirmation);
+		container.appendChild(document.createElement("br"));
+		container.appendChild(tempPlantId);
+		container.appendChild(tempPlantName);
+		container.appendChild(tempPlantTotal);
+		container.appendChild(tempPlantPrice);
+		container.appendChild(tempPlantPriceTotal);
+	}
 }
 
 export async function createAdminOrderUI(token) {
-  let orders = await getOrder(token);
+	let orders = await getOrder(token);
 
-  let wrapper = document.getElementById("orderWrapper");
+	let wrapper = document.getElementById("orderWrapper");
 
-  for (let i = 0; i < orders.length; i++) {
-    let tempOrderContainer = document.createElement("div");
-    tempOrderContainer.classList.add("orderContainer");
+	for (let i = 0; i < orders.length; i++) {
+		let tempOrderContainer = document.createElement("div");
+		tempOrderContainer.classList.add("orderContainer");
 
-    for (let key in orders[i]) {
-      let tempText = document.createElement("p");
-      tempText.innerText = key + ": " + String(orders[i][key]);
+		for (let key in orders[i]) {
+			let tempText = document.createElement("p");
+			tempText.innerText = key + ": " + String(orders[i][key]);
 
-      tempOrderContainer.appendChild(tempText);
-    }
+			tempOrderContainer.appendChild(tempText);
+		}
 
-    let deleteButton = document.createElement("button");
-    deleteButton.innerText = "Slett order";
-    deleteButton.addEventListener("click", async function () {
-      await deleteOrder(token, orders[i].id);
+		let deleteButton = document.createElement("button");
+		deleteButton.innerText = "Slett order";
+		deleteButton.addEventListener("click", async function () {
+			await deleteOrder(token, orders[i].id);
 
-      location.reload();
-    });
+			location.reload();
+		});
 
-    let line = document.createElement("hr");
+		let line = document.createElement("hr");
 
-    tempOrderContainer.appendChild(deleteButton);
-    tempOrderContainer.appendChild(line);
-    wrapper.appendChild(tempOrderContainer);
-  }
+		tempOrderContainer.appendChild(deleteButton);
+		tempOrderContainer.appendChild(line);
+		wrapper.appendChild(tempOrderContainer);
+	}
 }
 
-export function createHeaderUserUI(){
-  let container = document.getElementById("headerContainer");
+export function createHeaderUserUI() {
+	let container = document.getElementById("headerContainer");
 
-  let loggedIn = false;
-  if (!loggedIn){
-    let loginButton = document.createElement("button");
-    loginButton.addEventListener("click", function(){
-      window.location.href = "login.html";
-    })
-    loginButton.classList.add("headerButton");
-    loginButton.innerText = "Login";
+	let loginData;
+	if (sessionStorage.loginData == undefined){
+		let loginButton = document.createElement("button");
+		loginButton.addEventListener("click", function () {
+			window.location.href = "login.html";
+		})
+		loginButton.classList.add("headerButton");
+		loginButton.innerText = "Login";
 
-    let registerButton = document.createElement("button");
-    registerButton.addEventListener("click", function(){
-      window.location.href = "register.html";
-    })
-    registerButton.classList.add("headerButton");
-    registerButton.innerText = "Register";
+		let registerButton = document.createElement("button");
+		registerButton.addEventListener("click", function () {
+			window.location.href = "register.html";
+		})
+		registerButton.classList.add("headerButton");
+		registerButton.innerText = "Register";
 
-    container.appendChild(loginButton);
-    container.appendChild(registerButton);
-  }
-  else{
-    // BILDE OG LOGOUT KNAPP
-  }
+		container.appendChild(loginButton);
+		container.appendChild(registerButton);
+	}
+	else {
+		loginData = JSON.parse(sessionStorage.loginData);
+
+		let profilePic = document.createElement("img");
+		profilePic.classList.add("profilePic");
+		profilePic.src = loginData.thumb;
+
+		let logoutButton = document.createElement("button");
+		logoutButton.classList.add("headerButton");
+		logoutButton.innerText = "Logout";
+		logoutButton.addEventListener("click", function(){
+			sessionStorage.removeItem("loginData");
+
+			window.location.href = "logoutConfirmation.html";
+		})
+
+		container.appendChild(logoutButton);
+		container.appendChild(profilePic);
+	}
 }
 
-export function createRegisterUI(){
-  let fullContainer = document.getElementById("fullContainer2");
+export function createRegisterUI() {
+	let fullContainer = document.getElementById("fullContainer2");
 
-  let formContainer = document.createElement("div");
-  formContainer.classList.add("formContainer");
+	let formContainer = document.createElement("div");
+	formContainer.classList.add("formContainer");
 
-  let customerForm = document.createElement("form");
+	let customerForm = document.createElement("form");
 
-  let usernameLabel = document.createElement("label");
-  usernameLabel.innerText = "Brukernavn:";
+	let usernameLabel = document.createElement("label");
+	usernameLabel.innerText = "Brukernavn:";
 
-  let username = document.createElement("input");
-  username.classList.add("checkoutInput");
-  username.setAttribute("type", "text");
-  username.setAttribute("name", "username");
-  username.setAttribute("id", "textField0");
+	let username = document.createElement("input");
+	username.classList.add("checkoutInput");
+	username.setAttribute("type", "text");
+	username.setAttribute("name", "username");
+	username.setAttribute("id", "textField0");
 
-  let passwordLabel = document.createElement("label");
-  passwordLabel.innerText = "Passord:";
+	let passwordLabel = document.createElement("label");
+	passwordLabel.innerText = "Passord:";
 
-  let password = document.createElement("input");
-  password.classList.add("checkoutInput");
-  password.setAttribute("type", "password");
-  password.setAttribute("name", "password");
-  password.setAttribute("id", "textField1");
+	let password = document.createElement("input");
+	password.classList.add("checkoutInput");
+	password.setAttribute("type", "password");
+	password.setAttribute("name", "password");
+	password.setAttribute("id", "textField1");
 
-  let customerNameLabel = document.createElement("label");
-  customerNameLabel.innerText = "Navn:";
+	let customerNameLabel = document.createElement("label");
+	customerNameLabel.innerText = "Navn:";
 
-  let customerName = document.createElement("input");
-  customerName.classList.add("checkoutInput");
-  customerName.setAttribute("type", "text");
-  customerName.setAttribute("name", "customer_name");
-  customerName.setAttribute("id", "textField2");
+	let customerName = document.createElement("input");
+	customerName.classList.add("checkoutInput");
+	customerName.setAttribute("type", "text");
+	customerName.setAttribute("name", "fullname");
+	customerName.setAttribute("id", "textField2");
 
-  let streetLabel = document.createElement("label");
-  streetLabel.innerText = "Gateadresse:";
+	let streetLabel = document.createElement("label");
+	streetLabel.innerText = "Gateadresse:";
 
-  let street = document.createElement("input");
-  street.classList.add("checkoutInput");
-  street.setAttribute("type", "text");
-  street.setAttribute("name", "street");
-  street.setAttribute("id", "textField3");
+	let street = document.createElement("input");
+	street.classList.add("checkoutInput");
+	street.setAttribute("type", "text");
+	street.setAttribute("name", "street");
+	street.setAttribute("id", "textField3");
 
-  let cityLabel = document.createElement("label");
-  cityLabel.innerText = "By:";
+	let cityLabel = document.createElement("label");
+	cityLabel.innerText = "By:";
 
-  let city = document.createElement("input");
-  city.classList.add("checkoutInput");
-  city.setAttribute("type", "text");
-  city.setAttribute("name", "city");
-  city.setAttribute("id", "textField4");
+	let city = document.createElement("input");
+	city.classList.add("checkoutInput");
+	city.setAttribute("type", "text");
+	city.setAttribute("name", "city");
+	city.setAttribute("id", "textField4");
 
-  let zipCodeLabel = document.createElement("label");
-  zipCodeLabel.innerText = "Postnummer:";
+	let zipCodeLabel = document.createElement("label");
+	zipCodeLabel.innerText = "Postnummer:";
 
-  let zipCode = document.createElement("input");
-  zipCode.classList.add("checkoutInput");
-  zipCode.setAttribute("type", "text");
-  zipCode.setAttribute("name", "zipcode");
-  zipCode.setAttribute("id", "textField5");
+	let zipCode = document.createElement("input");
+	zipCode.classList.add("checkoutInput");
+	zipCode.setAttribute("type", "text");
+	zipCode.setAttribute("name", "zipcode");
+	zipCode.setAttribute("id", "textField5");
 
-  let countryLabel = document.createElement("label");
-  countryLabel.innerText = "Land:";
+	let countryLabel = document.createElement("label");
+	countryLabel.innerText = "Land:";
 
-  let country = document.createElement("input");
-  country.classList.add("checkoutInput");
-  country.setAttribute("type", "text");
-  country.setAttribute("name", "country");
-  country.setAttribute("id", "textField6");
+	let country = document.createElement("input");
+	country.classList.add("checkoutInput");
+	country.setAttribute("type", "text");
+	country.setAttribute("name", "country");
+	country.setAttribute("id", "textField6");
 
-  let imageLabel = document.createElement("label");
-  imageLabel.innerText = "Profil bilde:";
+	let imageLabel = document.createElement("label");
+	imageLabel.innerText = "Profil bilde:";
 
-  let image = document.createElement("input");
-  image.classList.add("checkoutInput");
-  image.setAttribute("type", "file");
-  image.setAttribute("name", "img_file");
-  image.setAttribute("accept", "image/jpeg, image/png, image/jpg");
-  image.setAttribute("id", "imageField");
-  
-  let confirmationButton = document.createElement("input");
-  confirmationButton.setAttribute("type", "submit");
-  confirmationButton.setAttribute("value", "Registrer Bruker");
-  confirmationButton.setAttribute("id", "submitFormButton");
+	let image = document.createElement("input");
+	image.classList.add("checkoutInput");
+	image.setAttribute("type", "file");
+	image.setAttribute("name", "img_file");
+	image.setAttribute("accept", "image/jpeg, image/png, image/jpg");
+	image.setAttribute("id", "imageField");
 
-  customerForm.addEventListener("submit", function(event){
-    event.preventDefault();
+	let confirmationButton = document.createElement("input");
+	confirmationButton.setAttribute("type", "submit");
+	confirmationButton.setAttribute("value", "Registrer Bruker");
+	confirmationButton.setAttribute("id", "submitFormButton");
 
-    for (let i = 0; i < 6; i++) {
-      if (document.getElementById("textField" + i).value == "") {
-        alert("Vennligst fyll inn alle feltene.");
+	customerForm.addEventListener("submit", async function (event) {
+		event.preventDefault();
 
-        return;
-      }
-    }
+		for (let i = 0; i < 6; i++) {
+			if (document.getElementById("textField" + i).value == "") {
+				alert("Vennligst fyll inn alle feltene.");
 
-    let formData = new FormData(customerForm);
-    registerUser(formData);
+				return;
+			}
+		}
 
-    window.location.href = "registerConfirmation.html";
-  })
+		let formData = new FormData(customerForm);
+		await registerUser(formData);
 
-  customerForm.appendChild(usernameLabel);
-  customerForm.appendChild(document.createElement("br"));
-  customerForm.appendChild(username);
-  customerForm.appendChild(document.createElement("br"));
-  customerForm.appendChild(passwordLabel);
-  customerForm.appendChild(document.createElement("br"));
-  customerForm.appendChild(password);
-  customerForm.appendChild(document.createElement("br"));
-  customerForm.appendChild(customerNameLabel);
-  customerForm.appendChild(document.createElement("br"));
-  customerForm.appendChild(customerName);
-  customerForm.appendChild(document.createElement("br"));
-  customerForm.appendChild(streetLabel);
-  customerForm.appendChild(document.createElement("br"));
-  customerForm.appendChild(street);
-  customerForm.appendChild(document.createElement("br"));
-  customerForm.appendChild(cityLabel);
-  customerForm.appendChild(document.createElement("br"));
-  customerForm.appendChild(city);
-  customerForm.appendChild(document.createElement("br"));
-  customerForm.appendChild(zipCodeLabel);
-  customerForm.appendChild(document.createElement("br"));
-  customerForm.appendChild(zipCode);
-  customerForm.appendChild(document.createElement("br"));
-  customerForm.appendChild(countryLabel);
-  customerForm.appendChild(document.createElement("br"));
-  customerForm.appendChild(country);
-  customerForm.appendChild(document.createElement("br"));
-  customerForm.appendChild(imageLabel);
-  customerForm.appendChild(document.createElement("br"));
-  customerForm.appendChild(image);
-  customerForm.appendChild(document.createElement("br"));
-  customerForm.appendChild(document.createElement("br"));
-  customerForm.appendChild(confirmationButton);
+		window.location.href = "registerConfirmation.html";
+	})
 
-  formContainer.appendChild(customerForm);
+	customerForm.appendChild(usernameLabel);
+	customerForm.appendChild(document.createElement("br"));
+	customerForm.appendChild(username);
+	customerForm.appendChild(document.createElement("br"));
+	customerForm.appendChild(passwordLabel);
+	customerForm.appendChild(document.createElement("br"));
+	customerForm.appendChild(password);
+	customerForm.appendChild(document.createElement("br"));
+	customerForm.appendChild(customerNameLabel);
+	customerForm.appendChild(document.createElement("br"));
+	customerForm.appendChild(customerName);
+	customerForm.appendChild(document.createElement("br"));
+	customerForm.appendChild(streetLabel);
+	customerForm.appendChild(document.createElement("br"));
+	customerForm.appendChild(street);
+	customerForm.appendChild(document.createElement("br"));
+	customerForm.appendChild(cityLabel);
+	customerForm.appendChild(document.createElement("br"));
+	customerForm.appendChild(city);
+	customerForm.appendChild(document.createElement("br"));
+	customerForm.appendChild(zipCodeLabel);
+	customerForm.appendChild(document.createElement("br"));
+	customerForm.appendChild(zipCode);
+	customerForm.appendChild(document.createElement("br"));
+	customerForm.appendChild(countryLabel);
+	customerForm.appendChild(document.createElement("br"));
+	customerForm.appendChild(country);
+	customerForm.appendChild(document.createElement("br"));
+	customerForm.appendChild(imageLabel);
+	customerForm.appendChild(document.createElement("br"));
+	customerForm.appendChild(image);
+	customerForm.appendChild(document.createElement("br"));
+	customerForm.appendChild(document.createElement("br"));
+	customerForm.appendChild(confirmationButton);
 
-  fullContainer.appendChild(formContainer);
+	formContainer.appendChild(customerForm);
+
+	fullContainer.appendChild(formContainer);
 }
 
-export function createRegisterUserConfirmationUI(){
-  let container = document.getElementById("fullContainer2");
+export function createLoginUI() {
+	let container = document.getElementById("fullContainer2");
 
-  let confirmationText = document.createElement("h1");
-  confirmationText.id = "confirmationText";
-  confirmationText.innerText = "Vellykket registrering!"
+	let loginForm = document.createElement("form");
+	loginForm.setAttribute("id", "userLoginForm");
 
-  container.appendChild(confirmationText);
-}
+	let usernameLabel = document.createElement("label");
+	usernameLabel.innerText = "Brukernavn:";
 
-export function createLoginUI(){
-  let container = document.getElementById("fullContainer2");
+	let username = document.createElement("input");
+	username.classList.add("checkoutInput");
+	username.setAttribute("type", "text");
+	username.setAttribute("name", "username");
+	username.setAttribute("id", "username");
 
-  let loginForm = document.createElement("form");
-  loginForm.setAttribute("id", "userLoginForm");
+	let passwordLabel = document.createElement("label");
+	passwordLabel.innerText = "Passord:";
 
-  let usernameLabel = document.createElement("label");
-  usernameLabel.innerText = "Brukernavn:";
+	let password = document.createElement("input");
+	password.classList.add("checkoutInput");
+	password.setAttribute("type", "password");
+	password.setAttribute("name", "street");
+	password.setAttribute("id", "password");
 
-  let username = document.createElement("input");
-  username.classList.add("checkoutInput");
-  username.setAttribute("type", "text");
-  username.setAttribute("name", "username");
-  username.setAttribute("id", "username");
+	let loginButton = document.createElement("input");
+	loginButton.setAttribute("type", "submit");
+	loginButton.setAttribute("value", "Login");
+	loginButton.setAttribute("id", "loginButton");
 
-  let passwordLabel = document.createElement("label");
-  passwordLabel.innerText = "Passord:";
+	loginForm.addEventListener("submit", async function (event) {
+		event.preventDefault();
 
-  let password = document.createElement("input");
-  password.classList.add("checkoutInput");
-  password.setAttribute("type", "password");
-  password.setAttribute("name", "street");
-  password.setAttribute("id", "password");
+		if (username.value == "") return
+		if (password.value == "") return
 
-  let loginButton = document.createElement("input");
-  loginButton.setAttribute("type", "submit");
-  loginButton.setAttribute("value", "Login");
-  loginButton.setAttribute("id", "loginButton");
+		let login = await loginUser(username.value, password.value);
 
-  loginForm.addEventListener("submit", function(event){
-    event.preventDefault();
+		if (login != undefined){
+			sessionStorage.loginData = JSON.stringify(login.logindata);
 
-    if (username.value == "") return
-    if (password.value == "") return
+			window.location.href = "loginConfirmation.html";
+		}
+	})
 
-    loginUser(username.value, password.value);
-  })
+	loginForm.appendChild(usernameLabel);
+	loginForm.appendChild(document.createElement("br"));
+	loginForm.appendChild(username);
+	loginForm.appendChild(document.createElement("br"));
+	loginForm.appendChild(passwordLabel);
+	loginForm.appendChild(document.createElement("br"));
+	loginForm.appendChild(password);
+	loginForm.appendChild(document.createElement("br"));
+	loginForm.appendChild(document.createElement("br"));
+	loginForm.appendChild(loginButton);
 
-  loginForm.appendChild(usernameLabel);
-  loginForm.appendChild(document.createElement("br"));
-  loginForm.appendChild(username);
-  loginForm.appendChild(document.createElement("br"));
-  loginForm.appendChild(passwordLabel);
-  loginForm.appendChild(document.createElement("br"));
-  loginForm.appendChild(password);
-  loginForm.appendChild(document.createElement("br"));
-  loginForm.appendChild(document.createElement("br"));
-  loginForm.appendChild(loginButton);
-
-  container.appendChild(loginForm);
+	container.appendChild(loginForm);
 }

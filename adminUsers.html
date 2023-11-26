@@ -1,12 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Users</title>
-    <link href="Styles/adminStyle.css" rel="stylesheet" type="text/css" />
-  </head>
-  <body>
-    asdf2
-  </body>
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Plants</title>
+	<link href="Styles/adminStyle.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+	<div id="wrapper">
+		<div id="listEditContainer">
+			<div id="topPartContainer">
+				<label for="userListInput">Username:</label>
+				<input type="text" id="userListInput" name="userListInput" />
+				<button id="userListButton">List users</button>
+				<button id="userDeleteButton">Delete user</button>
+			</div>
+			<div id="bottomPartContainer" class="adminListContainer"></div>
+		</div>
+	</div>
+
+	<script type="module" src="Scripts/admin.js"></script>
+</body>
+
 </html>
