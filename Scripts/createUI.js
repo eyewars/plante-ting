@@ -194,13 +194,13 @@ export function detailViewUI(detail, zone) {
 
 			await addComment(authToken, JSON.stringify(comment));
 
+			commentBox.value = "";
+
 			if (hasShownComments){
 				document.getElementById("commentFullContainer").innerHTML = "";
 
 				createCommentUI(detail.id);
 			}
-
-			commentBox.value = "";
 		})
 
 		ratingContainer.appendChild(rating);
@@ -214,6 +214,8 @@ export function detailViewUI(detail, zone) {
 		detailContainer.appendChild(makeCommentContainer);
 	}
 
+	let showCommentsButtonContainer = document.createElement("div");
+
 	let hasShownComments = false;
 
 	let showCommentsButton = document.createElement("button");
@@ -224,7 +226,9 @@ export function detailViewUI(detail, zone) {
 		showCommentsButton.classList.add("hidden");
 	})
 
-	detailContainer.appendChild(showCommentsButton);
+	showCommentsButtonContainer.appendChild(showCommentsButton);
+
+	detailContainer.appendChild(showCommentsButtonContainer);
 
 	document.getElementById("container").appendChild(detailContainer);
 }
@@ -581,6 +585,12 @@ export async function createCheckoutUI() {
 		tempShippingMethod.setAttribute("name", "shipping");
 		tempShippingMethod.setAttribute("id", "shippingOption" + i);
 
+		tempShippingMethod.addEventListener("change", function(){
+			if (tempShippingMethod.checked){
+				updatePrice(tempTotal + shippingMethods[i].price);
+			}
+		})
+
 		let tempShippingMethodLabel = document.createElement("label");
 		tempShippingMethodLabel.innerText = shippingMethods[i].method + ": " + shippingMethods[i].description + " kr " + shippingMethods[i].price + ",-";
 
@@ -599,7 +609,12 @@ export async function createCheckoutUI() {
 	}
 
 	let totalPrice = document.createElement("h3");
-	totalPrice.innerText = "Totalpris: kr " + tempTotal + ",-";
+
+	function updatePrice(total){
+		totalPrice.innerText = "Totalpris: kr " + total + ",-";
+	}
+
+	updatePrice(tempTotal);
 
 	let confirmationButton = document.createElement("button");
 	confirmationButton.innerText = "Bekreft ordre";
