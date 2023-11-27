@@ -1,5 +1,4 @@
 "use strict";
-//OLMALY81
 
 import { getPlantViewData, getDetailViewData, getPlantZoneData } from "./getData.js";
 import { plantViewUI, detailViewUI, createShoppingCartUI, createCheckoutUI, createConfirmationUI, createHeaderUserUI, createRegisterUI, createLoginUI, createUserSettingsUI } from "./createUI.js";
@@ -9,7 +8,6 @@ async function changeWindowPlant(category) {
 }
 
 async function changeWindowPlantSearch() {
-	console.log("HEISANN JEG TRYKKA LOOOL");
 	window.location.href = "plant.html?searchType=" + document.getElementById("searchInput").value;
 }
 
@@ -97,17 +95,4 @@ document.getElementById("plantSearch").addEventListener("click", function () {
 });
 
 createHeaderUserUI();
-
-/*
-TODO:
-
-5. HUSK Å GJØRE SÅNN AT ALLE ERRORS VISES TIL BRUKEREN OG IKKE BARE I KONSOLLEN!!!!!!!!!!!!!!!!!
-6. HUSK Å FJERNE KOMMENTARER (ALLE)
-7. Prøv å få fiksa det window.includes fanseskapet vi har
-9. ADD "?" I ALLE LINKENE OG FJERN FRA FUNKSJONENE
-10. ENDRE PÅ "IMAGE" GREIA I ADMIN PLANT OG USERS TIL EN SÅNN VELGE FIL TING TANG
-11. HVIS DU ALLEREDE HAR LAGD EN BRUKER SÅ FÅR DU FORTSATT VELLYKKET REGISTRERING
-12. PASS PÅ AT ALLE TITLENE ER RIKTIGE PÅ FANEN
-
-*/
 

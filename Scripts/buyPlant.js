@@ -13,7 +13,7 @@ export function addToCart(plant) {
     for (let i = 0; i < cart.length; i++) {
         if (plantId == cart[i][0].id) {
             cart[i][1]++;
-            console.log(cart);
+
             localStorage.cart = JSON.stringify(cart);
             return;
         }
@@ -21,7 +21,7 @@ export function addToCart(plant) {
 
     let tempPlant = [plant, 1];
     cart.push(tempPlant);
-    console.log(cart);
+  
     localStorage.cart = JSON.stringify(cart);
 }
 

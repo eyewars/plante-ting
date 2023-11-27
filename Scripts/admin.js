@@ -48,7 +48,7 @@ if (window.location.href.includes("admin.html")) {
 				formData.append("id", plantListedId);
 				addChangePlantData(authToken, formData, "PUT");
 			}
-			else console.log("Bruh, du må jo ha en plante lista opp for å endre");
+			else alert("List opp en plante for å kunne endre");
 		}
 		else {
 			deletePlant(authToken, plantListedId);

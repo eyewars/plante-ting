@@ -22,7 +22,6 @@ async function getCategoryData(category) {
 		}
 
 		let data = await response.json();
-		//console.log(data);
 
 		return data[category].id;
 	} catch (error) {
@@ -48,15 +47,13 @@ export async function getPlantViewData(category, searchByCategory, token) {
 			response = await fetch(plantViewUrl + key, requestOptions);
 		}
 
-		//console.log(await fetch(plantViewUrl + key));
-
 		if (response.status != 200) {
 			console.log("DET ER EN FEIL I getPlantViewData()");
 			throw new Error("Server error: " + response.status);
 		}
 
 		let data = await response.json();
-		//console.log(data);
+
 		return data;
 	} catch (error) {
 		console.log(error);
@@ -84,7 +81,6 @@ export async function getDetailViewData(id, token) {
 
 		let data = await response.json();
 
-		//console.log(data[0]);
 		return data[0];
 	} catch (error) {
 		console.log(error);
@@ -94,7 +90,6 @@ export async function getDetailViewData(id, token) {
 export async function getPlantZoneData(id) {
 	try {
 		let response = await fetch(plantZoneUrl + key);
-		//console.log(plantZoneUrl + "?" + key);
 
 		if (response.status != 200) {
 			console.log("DET ER EN FEIL I getPlantZoneData()");
@@ -112,7 +107,7 @@ export async function getPlantZoneData(id) {
 function createBasicAuthString(username, password) {
 	let combinedStr = username + ":" + password;
 	let b64Str = btoa(combinedStr);
-	return "basic " + b64Str; //return the basic authentication string
+	return "basic " + b64Str;
 }
 
 export async function getAuthenticationToken(username, password) {
@@ -134,7 +129,6 @@ export async function getAuthenticationToken(username, password) {
 		}
 
 		let data = await response.json();
-		//console.log(data);
 
 		return data;
 	} catch (error) {
@@ -159,7 +153,6 @@ export async function addChangePlantData(token, formData, postOrPut) {
 		}
 
 		let data = await response.json();
-		console.log(data);
 
 		return data;
 	} catch (error) {
@@ -183,7 +176,6 @@ export async function deletePlant(token, plantId) {
 		}
 
 		let data = await response.json();
-		console.log(data);
 
 		return data;
 	} catch (error) {
@@ -201,7 +193,6 @@ export async function getShippingMethods() {
 		}
 
 		let data = await response.json();
-		//console.log(data);
 
 		return data;
 	} catch (error) {
@@ -213,8 +204,6 @@ export async function sendOrder(order) {
 	let requestOptions = {
 		method: "POST",
 		headers: {
-			//HER SKAL DU KUNNE PUTTE INN BRUKER ID NÅR MAN LOGGER INN
-			//authorization: "",
 			"Content-Type": "application/json",
 		},
 		body: order,
@@ -228,7 +217,6 @@ export async function sendOrder(order) {
 		}
 
 		let data = await response.json();
-		//console.log(data);
 
 		return data;
 	} catch (error) {
@@ -252,7 +240,6 @@ export async function getOrder(token) {
 		}
 
 		let data = await response.json();
-		//console.log(data);
 
 		return data;
 	} catch (error) {
@@ -276,7 +263,6 @@ export async function deleteOrder(token, orderId) {
 		}
 
 		let data = await response.json();
-		console.log(data);
 
 		return data;
 	} catch (error) {
@@ -304,7 +290,6 @@ export async function listUsers(token, userId) {
 		}
 
 		let data = await response.json();
-		//console.log(data);
 
 		return data;
 	} catch (error) {
@@ -332,7 +317,6 @@ export async function deleteUser(token, userId) {
 		}
 
 		let data = await response.json();
-		console.log(data);
 
 		return data;
 	} catch (error) {
@@ -354,7 +338,6 @@ export async function registerUser(formData) {
 		}
 
 		let data = await response.json();
-		console.log(data);
 
 		return data;
 	} catch (error) {
@@ -381,7 +364,6 @@ export async function loginUser(username, password) {
 		}
 
 		let data = await response.json();
-		//console.log(data);
 
 		return data;
 	} catch (error) {
@@ -406,7 +388,6 @@ export async function changeUser(token, formData) {
 		}
 
 		let data = await response.json();
-		console.log(data);
 
 		return data;
 	} catch (error) {
@@ -437,7 +418,6 @@ export async function listComment(token, plantId, isAdmin) {
 		}
 
 		let data = await response.json();
-		//console.log(data);
 
 		return data;
 	} catch (error) {
@@ -463,7 +443,6 @@ export async function addComment(token, comment) {
 		}
 
 		let data = await response.json();
-		console.log(data);
 
 		return data;
 	} catch (error) {
@@ -487,7 +466,6 @@ export async function deleteComment(token, commentId) {
 		}
 
 		let data = await response.json();
-		console.log(data);
 
 		return data;
 	} catch (error) {

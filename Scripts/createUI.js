@@ -119,7 +119,10 @@ export function detailViewUI(detail, zone) {
 	}
 
 	const rating = document.createElement("p");
-	rating.innerText = detail.rating.toFixed(2) + " Stjerner";
+	if (detail.rating == undefined){
+		rating.innerText = "";
+	}
+	else rating.innerText = detail.rating.toFixed(2) + " Stjerner";
 
 	if (detail.rating == null) {
 		picDiscountText.classList.add("hidden");
@@ -692,7 +695,7 @@ export async function createCheckoutUI() {
 			orderData["content"] = tempArr;
 
 			let order = await sendOrder(JSON.stringify(orderData));
-			//if ((order.msg == "insert order ok") && (order != undefined)){
+
 			if (order != undefined) {
 				localStorage.orderData = JSON.stringify(order);
 				window.location.href = "confirmation.html";
@@ -942,9 +945,12 @@ export function createRegisterUI() {
 		}
 
 		let formData = new FormData(customerForm);
-		await registerUser(formData);
+		let register = await registerUser(formData);
 
-		window.location.href = "registerConfirmation.html";
+		if (register == undefined){
+			alert("Brukernavn er tatt.");
+		}
+		else window.location.href = "registerConfirmation.html";
 	})
 
 	customerForm.appendChild(usernameLabel);
@@ -1029,6 +1035,7 @@ export function createLoginUI() {
 
 			window.location.href = "loginConfirmation.html";
 		}
+		else alert("Brukernavn eller passord er feil.");
 	})
 
 	loginForm.appendChild(usernameLabel);
@@ -1046,9 +1053,8 @@ export function createLoginUI() {
 }
 
 export function createUserSettingsUI() {
-	// ENDRE INFO
-	// SLETTE BRUKER
-	// LOGOUT
+	let tempUser = JSON.parse(sessionStorage.loginData);
+	console.log(tempUser);
 
 	let fullContainer = document.getElementById("fullContainer2");
 
@@ -1065,6 +1071,7 @@ export function createUserSettingsUI() {
 	username.setAttribute("type", "text");
 	username.setAttribute("name", "username");
 	username.setAttribute("id", "textField0");
+	username.setAttribute("value", tempUser.username);
 
 	let passwordLabel = document.createElement("label");
 	passwordLabel.innerText = "Passord:";
@@ -1083,6 +1090,7 @@ export function createUserSettingsUI() {
 	customerName.setAttribute("type", "text");
 	customerName.setAttribute("name", "fullname");
 	customerName.setAttribute("id", "textField2");
+	customerName.setAttribute("value", tempUser.full_name);
 
 	let streetLabel = document.createElement("label");
 	streetLabel.innerText = "Gateadresse:";
@@ -1092,6 +1100,7 @@ export function createUserSettingsUI() {
 	street.setAttribute("type", "text");
 	street.setAttribute("name", "street");
 	street.setAttribute("id", "textField3");
+	street.setAttribute("value", tempUser.street);
 
 	let cityLabel = document.createElement("label");
 	cityLabel.innerText = "By:";
@@ -1101,6 +1110,7 @@ export function createUserSettingsUI() {
 	city.setAttribute("type", "text");
 	city.setAttribute("name", "city");
 	city.setAttribute("id", "textField4");
+	city.setAttribute("value", tempUser.city);
 
 	let zipCodeLabel = document.createElement("label");
 	zipCodeLabel.innerText = "Postnummer:";
@@ -1110,6 +1120,7 @@ export function createUserSettingsUI() {
 	zipCode.setAttribute("type", "text");
 	zipCode.setAttribute("name", "zipcode");
 	zipCode.setAttribute("id", "textField5");
+	zipCode.setAttribute("value", tempUser.zipcode);
 
 	let countryLabel = document.createElement("label");
 	countryLabel.innerText = "Land:";
@@ -1119,6 +1130,7 @@ export function createUserSettingsUI() {
 	country.setAttribute("type", "text");
 	country.setAttribute("name", "country");
 	country.setAttribute("id", "textField6");
+	country.setAttribute("value", tempUser.country);
 
 	let imageLabel = document.createElement("label");
 	imageLabel.innerText = "Profil bilde:";
@@ -1129,6 +1141,7 @@ export function createUserSettingsUI() {
 	image.setAttribute("name", "img_file");
 	image.setAttribute("accept", "image/jpeg, image/png, image/jpg");
 	image.setAttribute("id", "imageField");
+	image.setAttribute("value", tempUser.thumb);
 
 	let confirmationButton = document.createElement("input");
 	confirmationButton.setAttribute("type", "submit");
