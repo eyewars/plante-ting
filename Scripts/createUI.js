@@ -2,7 +2,7 @@
 
 import { addToCart, changeCartPlant, removePlantFromCart, emptyCart } from "./buyPlant.js";
 
-import { getShippingMethods, sendOrder, getOrder, deleteOrder, registerUser, loginUser, listUsers, addComment, listComment } from "./getData.js";
+import { getShippingMethods, sendOrder, getOrder, deleteOrder, registerUser, loginUser, listUsers, addComment, listComment, deleteComment, changeUser, deleteUser } from "./getData.js";
 
 export function plantViewUI(plantArr, fromSearch) {
 	if (plantArr[0] == null) {
@@ -154,7 +154,7 @@ export function detailViewUI(detail, zone) {
 	detailContainer.appendChild(rating);
 	detailContainer.appendChild(buyPlant);
 
-	if (sessionStorage.loginData != undefined){
+	if (sessionStorage.loginData != undefined) {
 		let makeCommentContainer = document.createElement("div");
 		makeCommentContainer.classList.add("makeCommentContainer");
 
@@ -167,7 +167,7 @@ export function detailViewUI(detail, zone) {
 		let rating = document.createElement("select");
 		rating.setAttribute("name", "rating");
 
-		for (let i = 1; i <= 5; i++){
+		for (let i = 1; i <= 5; i++) {
 			let ratingOption = document.createElement("option");
 			ratingOption.value = i;
 			ratingOption.innerText = i;
@@ -183,7 +183,7 @@ export function detailViewUI(detail, zone) {
 
 		let submitCommentButton = document.createElement("button");
 		submitCommentButton.innerText = "Legg igjen kommentar";
-		submitCommentButton.addEventListener("click", async function(){
+		submitCommentButton.addEventListener("click", async function () {
 			let comment = {
 				comment_text: commentBox.value,
 				rating: rating.value,
@@ -196,7 +196,7 @@ export function detailViewUI(detail, zone) {
 
 			commentBox.value = "";
 
-			if (hasShownComments){
+			if (hasShownComments) {
 				document.getElementById("commentFullContainer").innerHTML = "";
 
 				createCommentUI(detail.id);
@@ -220,7 +220,7 @@ export function detailViewUI(detail, zone) {
 
 	let showCommentsButton = document.createElement("button");
 	showCommentsButton.innerText = "Vis kommentarfelt";
-	showCommentsButton.addEventListener("click", function(){
+	showCommentsButton.addEventListener("click", function () {
 		createCommentUI(detail.id);
 		hasShownComments = true;
 		showCommentsButton.classList.add("hidden");
@@ -233,19 +233,26 @@ export function detailViewUI(detail, zone) {
 	document.getElementById("container").appendChild(detailContainer);
 }
 
-async function createCommentUI(plantId){
+export async function createCommentUI(plantId, isAdmin) {
 	let commentFullContainer = document.createElement("div");
 	commentFullContainer.setAttribute("id", "commentFullContainer");
 	commentFullContainer.classList.add("commentFullContainer");
 
 	let authToken;
-	if (sessionStorage.loginData != undefined){
+	if (sessionStorage.auth != undefined) {
+		authToken = JSON.parse(sessionStorage.auth).logindata.token;
+	}
+	else if (sessionStorage.loginData != undefined) {
 		authToken = JSON.parse(sessionStorage.loginData).token;
 	}
 
-	let comments = await listComment(authToken, plantId)
+	let comments;
+	if (isAdmin) {
+		comments = await listComment(authToken, null, true);
+	}
+	else comments = await listComment(authToken, plantId);
 
-	for (let i = 0; i < comments.length; i++){
+	for (let i = 0; i < comments.length; i++) {
 		let tempFullCommentContainer = document.createElement("div");
 		tempFullCommentContainer.classList.add("tempFullCommentContainer");
 
@@ -256,14 +263,14 @@ async function createCommentUI(plantId){
 		tempPersonContainer.classList.add("tempPersonContainer");
 
 		let user;
-		if (authToken != undefined){
+		if (authToken != undefined) {
 			user = await listUsers(authToken, comments[i].user_id);
 
 			user = user[0];
 		}
 		else {
 			user = {
-				full_name: "Anonymous", 
+				full_name: "Anonymous",
 				thumb: "./Assets/bilde.PNG"
 			}
 		}
@@ -276,7 +283,7 @@ async function createCommentUI(plantId){
 
 		let tempRating = document.createElement("h3");
 
-		if (comments[i].rating == 1){
+		if (comments[i].rating == 1) {
 			tempRating.innerText = comments[i].rating + " Stjerne";
 		}
 		else tempRating.innerText = comments[i].rating + " Stjerner";
@@ -299,6 +306,20 @@ async function createCommentUI(plantId){
 		tempFullCommentContainer.appendChild(tempCommentContainer);
 
 		commentFullContainer.appendChild(tempFullCommentContainer);
+
+		if (isAdmin) {
+			let deleteCommentButton = document.createElement("button");
+			deleteCommentButton.innerText = "Delete comment";
+			deleteCommentButton.classList.add("deleteCommentButton");
+
+			deleteCommentButton.addEventListener("click", async function () {
+				await deleteComment(authToken, comments[i].id);
+
+				location.reload();
+			})
+
+			commentFullContainer.appendChild(deleteCommentButton);
+		}
 	}
 
 	document.getElementById("container").appendChild(commentFullContainer);
@@ -337,7 +358,7 @@ export function createAdminPlantUI(plant) {
 	}
 }
 
-export function createAdminUserUI(user){
+export function createAdminUserUI(user) {
 	let container = document.getElementById("bottomPartContainer");
 	container.innerHTML = "";
 
@@ -485,7 +506,7 @@ export function createShoppingCartUI() {
 
 export async function createCheckoutUI() {
 	let loginData;
-	if (sessionStorage.loginData != undefined){
+	if (sessionStorage.loginData != undefined) {
 		loginData = JSON.parse(sessionStorage.loginData);
 	}
 
@@ -568,8 +589,8 @@ export async function createCheckoutUI() {
 	customerForm.appendChild(country);
 
 	formContainer.appendChild(customerForm);
-	
-	if (loginData != undefined){
+
+	if (loginData != undefined) {
 		customerName.value = loginData.full_name;
 		street.value = loginData.street;
 		city.value = loginData.city;
@@ -585,8 +606,8 @@ export async function createCheckoutUI() {
 		tempShippingMethod.setAttribute("name", "shipping");
 		tempShippingMethod.setAttribute("id", "shippingOption" + i);
 
-		tempShippingMethod.addEventListener("change", function(){
-			if (tempShippingMethod.checked){
+		tempShippingMethod.addEventListener("change", function () {
+			if (tempShippingMethod.checked) {
 				updatePrice(tempTotal + shippingMethods[i].price);
 			}
 		})
@@ -610,7 +631,7 @@ export async function createCheckoutUI() {
 
 	let totalPrice = document.createElement("h3");
 
-	function updatePrice(total){
+	function updatePrice(total) {
 		totalPrice.innerText = "Totalpris: kr " + total + ",-";
 	}
 
@@ -781,7 +802,7 @@ export function createHeaderUserUI() {
 	let container = document.getElementById("headerContainer");
 
 	let loginData;
-	if (sessionStorage.loginData == undefined){
+	if (sessionStorage.loginData == undefined) {
 		let loginButton = document.createElement("button");
 		loginButton.addEventListener("click", function () {
 			window.location.href = "login.html";
@@ -805,14 +826,17 @@ export function createHeaderUserUI() {
 		let profilePic = document.createElement("img");
 		profilePic.classList.add("profilePic");
 		profilePic.src = loginData.thumb;
+		profilePic.addEventListener("click", function () {
+			window.location.href = "userSettings.html";
+		})
 
 		let logoutButton = document.createElement("button");
 		logoutButton.classList.add("headerButton");
 		logoutButton.innerText = "Logout";
-		logoutButton.addEventListener("click", function(){
+		logoutButton.addEventListener("click", function () {
 			sessionStorage.removeItem("loginData");
 
-			window.location.href = "logoutConfirmation.html";
+			window.location.href = "index.html";
 		})
 
 		container.appendChild(logoutButton);
@@ -909,7 +933,7 @@ export function createRegisterUI() {
 	customerForm.addEventListener("submit", async function (event) {
 		event.preventDefault();
 
-		for (let i = 0; i < 6; i++) {
+		for (let i = 0; i < 7; i++) {
 			if (document.getElementById("textField" + i).value == "") {
 				alert("Vennligst fyll inn alle feltene.");
 
@@ -1000,7 +1024,7 @@ export function createLoginUI() {
 
 		let login = await loginUser(username.value, password.value);
 
-		if (login != undefined){
+		if (login != undefined) {
 			sessionStorage.loginData = JSON.stringify(login.logindata);
 
 			window.location.href = "loginConfirmation.html";
@@ -1019,4 +1043,188 @@ export function createLoginUI() {
 	loginForm.appendChild(loginButton);
 
 	container.appendChild(loginForm);
+}
+
+export function createUserSettingsUI() {
+	// ENDRE INFO
+	// SLETTE BRUKER
+	// LOGOUT
+
+	let fullContainer = document.getElementById("fullContainer2");
+
+	let formContainer = document.createElement("div");
+	formContainer.classList.add("formContainer");
+
+	let customerForm = document.createElement("form");
+
+	let usernameLabel = document.createElement("label");
+	usernameLabel.innerText = "Brukernavn:";
+
+	let username = document.createElement("input");
+	username.classList.add("checkoutInput");
+	username.setAttribute("type", "text");
+	username.setAttribute("name", "username");
+	username.setAttribute("id", "textField0");
+
+	let passwordLabel = document.createElement("label");
+	passwordLabel.innerText = "Passord:";
+
+	let password = document.createElement("input");
+	password.classList.add("checkoutInput");
+	password.setAttribute("type", "password");
+	password.setAttribute("name", "password");
+	password.setAttribute("id", "textField1");
+
+	let customerNameLabel = document.createElement("label");
+	customerNameLabel.innerText = "Navn:";
+
+	let customerName = document.createElement("input");
+	customerName.classList.add("checkoutInput");
+	customerName.setAttribute("type", "text");
+	customerName.setAttribute("name", "fullname");
+	customerName.setAttribute("id", "textField2");
+
+	let streetLabel = document.createElement("label");
+	streetLabel.innerText = "Gateadresse:";
+
+	let street = document.createElement("input");
+	street.classList.add("checkoutInput");
+	street.setAttribute("type", "text");
+	street.setAttribute("name", "street");
+	street.setAttribute("id", "textField3");
+
+	let cityLabel = document.createElement("label");
+	cityLabel.innerText = "By:";
+
+	let city = document.createElement("input");
+	city.classList.add("checkoutInput");
+	city.setAttribute("type", "text");
+	city.setAttribute("name", "city");
+	city.setAttribute("id", "textField4");
+
+	let zipCodeLabel = document.createElement("label");
+	zipCodeLabel.innerText = "Postnummer:";
+
+	let zipCode = document.createElement("input");
+	zipCode.classList.add("checkoutInput");
+	zipCode.setAttribute("type", "text");
+	zipCode.setAttribute("name", "zipcode");
+	zipCode.setAttribute("id", "textField5");
+
+	let countryLabel = document.createElement("label");
+	countryLabel.innerText = "Land:";
+
+	let country = document.createElement("input");
+	country.classList.add("checkoutInput");
+	country.setAttribute("type", "text");
+	country.setAttribute("name", "country");
+	country.setAttribute("id", "textField6");
+
+	let imageLabel = document.createElement("label");
+	imageLabel.innerText = "Profil bilde:";
+
+	let image = document.createElement("input");
+	image.classList.add("checkoutInput");
+	image.setAttribute("type", "file");
+	image.setAttribute("name", "img_file");
+	image.setAttribute("accept", "image/jpeg, image/png, image/jpg");
+	image.setAttribute("id", "imageField");
+
+	let confirmationButton = document.createElement("input");
+	confirmationButton.setAttribute("type", "submit");
+	confirmationButton.setAttribute("value", "Rediger bruker informasjon");
+	confirmationButton.setAttribute("id", "submitFormButton");
+
+	customerForm.addEventListener("submit", async function (event) {
+		event.preventDefault();
+
+		for (let i = 0; i < 7; i++) {
+			if (i == 1) continue
+			if (document.getElementById("textField" + i).value == "") {
+				alert("Vennligst fyll inn alle feltene.");
+
+				return;
+			}
+		}
+
+		let formData = new FormData(customerForm);
+		let authToken = JSON.parse(sessionStorage.loginData).token;
+
+		await changeUser(authToken, formData);
+
+		sessionStorage.removeItem("loginData");
+
+		window.location.href = "userChange.html";
+	})
+
+	customerForm.appendChild(usernameLabel);
+	customerForm.appendChild(document.createElement("br"));
+	customerForm.appendChild(username);
+	customerForm.appendChild(document.createElement("br"));
+	customerForm.appendChild(passwordLabel);
+	customerForm.appendChild(document.createElement("br"));
+	customerForm.appendChild(password);
+	customerForm.appendChild(document.createElement("br"));
+	customerForm.appendChild(customerNameLabel);
+	customerForm.appendChild(document.createElement("br"));
+	customerForm.appendChild(customerName);
+	customerForm.appendChild(document.createElement("br"));
+	customerForm.appendChild(streetLabel);
+	customerForm.appendChild(document.createElement("br"));
+	customerForm.appendChild(street);
+	customerForm.appendChild(document.createElement("br"));
+	customerForm.appendChild(cityLabel);
+	customerForm.appendChild(document.createElement("br"));
+	customerForm.appendChild(city);
+	customerForm.appendChild(document.createElement("br"));
+	customerForm.appendChild(zipCodeLabel);
+	customerForm.appendChild(document.createElement("br"));
+	customerForm.appendChild(zipCode);
+	customerForm.appendChild(document.createElement("br"));
+	customerForm.appendChild(countryLabel);
+	customerForm.appendChild(document.createElement("br"));
+	customerForm.appendChild(country);
+	customerForm.appendChild(document.createElement("br"));
+	customerForm.appendChild(imageLabel);
+	customerForm.appendChild(document.createElement("br"));
+	customerForm.appendChild(image);
+	customerForm.appendChild(document.createElement("br"));
+	customerForm.appendChild(document.createElement("br"));
+	customerForm.appendChild(confirmationButton);
+
+	formContainer.appendChild(customerForm);
+
+	let extraButtonsContainer = document.createElement("div");
+	extraButtonsContainer.classList.add("extraButtonsContainer");
+
+	let logoutButton = document.createElement("button");
+	logoutButton.classList.add("logout");
+	logoutButton.innerText = "Logout";
+	logoutButton.addEventListener("click", function () {
+		sessionStorage.removeItem("loginData");
+
+		window.location.href = "index.html";
+	})
+
+	let deleteUserButton = document.createElement("button");
+	deleteUserButton.classList.add("deleteUser");
+	deleteUserButton.innerText = "Slett bruker";
+	deleteUserButton.addEventListener("click", async function () {
+		let result = window.confirm("Er du sikker?");
+		if (!result) return;
+
+		let authToken = JSON.parse(sessionStorage.loginData).token;
+
+		await deleteUser(authToken);
+
+		sessionStorage.removeItem("loginData");
+
+		window.location.href = "index.html";
+	})
+
+	extraButtonsContainer.appendChild(logoutButton);
+	extraButtonsContainer.appendChild(deleteUserButton);
+
+	fullContainer.appendChild(formContainer);
+	fullContainer.appendChild(extraButtonsContainer);
 }

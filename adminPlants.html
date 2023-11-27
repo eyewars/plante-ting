@@ -1,90 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Plants</title>
-    <link href="Styles/adminStyle.css" rel="stylesheet" type="text/css" />
-  </head>
-  <body>
-    <div id="wrapper">
-      <div id="listEditContainer">
-        <div id="topPartContainer">
-          <label for="plantListInput">Plant Name:</label>
-          <input type="text" id="plantListInput" name="plantListInput" />
-          <button id="plantListButton">List plant</button>
-        </div>
-        <div id="bottomPartContainer" class="adminListContainer"></div>
-      </div>
-      <div id="addContainer">
-        <form id="createPlantForm">|
-          <label for="adminPlantImg">Image:</label><br />
-          <input type="text" id="adminPlantImg" name="img_file" /><br />
 
-          <label for="adminPlantName">Name:</label><br />
-          <input type="text" id="adminPlantName" name="name" /><br />
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Plants</title>
+	<link href="Styles/adminStyle.css" rel="stylesheet" type="text/css" />
+</head>
 
-          <label for="adminPlantcategoryId">Category id:</label><br />
-          <input type="text" id="adminPlantcategoryId" name="category_id" /><br />
+<body>
+	<div id="wrapper">
+		<div id="listEditContainer">
+			<div id="topPartContainer">
+				<label for="plantListInput">Plant Name:</label>
+				<input type="text" id="plantListInput" name="plantListInput" />
+				<button id="plantListButton">List plant</button>
+			</div>
+			<div id="bottomPartContainer" class="adminListContainer"></div>
+		</div>
+		<div id="addContainer">
+			<form id="createPlantForm">|
+				<label for="adminPlantImg">Image:</label><br />
+				<input type="text" id="adminPlantImg" name="img_file" /><br />
 
-          <label for="adminPlantDescription">Description:</label><br />
-          <input type="text" id="adminPlantDescription" name="description" /><br />
+				<label for="adminPlantName">Name:</label><br />
+				<input type="text" id="adminPlantName" name="name" /><br />
 
-          <label for="adminPlantPrice">Price:</label><br />
-          <input type="text" id="adminPlantPrice" name="price" /><br />
+				<label for="adminPlantcategoryId">Category id:</label><br />
+				<input type="text" id="adminPlantcategoryId" name="category_id" /><br />
 
-          <label for="adminPlantDiscount">Discount:</label><br />
-          <input type="text" id="adminPlantDiscount" name="discount" /><br />
+				<label for="adminPlantDescription">Description:</label><br />
+				<input type="text" id="adminPlantDescription" name="description" /><br />
 
-          <label for="adminPlantHeight">Height:</label><br />
-          <input type="text" id="adminPlantHeight" name="height" /><br />
+				<label for="adminPlantPrice">Price:</label><br />
+				<input type="text" id="adminPlantPrice" name="price" /><br />
 
-          <label for="adminPlantZone">Zone id:</label><br />
-          <input type="text" id="adminPlantZone" name="zone_id" /><br />
+				<label for="adminPlantDiscount">Discount:</label><br />
+				<input type="text" id="adminPlantDiscount" name="discount" /><br />
 
-          <label for="adminPlantMinTempDay">Min temp day:</label><br />
-          <input type="text" id="adminPlantMinTempDay" name="min_temp_day" /><br />
+				<label for="adminPlantHeight">Height:</label><br />
+				<input type="text" id="adminPlantHeight" name="height" /><br />
 
-          <label for="adminPlantMinTempNight">Min temp night:</label><br />
-          <input type="text" id="adminPlantMinTempNight" name="min_temp_night" /><br />
+				<label for="adminPlantZone">Zone id:</label><br />
+				<input type="text" id="adminPlantZone" name="zone_id" /><br />
 
-          <label for="adminPlantNitrogen">Nitrogen:</label><br />
-          <input type="text" id="adminPlantNitrogen" name="nitrogen" /><br />
+				<label for="adminPlantMinTempDay">Min temp day:</label><br />
+				<input type="text" id="adminPlantMinTempDay" name="min_temp_day" /><br />
 
-          <label for="adminPlantPotassium">Potassium:</label><br />
-          <input type="text" id="adminPlantPotassium" name="potassium" /><br />
+				<label for="adminPlantMinTempNight">Min temp night:</label><br />
+				<input type="text" id="adminPlantMinTempNight" name="min_temp_night" /><br />
 
-          <label for="adminPlantPhosphor">Phosphor:</label><br />
-          <input type="text" id="adminPlantPhosphor" name="phosphor" /><br />
+				<label for="adminPlantNitrogen">Nitrogen:</label><br />
+				<input type="text" id="adminPlantNitrogen" name="nitrogen" /><br />
 
-          <label for="adminPlantStock">Stock:</label><br />
-          <input type="text" id="adminPlantStock" name="stock" /><br />
+				<label for="adminPlantPotassium">Potassium:</label><br />
+				<input type="text" id="adminPlantPotassium" name="potassium" /><br />
 
-          <label for="adminPlantExpectedShipped">Expected shipped:</label><br />
-          <input type="text" id="adminPlantExpectedShipped" name="expected_shipped" /><br />
+				<label for="adminPlantPhosphor">Phosphor:</label><br />
+				<input type="text" id="adminPlantPhosphor" name="phosphor" /><br />
 
-          <label for="adminPlantReservedMembers">Reserved memebers:</label><br />
-          <input type="text" id="adminPlantReservedMembers" name="reserved_members" /><br />
+				<label for="adminPlantStock">Stock:</label><br />
+				<input type="text" id="adminPlantStock" name="stock" /><br />
 
-          <label for="adminPlantExtra1">Extra 1:</label><br />
-          <input type="text" id="adminPlantExtra1" name="extra_1" /><br />
+				<label for="adminPlantExpectedShipped">Expected shipped:</label><br />
+				<input type="text" id="adminPlantExpectedShipped" name="expected_shipped" /><br />
 
-          <label for="adminPlantExtra2">Extra 2:</label><br />
-          <input type="text" id="adminPlantExtra2" name="extra_2" /><br />
+				<label for="adminPlantReservedMembers">Reserved memebers:</label><br />
+				<input type="text" id="adminPlantReservedMembers" name="reserved_members" /><br />
 
-          <label for="adminPlantExtra3">Extra 3:</label><br />
-          <input type="text" id="adminPlantExtra3" name="extra_3" /><br />
+				<label for="adminPlantExtra1">Extra 1:</label><br />
+				<input type="text" id="adminPlantExtra1" name="extra_1" /><br />
 
-          <label for="adminPlantExtra4">Extra 4:</label><br />
-          <input type="text" id="adminPlantExtra4" name="extra_4" /><br />
+				<label for="adminPlantExtra2">Extra 2:</label><br />
+				<input type="text" id="adminPlantExtra2" name="extra_2" /><br />
 
-          <input id="adminFormButton" type="submit" value="Add new" />
-          <input id="adminFormButton2" type="submit" value="Change plant" />
-          <input id="adminFormButton3" type="submit" value="Delete plant" />
-        </form>
-      </div>
-    </div>
+				<label for="adminPlantExtra3">Extra 3:</label><br />
+				<input type="text" id="adminPlantExtra3" name="extra_3" /><br />
 
-    <script type="module" src="Scripts/admin.js"></script>
-  </body>
+				<label for="adminPlantExtra4">Extra 4:</label><br />
+				<input type="text" id="adminPlantExtra4" name="extra_4" /><br />
+
+				<input id="adminFormButton" type="submit" value="Add new" />
+				<input id="adminFormButton2" type="submit" value="Change plant" />
+				<input id="adminFormButton3" type="submit" value="Delete plant" />
+			</form>
+		</div>
+	</div>
+
+	<script type="module" src="Scripts/admin.js"></script>
+</body>
+
 </html>

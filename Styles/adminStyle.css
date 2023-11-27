@@ -1,52 +1,82 @@
-* {
-}
+* {}
 
 #adminLoginForm {
-  width: 150px;
+	width: 150px;
 
-  display: flex;
-  flex-direction: column;
+	display: flex;
+	flex-direction: column;
 }
 
 #adminFormButton {
-  margin-top: 20px;
+	margin-top: 20px;
 }
 
 #adminButtonContainer {
-  display: flex;
-  flex-direction: column;
+	display: flex;
+	flex-direction: column;
 }
 
 #adminButtonContainer button {
-  width: 150px;
-  margin-top: 10px;
+	width: 150px;
+	margin-top: 10px;
 }
 
 #wrapper {
-  display: flex;
+	display: flex;
 }
 
 #listEditContainer {
-  margin-right: 100px;
-  width: 400px;
+	margin-right: 100px;
+	width: 400px;
 }
 
 .adminPlantListContainer {
-  display: flex;
-  flex-direction: column;
+	display: flex;
+	flex-direction: column;
 }
 
 .adminContainer {
-  display: flex;
-  align-items: center;
-  border: 1px blue solid;
+	display: flex;
+	align-items: center;
+	border: 1px blue solid;
 }
 
 .adminKey {
-  font-weight: bold;
-  margin-right: 5px;
+	font-weight: bold;
+	margin-right: 5px;
 }
 
 #addContainer {
-  width: 400px;
+	width: 400px;
+}
+
+.commentFullContainer {
+	margin-left: 50px;
+	width: 400px;
+	display: flex;
+	flex-direction: column;
+}
+
+.tempTopContainer {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.tempPersonContainer {
+	display: flex;
+	align-items: center;
+}
+
+.tempPersonContainer img {
+	width: 50px;
+}
+
+.tempCommentContainer {
+	margin: 20px 0 0 0;
+	border: 2px solid black;
+}
+
+.deleteCommentButton {
+	margin-bottom: 50px;
 }

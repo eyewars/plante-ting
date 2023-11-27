@@ -2,7 +2,7 @@
 
 import { getPlantViewData, getAuthenticationToken, addChangePlantData, deletePlant, listUsers, deleteUser } from "./getData.js";
 
-import { createAdminPlantUI, createAdminOrderUI, createAdminUserUI } from "./createUI.js";
+import { createAdminPlantUI, createAdminOrderUI, createAdminUserUI, createCommentUI } from "./createUI.js";
 
 async function adminLogin() {
 	const username = document.getElementById("username").value;
@@ -79,14 +79,14 @@ if (window.location.href.includes("admin.html")) {
 	createAdminOrderUI(authToken);
 } else if (window.location.href.includes("adminUsers.html")) {
 	let authToken = JSON.parse(sessionStorage.auth).logindata.token;
-	
-	document.getElementById("userListButton").addEventListener("click", async function(){
+
+	document.getElementById("userListButton").addEventListener("click", async function () {
 		let users = await listUsers(authToken);
 		let user;
 		let usernameSearch = document.getElementById("userListInput").value;
 
-		for (let i = 0; i < users.length; i++){
-			if (users[i].username == usernameSearch){
+		for (let i = 0; i < users.length; i++) {
+			if (users[i].username == usernameSearch) {
 				user = users[i];
 				break;
 			}
@@ -94,14 +94,14 @@ if (window.location.href.includes("admin.html")) {
 
 		createAdminUserUI(user);
 	})
-	
-	document.getElementById("userDeleteButton").addEventListener("click", async function(){
+
+	document.getElementById("userDeleteButton").addEventListener("click", async function () {
 		let users = await listUsers(authToken);
 		let user;
 		let usernameSearch = document.getElementById("userListInput").value;
 
-		for (let i = 0; i < users.length; i++){
-			if (users[i].username == usernameSearch){
+		for (let i = 0; i < users.length; i++) {
+			if (users[i].username == usernameSearch) {
 				user = users[i];
 				break;
 			}
@@ -109,6 +109,8 @@ if (window.location.href.includes("admin.html")) {
 
 		deleteUser(authToken, user.id);
 	})
+} else if (window.location.href.includes("adminComments.html")) {
+	createCommentUI(null, true);
 }
 
 function adminPageChange(page) {

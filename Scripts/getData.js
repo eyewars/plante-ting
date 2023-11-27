@@ -1,20 +1,20 @@
 "use strict";
 
 let key = "key=OLMALY81";
-let categoryUrl = "https://helseflora.herokuapp.com/webshop/categories";
+let categoryUrl = "https://helseflora.herokuapp.com/webshop/categories?";
 let plantViewUrl = "https://helseflora.herokuapp.com/webshop/plants?";
 let detailViewUrl = "https://helseflora.herokuapp.com/webshop/plants?id=";
-let plantZoneUrl = "https://helseflora.herokuapp.com/botany/plantzones";
-let adminLoginUrl = "https://helseflora.herokuapp.com/users/adminlogin";
-let shippingMethodsUrl = "https://helseflora.herokuapp.com/logistics/shippingtypes";
-let ordersUrl = "https://helseflora.herokuapp.com/webshop/orders";
+let plantZoneUrl = "https://helseflora.herokuapp.com/botany/plantzones?";
+let adminLoginUrl = "https://helseflora.herokuapp.com/users/adminlogin?";
+let shippingMethodsUrl = "https://helseflora.herokuapp.com/logistics/shippingtypes?";
+let ordersUrl = "https://helseflora.herokuapp.com/webshop/orders?";
 let userUrl = "https://helseflora.herokuapp.com/users?";
 let loginUrl = "https://helseflora.herokuapp.com/users/login?";
 let commentUrl = "https://helseflora.herokuapp.com/webshop/comments?";
 
 async function getCategoryData(category) {
 	try {
-		let response = await fetch(categoryUrl + "?" + key);
+		let response = await fetch(categoryUrl + key);
 
 		if (response.status != 200) {
 			console.log("DET ER EN FEIL I getCategoryData()");
@@ -40,7 +40,7 @@ export async function getPlantViewData(category, searchByCategory, token) {
 	try {
 		let response;
 		if (searchByCategory) {
-			if (requestOptions.headers.authorization == undefined){
+			if (requestOptions.headers.authorization == undefined) {
 				response = await fetch(plantViewUrl + "category=" + (await getCategoryData(category)) + "&" + key);
 			}
 			else response = await fetch(plantViewUrl + "category=" + (await getCategoryData(category)) + "&" + key, requestOptions);
@@ -72,7 +72,7 @@ export async function getDetailViewData(id, token) {
 	}
 	try {
 		let response;
-		if (requestOptions.headers.authorization == undefined){
+		if (requestOptions.headers.authorization == undefined) {
 			response = await fetch(detailViewUrl + id + "&" + key);
 		}
 		else response = await fetch(detailViewUrl + id + "&" + key, requestOptions);
@@ -93,7 +93,7 @@ export async function getDetailViewData(id, token) {
 
 export async function getPlantZoneData(id) {
 	try {
-		let response = await fetch(plantZoneUrl + "?" + key);
+		let response = await fetch(plantZoneUrl + key);
 		//console.log(plantZoneUrl + "?" + key);
 
 		if (response.status != 200) {
@@ -126,7 +126,7 @@ export async function getAuthenticationToken(username, password) {
 	};
 
 	try {
-		let response = await fetch(adminLoginUrl + "?" + key, requestOptions);
+		let response = await fetch(adminLoginUrl + key, requestOptions);
 
 		if (response.status != 200) {
 			console.log("DET ER EN FEIL I getAuthenticationToken()");
@@ -193,7 +193,7 @@ export async function deletePlant(token, plantId) {
 
 export async function getShippingMethods() {
 	try {
-		let response = await fetch(shippingMethodsUrl + "?" + key);
+		let response = await fetch(shippingMethodsUrl + key);
 
 		if (response.status != 200) {
 			console.log("DET ER EN FEIL I getShippingMethods()");
@@ -220,7 +220,7 @@ export async function sendOrder(order) {
 		body: order,
 	}
 	try {
-		let response = await fetch(ordersUrl + "?" + key, requestOptions);
+		let response = await fetch(ordersUrl + key, requestOptions);
 
 		if (response.status != 200) {
 			console.log("DET ER EN FEIL I sendOrder()");
@@ -244,7 +244,7 @@ export async function getOrder(token) {
 		},
 	}
 	try {
-		let response = await fetch(ordersUrl + "?" + key, requestOptions);
+		let response = await fetch(ordersUrl + key, requestOptions);
 
 		if (response.status != 200) {
 			console.log("DET ER EN FEIL I getOrder()");
@@ -268,7 +268,7 @@ export async function deleteOrder(token, orderId) {
 		},
 	}
 	try {
-		let response = await fetch(ordersUrl + "?" + key + "&id=" + orderId, requestOptions);
+		let response = await fetch(ordersUrl + key + "&id=" + orderId, requestOptions);
 
 		if (response.status != 200) {
 			console.log("DET ER EN FEIL I deleteOrder()");
@@ -293,7 +293,7 @@ export async function listUsers(token, userId) {
 	}
 	try {
 		let response;
-		if (userId == undefined){
+		if (userId == undefined) {
 			response = await fetch(userUrl + key, requestOptions);
 		}
 		else response = await fetch(userUrl + key + "&userid=" + userId, requestOptions);
@@ -312,7 +312,7 @@ export async function listUsers(token, userId) {
 	}
 }
 
-export async function deleteUser(token, userId){
+export async function deleteUser(token, userId) {
 	let requestOptions = {
 		method: "DELETE",
 		headers: {
@@ -320,7 +320,11 @@ export async function deleteUser(token, userId){
 		},
 	}
 	try {
-		let response = await fetch(userUrl + key + "&id=" + userId, requestOptions);
+		let response;
+		if (userId != undefined) {
+			response = await fetch(userUrl + key + "&id=" + userId, requestOptions);
+		}
+		else response = await fetch(userUrl + key, requestOptions);
 
 		if (response.status != 200) {
 			console.log("DET ER EN FEIL I deleteUser()");
@@ -385,7 +389,32 @@ export async function loginUser(username, password) {
 	}
 }
 
-export async function listComment(token, plantId){
+export async function changeUser(token, formData) {
+	let requestOptions = {
+		method: "PUT",
+		headers: {
+			authorization: token,
+		},
+		body: formData,
+	}
+	try {
+		let response = await fetch(userUrl + key, requestOptions);
+
+		if (response.status != 200) {
+			console.log("DET ER EN FEIL I changeUser()");
+			throw new Error("Server error: " + response.status);
+		}
+
+		let data = await response.json();
+		console.log(data);
+
+		return data;
+	} catch (error) {
+		console.log(error);
+	}
+}
+
+export async function listComment(token, plantId, isAdmin) {
 	let requestOptions = {
 		method: "GET",
 		headers: {
@@ -394,7 +423,10 @@ export async function listComment(token, plantId){
 	}
 	try {
 		let response;
-		if (token != undefined){
+		if (isAdmin) {
+			response = await fetch(commentUrl + key, requestOptions);
+		}
+		else if (token != undefined) {
 			response = await fetch(commentUrl + key + "&plant_id=" + plantId, requestOptions);
 		}
 		else response = await fetch(commentUrl + key + "&plant_id=" + plantId);
@@ -413,7 +445,7 @@ export async function listComment(token, plantId){
 	}
 }
 
-export async function addComment(token, comment){
+export async function addComment(token, comment) {
 	let requestOptions = {
 		method: "POST",
 		headers: {
@@ -427,6 +459,30 @@ export async function addComment(token, comment){
 
 		if (response.status != 200) {
 			console.log("DET ER EN FEIL I addComment()");
+			throw new Error("Server error: " + response.status);
+		}
+
+		let data = await response.json();
+		console.log(data);
+
+		return data;
+	} catch (error) {
+		console.log(error);
+	}
+}
+
+export async function deleteComment(token, commentId) {
+	let requestOptions = {
+		method: "DELETE",
+		headers: {
+			authorization: token,
+		},
+	}
+	try {
+		let response = await fetch(commentUrl + key + "&comment_id=" + commentId, requestOptions);
+
+		if (response.status != 200) {
+			console.log("DET ER EN FEIL I deleteComment()");
 			throw new Error("Server error: " + response.status);
 		}
 

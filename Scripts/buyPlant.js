@@ -1,17 +1,17 @@
 "use strict";
 
-import {createShoppingCartUI} from "./createUI.js";
+import { createShoppingCartUI } from "./createUI.js";
 
 let cart = [];
 
-export function addToCart(plant){
-    if (localStorage.cart != null){
+export function addToCart(plant) {
+    if (localStorage.cart != null) {
         cart = JSON.parse(localStorage.cart);
     }
     let plantId = plant.id;
 
-    for (let i = 0; i < cart.length; i++){
-        if (plantId == cart[i][0].id){
+    for (let i = 0; i < cart.length; i++) {
+        if (plantId == cart[i][0].id) {
             cart[i][1]++;
             console.log(cart);
             localStorage.cart = JSON.stringify(cart);
@@ -25,13 +25,13 @@ export function addToCart(plant){
     localStorage.cart = JSON.stringify(cart);
 }
 
-export function changeCartPlant(plantIndex, add){
+export function changeCartPlant(plantIndex, add) {
     cart = JSON.parse(localStorage.cart);
 
-    if (add){
+    if (add) {
         cart[plantIndex][1]++;
     }
-    else if (cart[plantIndex][1] == 1){
+    else if (cart[plantIndex][1] == 1) {
         return;
     }
     else cart[plantIndex][1]--;
@@ -41,7 +41,7 @@ export function changeCartPlant(plantIndex, add){
     createShoppingCartUI();
 }
 
-export function removePlantFromCart(plantIndex){
+export function removePlantFromCart(plantIndex) {
     cart = JSON.parse(localStorage.cart);
 
     cart.splice(plantIndex, 1)
@@ -51,7 +51,7 @@ export function removePlantFromCart(plantIndex){
     createShoppingCartUI();
 }
 
-export function emptyCart(){
+export function emptyCart() {
     localStorage.cart = JSON.stringify([]);
     createShoppingCartUI();
 }

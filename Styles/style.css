@@ -326,18 +326,18 @@ p {
 	margin-left: 5px;
 }
 
-.commentFullContainer{
+.commentFullContainer {
 	margin-left: 50px;
 	width: 400px;
 }
 
-.tempTopContainer{
+.tempTopContainer {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 }
 
-.tempPersonContainer{
+.tempPersonContainer {
 	display: flex;
 	align-items: center;
 }
@@ -346,7 +346,26 @@ p {
 	width: 50px;
 }
 
-.tempCommentContainer{
+.tempCommentContainer {
 	margin: 20px 0 50px 0;
 	border: 2px solid white;
+}
+
+.extraButtonsContainer {
+	display: flex;
+	flex-direction: column;
+}
+
+.extraButtonsContainer button {
+	width: 60px;
+}
+
+.logout {
+	color: black;
+	margin-top: 30px;
+}
+
+.deleteUser {
+	background-color: red;
+	margin-top: 60px;
 }

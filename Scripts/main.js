@@ -2,7 +2,7 @@
 //OLMALY81
 
 import { getPlantViewData, getDetailViewData, getPlantZoneData } from "./getData.js";
-import { plantViewUI, detailViewUI, createShoppingCartUI, createCheckoutUI, createConfirmationUI, createHeaderUserUI, createRegisterUI, createLoginUI } from "./createUI.js";
+import { plantViewUI, detailViewUI, createShoppingCartUI, createCheckoutUI, createConfirmationUI, createHeaderUserUI, createRegisterUI, createLoginUI, createUserSettingsUI } from "./createUI.js";
 
 async function changeWindowPlant(category) {
 	window.location.href = "plant.html?category=" + category;
@@ -22,7 +22,7 @@ async function displayPlantView() {
 	if (window.location.href.includes("index.html")) return;
 	else if (window.location.href.includes("plant.html")) {
 		let authToken;
-		if (sessionStorage.loginData != undefined){
+		if (sessionStorage.loginData != undefined) {
 			authToken = JSON.parse(sessionStorage.loginData).token;
 		}
 
@@ -46,7 +46,7 @@ async function displayPlantView() {
 		}
 	} else if (window.location.href.includes("detail.html")) {
 		let authToken;
-		if (sessionStorage.loginData != undefined){
+		if (sessionStorage.loginData != undefined) {
 			authToken = JSON.parse(sessionStorage.loginData).token;
 		}
 
@@ -69,11 +69,14 @@ async function displayPlantView() {
 	else if (window.location.href.includes("login.html")) {
 		createLoginUI();
 	}
+	else if (window.location.href.includes("userSettings.html")) {
+		createUserSettingsUI();
+	}
 }
 
 window.addEventListener("load", displayPlantView);
 
-if (!window.location.href.includes("index.html") && !window.location.href.includes("plant.html") && !window.location.href.includes("detail.html") && !window.location.href.includes("cart.html") && !window.location.href.includes("checkout.html") && !window.location.href.includes("confirmation.html") && !window.location.href.includes("register.html") && !window.location.href.includes("registerConfirmation.html") && !window.location.href.includes("login.html") && !window.location.href.includes("loginConfirmation.html") && !window.location.href.includes("logoutConfirmation.html")) {
+if (!window.location.href.includes("index.html") && !window.location.href.includes("plant.html") && !window.location.href.includes("detail.html") && !window.location.href.includes("cart.html") && !window.location.href.includes("checkout.html") && !window.location.href.includes("confirmation.html") && !window.location.href.includes("register.html") && !window.location.href.includes("registerConfirmation.html") && !window.location.href.includes("login.html") && !window.location.href.includes("loginConfirmation.html") && !window.location.href.includes("userSettings.html") && !window.location.href.includes("userChange.html")) {
 	window.location.href = "index.html";
 }
 
@@ -98,14 +101,9 @@ createHeaderUserUI();
 /*
 TODO:
 
-1. Bytt ut .includes() med noe regex shit (+ da kan vi få den til å funke med små og store bokstaver)
-2. Responsive design
-3. Oppdater admin login ui
-4. Tror man skulle kunne se extra_3 og 4 i adminPlants.html sida (dobbel sjekk)
 5. HUSK Å GJØRE SÅNN AT ALLE ERRORS VISES TIL BRUKEREN OG IKKE BARE I KONSOLLEN!!!!!!!!!!!!!!!!!
 6. HUSK Å FJERNE KOMMENTARER (ALLE)
 7. Prøv å få fiksa det window.includes fanseskapet vi har
-8. FIKS FORMATERING
 9. ADD "?" I ALLE LINKENE OG FJERN FRA FUNKSJONENE
 10. ENDRE PÅ "IMAGE" GREIA I ADMIN PLANT OG USERS TIL EN SÅNN VELGE FIL TING TANG
 11. HVIS DU ALLEREDE HAR LAGD EN BRUKER SÅ FÅR DU FORTSATT VELLYKKET REGISTRERING
